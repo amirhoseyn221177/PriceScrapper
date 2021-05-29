@@ -11,12 +11,16 @@ Team:
 
 Project Description: \
 \
-\
 Who is it for?\
+\
 Everyday Consumers for online shopping.\
-What will it do?\
+\
+wat will it do?\
+\
 Simplify finding the best and lowest price for a specific product which is available on the internet.\
+\
 What type of data will it store?\
+\
 Account information (email and password)\
 Recently viewed items\
 Reviews on items\

@@ -10,7 +10,8 @@ Team:
 - Amir Sayyar -e7h2b1
 
 Project Description: \
-$~$
+\
+\
 Who is it for?\
 Everyday Consumers for online shopping.\
 What will it do?\

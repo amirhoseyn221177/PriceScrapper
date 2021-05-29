@@ -54,7 +54,7 @@ Display (Searched)  Product Link to associated sites\
 Display  (Searched) Product Price\
 Product Querying\
 Building check boxes for items\
-Building specific categories for items and specific identifiers\
+Building specific categories for items and specific identifiers
 
 
 

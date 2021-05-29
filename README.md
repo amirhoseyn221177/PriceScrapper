@@ -44,6 +44,7 @@ Recently viewed\
 2-3 stretch requirements (plan to complete at least 1!)\
 Having a review system for products through account. (Star and comments)\
 Having a communication centre between buyer and seller (Chat system).\
+\
 
 Pick 2 of your minimal requirements and break each of them down into ~2-5 smaller tasks!\
 Display item and associated information\

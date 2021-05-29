@@ -4,7 +4,7 @@
 # Team Name: merge-conflict
 
 Team: 
-- Alireza Ghiam -j6i2b\ 
+- Alireza Ghiam -j6i2b
 - Satyak Handa -y6i2b\
 - Amy Yung -g8y9a\  
 - Amir Sayyar -e7h2b1\
@@ -49,3 +49,10 @@ Display  (Searched) Product Price
 Product Querying
 Building check boxes for items
 Building specific categories for items and specific identifiers
+
+\
+\
+
+# Required primary sketch of the website
+
+![alt text] (./firstPage.png)

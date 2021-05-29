@@ -12,24 +12,22 @@ Team:
 Project Description: \
 \
 Who is it for?\
-\
 Everyday Consumers for online shopping.\
 \
 wat will it do?\
-\
 Simplify finding the best and lowest price for a specific product which is available on the internet.\
 \
 What type of data will it store?\
-\
 Account information (email and password)\
 Recently viewed items\
 Reviews on items\
 Purchases\
+\
 What will users be able to do with this data?\
 Guidance for finding the cheapest and best reviewed product in which they are looking for.\
 What is some additional functionality you can add/remove based on time constraints?\
 Using an encrypted login system with email and password to be able to access recently viewed items, purchases and reviews. Adding some statistics on purchases.\ Enabling reviews for purchases through accounts.\
-
+\
 Project Task Requirements:\
 3-5 minimal requirements (will definitely complete)\
 Product Querying (Search for T-Shirt, Car, Electronics, etc)\

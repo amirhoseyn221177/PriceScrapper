@@ -61,5 +61,17 @@ Building specific categories for items and specific identifiers\
 
 # Required sketch of our website
 
+
+## Page One
 ![alt text](./firstPage.png)
+
+## Page two 
+
+![alt text](./secondPage.png)
+
+## Page three
+![alt text](./thirdpage.png)
+
+
+
 

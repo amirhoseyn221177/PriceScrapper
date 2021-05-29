@@ -10,7 +10,7 @@ Team:
 - Amir Sayyar -e7h2b1
 
 Project Description: 
-Who is it for?
+Who is it for?\
 Everyday Consumers for online shopping.
 What will it do?
 Simplify finding the best and lowest price for a specific product which is available on the internet.

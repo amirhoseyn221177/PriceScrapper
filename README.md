@@ -57,7 +57,7 @@ Building specific categories for items and specific identifiers\
 
 \
 \
-\
+
 
 # Required sketch of our website
 

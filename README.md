@@ -9,7 +9,8 @@ Team:
 - Amy Yung -g8y9a 
 - Amir Sayyar -e7h2b1
 
-Project Description: 
+Project Description: \
+$~$
 Who is it for?\
 Everyday Consumers for online shopping.\
 What will it do?\

@@ -4,10 +4,10 @@
 # Team Name: merge-conflict
 
 Team: 
-Alireza Ghiam -j6i2b
-Satyak Handa -y6i2b
-Amy Yung -g8y9a
-Amir Sayyar -e7h2b1
+- Alireza Ghiam -j6i2b\ 
+- Satyak Handa -y6i2b\
+- Amy Yung -g8y9a\  
+- Amir Sayyar -e7h2b1\
 
 Project Description: 
 Who is it for?

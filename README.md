@@ -27,8 +27,7 @@ What will users be able to do with this data?\
 Guidance for finding the cheapest and best reviewed product in which they are looking for.\
 What is some additional functionality you can add/remove based on time constraints?\
 Using an encrypted login system with email and password to be able to access recently viewed items,
-purchases and reviews. Adding some statistics on purchases\
-Enabling reviews for purchases through accounts.
+purchases and reviews. Adding some statistics on purchases and Enabling reviews for purchases through accounts.
 
 Project Task Requirements:\
 3-5 minimal requirements (will definitely complete)\

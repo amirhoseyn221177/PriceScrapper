@@ -33,7 +33,7 @@ Project Task Requirements:\
 3-5 minimal requirements (will definitely complete)\
 Product Querying (Search for T-Shirt, Car, Electronics, etc)\
 Display item and associated information\
-Web Scraping/using API's for specific sellers to gather information on queried items\
+Web Scraping/using API's for specific sellers to gather information on queried items
 
 3-7 "standard" requirements (will most likely complete)\
 Product Ordering (High to Low, Low to High, Most Reviews, etc)\

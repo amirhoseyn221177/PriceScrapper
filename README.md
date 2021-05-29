@@ -3,20 +3,20 @@
 
 # Team Name: merge-conflict
 
-Team: 
+### Team: 
 - Alireza Ghiam - j6i2b
 - Satyak Handa - y6i2b
 - Amy Yung - g8y9a 
 - Amir Sayyar - e7h2b1
 
-Project Description: \
-\
-Who is it for?\
-Everyday Consumers for online shopping.\
-\
-What will it do?\
-Simplify finding the best and lowest price for a specific product which is available on the internet.\
-\
+### Project Description:
+
+Who is it for?
+- Everyday Consumers for online shopping.
+
+What will it do?
+- Simplify finding the best and lowest price for a specific product which is available on the internet.
+
 What type of data will it store?
 - Account information (email and password)
 - Recently viewed items

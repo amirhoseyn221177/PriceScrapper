@@ -39,7 +39,7 @@ Product Ordering (High to Low, Low to High, Most Reviews, etc)\
 Product Statistics (Mean price, Standard Deviation, Mean, etc)\
 Login and registration of a personal account\
 Recently purchased\
-Recently viewed
+Recently viewed\
 \
 2-3 stretch requirements (plan to complete at least 1!)\
 Having a review system for products through account. (Star and comments)\

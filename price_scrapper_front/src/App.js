@@ -3,6 +3,8 @@ import NavBar from './components/Header/Header'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Home from './components/Home/Home'
 import Footer from './components/Footer/Footer'
+import ProductTable from './components/ProductTable/ProductTable';
+import Searchbar from './components/Searchbar/Searchbar';
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
     <div className="App">
       
         <NavBar />
+        <Searchbar />
+        <ProductTable />
         <Footer />
       </div>
   </BrowserRouter>

@@ -1,0 +1,29 @@
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #2c56e0;
+    text-align: center;
+  }
+    
+  nav ul li {
+    display: inline-block;
+  }
+    
+  nav a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+
+  nav li a:hover {
+    background-color: white;
+    color: #3048cc;
+  }
+  
+  .active {
+    border-bottom: 4px solid white;
+  }

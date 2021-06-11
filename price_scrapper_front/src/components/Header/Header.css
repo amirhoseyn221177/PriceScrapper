@@ -27,3 +27,9 @@ nav ul {
   .active {
     border-bottom: 4px solid white;
   }
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }

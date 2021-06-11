@@ -3,6 +3,7 @@ import { Table } from 'react-bootstrap';
 import './ProductTable.css';
 import ProductCard from '../ProductCard/ProductCard';
 import Searchbar from '../Searchbar/Searchbar';
+
 const ProductTable = () => {
     return (
         <Fragment>

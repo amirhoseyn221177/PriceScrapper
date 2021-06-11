@@ -15,7 +15,11 @@ nav ul {
     display: block;
     color: white;
     text-align: center;
+<<<<<<< HEAD
     padding: 14px 16px;
+=======
+    padding: 14px 40px 16px 40px;
+>>>>>>> f48a9da3ce8fa7cac7574569fa2e144459a27a3c
     text-decoration: none;
   }
 

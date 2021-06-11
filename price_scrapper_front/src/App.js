@@ -6,7 +6,11 @@ import Footer from './components/Footer/Footer'
 import ProductTable from './components/ProductTable/ProductTable';
 import Searchbar from './components/Searchbar/Searchbar';
 
-function App() {
+import MainComponent from './components/MainComponent';
+
+
+function  App(){
+  
   return (
     <BrowserRouter>
     <div className="App">

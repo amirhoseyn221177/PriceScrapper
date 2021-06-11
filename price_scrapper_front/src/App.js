@@ -12,7 +12,8 @@ function  App(){
     <div className="App">
       
         <NavBar />
-        <MainComponent/>
+        <Searchbar />
+        <ProductTable />
         <Footer />
       </div>
   </BrowserRouter>

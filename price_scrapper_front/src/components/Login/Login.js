@@ -28,8 +28,8 @@ const Login = props => {
             <div className="loginForm">
                 <h1>Login</h1>
                 <form  noValidate autoComplete="off">
-                    <TextField onChange={e=>setEmail(e.target.value)} value={email} id="standard-basic" className="form-item" label="Email" />
-                    <TextField onChange={e=>setPassword(e.target.value)} value={password} type="password" id="standard-basic" className="form-item" label="Password" />
+                    <TextField autoComplete onChange={e=>setEmail(e.target.value)} value={email} id="standard-basic" className="form-item" label="Email" />
+                    <TextField autoComplete onChange={e=>setPassword(e.target.value)} value={password} type="password" id="standard-basic" className="form-item" label="Password" />
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>

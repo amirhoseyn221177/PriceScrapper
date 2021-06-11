@@ -1,10 +1,12 @@
-import React from 'react'
+import React,{Fragment} from 'react'
 import { Table } from 'react-bootstrap'
 import './ProductTable.css'
 import ProductCard from '../ProductCard/ProductCard'
-
+import Searchbar from '../Searchbar/Searchbar'
 const ProductTable = () => {
     return (
+        <Fragment>
+            <Searchbar/>
         <Table className="productTable">
             <tbody>
                 <tr>
@@ -24,6 +26,8 @@ const ProductTable = () => {
                 </tr>
             </tbody>
         </Table>
+        </Fragment>
+
     )
 }
 

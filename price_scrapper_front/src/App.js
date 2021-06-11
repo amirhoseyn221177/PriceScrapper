@@ -1,11 +1,7 @@
 import './App.css';
 import NavBar from './components/Header/Header'
-import { BrowserRouter, Route } from 'react-router-dom'
-import Home from './components/Home/Home'
+import { BrowserRouter } from 'react-router-dom'
 import Footer from './components/Footer/Footer'
-import ProductTable from './components/ProductTable/ProductTable';
-import Searchbar from './components/Searchbar/Searchbar';
-
 import MainComponent from './components/MainComponent';
 
 
@@ -16,8 +12,7 @@ function  App(){
     <div className="App">
       
         <NavBar />
-        <Searchbar />
-        <ProductTable />
+        <MainComponent/>
         <Footer />
       </div>
   </BrowserRouter>

@@ -1,6 +1,10 @@
 .productTable {
     position: absolute;
+<<<<<<< HEAD
+    top:  50%;
+=======
     top:  55%;
+>>>>>>> f48a9da3ce8fa7cac7574569fa2e144459a27a3c
     left: 50%;
     transform: translate(-50%,-50%);
 }

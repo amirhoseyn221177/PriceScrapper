@@ -7,10 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import { createStore, compose, applyMiddleware, combineReducers } from "redux"
 import {Provider} from 'react-redux'
 import thunk  from 'redux-thunk'
-import reducer from './Reducers/reducer1'
-import backlog from './Reducers/backlogReducer'
-import Auth from './Reducers/Authorization'
-
+import reducer from './Reducers/rootReducer'
 
 const rootreducer=combineReducers({
 })

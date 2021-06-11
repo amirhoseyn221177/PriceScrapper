@@ -4,14 +4,13 @@ import './Login.css'
 import { withRouter } from 'react-router-dom';
 import axios from 'axios'
 
-const Login = props => {
+const Login = () => {
 
     const [email,setEmail]= useState("")
     const [password,setPassword]=useState("")
 
 
     var sendingInfoToBackEnd=async()=>{
-        console.log(14)
         var resp = await axios.post("/url/node",{
             headers:{
                 password,
@@ -27,9 +26,9 @@ const Login = props => {
         <div className="loginBox">
             <div className="loginForm">
                 <h1>Login</h1>
-                <form  noValidate autoComplete="off">
-                    <TextField autoComplete onChange={e=>setEmail(e.target.value)} value={email} id="standard-basic" className="form-item" label="Email" />
-                    <TextField autoComplete onChange={e=>setPassword(e.target.value)} value={password} type="password" id="standard-basic" className="form-item" label="Password" />
+                <form noValidate autoComplete="off">
+                    <TextField onChange={e=>setEmail(e.target.value)} className="form-item" label="Email" />
+                    <TextField onChange={e=>setPassword(e.target.value)} className="form-item" label="Password" />
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>

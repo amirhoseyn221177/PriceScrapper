@@ -1,6 +1,11 @@
 .productTable {
     margin: auto;
     padding: 20px;
-    min-width: 400px;
+}
+
+.tableDiv {
+    margin: auto;
+    min-width: 1000px;
+    height: 100%;
     overflow: auto;
 }

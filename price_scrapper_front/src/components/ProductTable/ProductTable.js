@@ -8,6 +8,7 @@ const ProductTable = () => {
     return (
         <Fragment>
             <Searchbar />
+            <div className="tableDiv">
             <Table className="productTable">
                 <tbody>
                     <tr>
@@ -27,6 +28,7 @@ const ProductTable = () => {
                     </tr>
                 </tbody>
             </Table>
+            </div>
         </Fragment>
 
     );

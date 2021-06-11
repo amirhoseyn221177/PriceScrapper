@@ -1,0 +1,13 @@
+button.MuiButton-containedPrimary:hover {
+    color:black;
+    background-color: white;
+}
+
+.card {
+    border: 1px solid black;
+    margin: 30px;
+}
+
+.cardBody {
+    padding: 30px;
+}

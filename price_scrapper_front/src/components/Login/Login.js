@@ -1,6 +1,5 @@
 import React from 'react'
-import { TextField } from '@material-ui/core';
-import { Button } from 'react-bootstrap';
+import { TextField, Button } from '@material-ui/core';
 import './Login.css'
 
 const Login = (classes) => {
@@ -11,7 +10,9 @@ const Login = (classes) => {
                 <form className={classes.root} noValidate autoComplete="off">
                     <TextField id="standard-basic" className="form-item" label="Email" />
                     <TextField id="standard-basic" className="form-item" label="Password" />
-                    <Button className="loginBtn" variant="primary">Login</Button>
+                    <Button variant="contained" color="primary">
+                        Login
+                    </Button>
                 </form>
             </div>
         </div>

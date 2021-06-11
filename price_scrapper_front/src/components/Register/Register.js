@@ -1,6 +1,5 @@
 import React from 'react'
-import { TextField } from '@material-ui/core';
-import { Button } from 'react-bootstrap';
+import { TextField, Button } from '@material-ui/core';
 import './Register.css'
 
 const Register = (classes) => {
@@ -13,7 +12,9 @@ const Register = (classes) => {
                     <TextField id="standard-basic" className="form-item" label="Last Name" />
                     <TextField id="standard-basic" className="form-item" label="Email" />
                     <TextField id="standard-basic" className="form-item" label="Password" />
-                    <Button className="loginBtn" variant="primary">Sign Up</Button>
+                    <Button variant="contained" color="primary">
+                        Sign Up
+                    </Button>
                 </form>
             </div>
         </div>

@@ -5,7 +5,7 @@ form {
 
 .signUpForm {
     margin: auto;
-    background-color: #f3f2ff;
+    background-color: #f1f5ff;
     padding: 20px;
     border: 2px solid black;
     width: 400px;
@@ -16,3 +16,9 @@ form {
 .signUpBox {
     margin-top: 100px;
 }
+
+form button.MuiButton-containedPrimary:hover {
+    color:black;
+    background-color: white;
+}
+

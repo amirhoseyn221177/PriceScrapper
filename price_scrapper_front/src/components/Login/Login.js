@@ -11,6 +11,7 @@ const Login = props => {
 
 
     var sendingInfoToBackEnd=async()=>{
+        console.log(14)
         var resp = await axios.post("/url/node",{
             headers:{
                 password,

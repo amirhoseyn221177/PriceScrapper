@@ -1,35 +1,42 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
-import './Login.css'
+import './Login.css';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios'
+import axios from 'axios';
+import { savingToStorage } from '../Actions/actions';
+import { connect } from 'react-redux';
 
 const Login = props => {
 
-    const [email,setEmail]= useState("")
-    const [password,setPassword]=useState("")
+    const [email, setEmail] = useState("amirsayuar221177@gmail.com");
+    const [password, setPassword] = useState("sex221177");
+    const [error,setError]=useState(false)
 
+    var sendingInfoToBackEnd = async () => {
 
-    var sendingInfoToBackEnd=async()=>{
-        console.log(14)
-        var resp = await axios.post("/url/node",{
-            headers:{
-                password,
-                email
+        var resp = await axios.post("/api/user/login", {}, {
+            headers: {
+                'password': password,
+                'email': email
             }
-        })
+        });
+        const data = await resp.headers;
+        if(data.autorization!==""){
+            props.sendingToActions(data.authorization)
+        }
+        else{
+            setError(true)
+        }
 
-        const data = await resp.data
-        console.log(data)
-    }
+    };
 
     return (
         <div className="loginBox">
             <div className="loginForm">
                 <h1>Login</h1>
-                <form  noValidate autoComplete="off">
-                    <TextField autoComplete onChange={e=>setEmail(e.target.value)} value={email} id="standard-basic" className="form-item" label="Email" />
-                    <TextField autoComplete onChange={e=>setPassword(e.target.value)} value={password} type="password" id="standard-basic" className="form-item" label="Password" />
+                <form noValidate >
+                    <TextField onChange={e => setEmail(e.target.value)} value={email} id="standard-basic" className="form-item" label="Email" type="email" />
+                    <TextField onChange={e => setPassword(e.target.value)} value={password} type="password" id="standard-basic" className="form-item" label="Password" />
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>
@@ -37,7 +44,14 @@ const Login = props => {
             </div>
         </div>
 
-    )
-}
+    );
+};
 
-export default withRouter(Login)
+
+const mapToProps = dispatch => {
+    return {
+        sendingToActions: (token) => dispatch(savingToStorage(token))
+    };
+};
+
+export default connect(null, mapToProps)(withRouter(Login));

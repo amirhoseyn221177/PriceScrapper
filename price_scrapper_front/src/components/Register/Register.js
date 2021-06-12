@@ -1,25 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
-import './Register.css'
+import './Register.css';
+import { Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
-const Register = (classes) => {
+const Register = props => {
+
+    const [FirstName,setFirstName]=useState("")
+    const [LastName,setLastName]=useState("")
+    const [Email,setEmail]=useState("")
+    const [password,setPassword]=useState("")
+
+
+    var sendingUserInfoToBackEnd=async()=>{
+        try{
+            const req = await axios.post("/api/user/signup",{FirstName,LastName,Email,password})
+            const resp = await req.data
+            console.log(resp)
+        }catch(e){
+            console.log(e.response.data.error.message)
+        }
+
+    }
+
     return (
-        <div className="signUpBox">
-            <div className="signUpForm">
-                <h1>Sign Up</h1>
-                <form className={classes.root} noValidate autoComplete="off">
-                    <TextField id="standard-basic" className="form-item" label="First Name" />
-                    <TextField id="standard-basic" className="form-item" label="Last Name" />
-                    <TextField id="standard-basic" className="form-item" label="Email" />
-                    <TextField id="standard-basic" className="form-item" label="Password" />
-                    <Button variant="contained" color="primary">
-                        Sign Up
-                    </Button>
-                </form>
+        <Fragment>
+            <div className="signUpBox">
+                <div className="signUpForm">
+                    <h1>Sign Up</h1>
+                    <form noValidate autoComplete="off">
+                        <TextField onChange={e=>setFirstName(e.target.value)} id="standard-basic" className="form-item" label="First Name" type="first name" />
+                        <TextField onChange={e=>setLastName(e.target.value)} id="standard-basic" className="form-item" label="Last Name" />
+                        <TextField onChange={e=>setEmail(e.target.value)} id="standard-basic" className="form-item" label="Email" type="email" />
+                        <TextField onChange={e=>setPassword(e.target.value)} id="standard-basic" className="form-item" label="Password" type="password"/>
+                        <Button onClick={sendingUserInfoToBackEnd} variant="contained" color="primary">
+                            Sign Up
+                        </Button>
+                    </form>
+                </div>
             </div>
-        </div>
+        </Fragment>
+    );
+};
 
-    )
-}
-
-export default Register
+export default withRouter(Register);

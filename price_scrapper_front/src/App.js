@@ -10,7 +10,7 @@ function  App(){
   return (
     <BrowserRouter>
     <div className="App">
-      
+
         <NavBar />
         <MainComponent />
         <Footer />

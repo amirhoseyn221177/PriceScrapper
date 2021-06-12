@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card } from 'react-bootstrap'
 import { Button } from '@material-ui/core';
+import {Link } from "react-router-dom";
 import './ProductCard.css'
 
 const ProductCard = () => {
@@ -15,6 +16,11 @@ const ProductCard = () => {
                 <Button variant="contained" color="primary">
                     Buy product!
                 </Button>
+                <Link to="/productDetail">
+                <Button variant="contained" color="primary">
+                    Details
+                </Button>
+                </Link>
             </Card.Body>
         </Card>
     )

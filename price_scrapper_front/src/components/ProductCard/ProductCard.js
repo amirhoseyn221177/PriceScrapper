@@ -13,9 +13,6 @@ const ProductCard = () => {
                 <Card.Text>
                     Best price at Ebay for $1
                 </Card.Text>
-                {/* <Button variant="contained" color="primary">
-                    Buy product!
-                </Button> */}
                 <Link to="/productDetail">
                 <Button variant="contained" color="primary">
                     Details

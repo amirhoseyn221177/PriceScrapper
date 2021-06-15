@@ -4,7 +4,7 @@ import Login from './Login/Login'
 import ProductTable from './ProductTable/ProductTable'
 import Register from './Register/Register'
 import ProductDetail from './ProductPage/ProductDetail'
-
+import ForgotPassword from './Login/ConfirmPassword'
 
 var Main = props => {
 
@@ -16,9 +16,10 @@ var Main = props => {
         <Fragment>
             <Switch>
                 <Route exact path="/" component={ProductTable} />
-                <Route path="/login" component={Login} />
-                <Route path="/register" component={Register} />
-                <Route path="/productDetail" component={ProductDetail} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/productDetail" component={ProductDetail} />
+                <Route exact path="/forgotpass/:email" component={ForgotPassword}/>
             </Switch>
         </Fragment>
     );

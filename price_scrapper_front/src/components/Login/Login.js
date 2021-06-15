@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 
 const Login = props => {
 
-    const [email, setEmail] = useState("amirsayuar221177@gmail.com");
-    const [password, setPassword] = useState("sex221177");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [error,setError]=useState(false)
 
     var sendingInfoToBackEnd = async () => {

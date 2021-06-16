@@ -9,17 +9,17 @@ const Register = props => {
 
     const [FirstName,setFirstName]=useState("")
     const [LastName,setLastName]=useState("")
-    const [Email,setEmail]=useState("")
+    const [email,setEmail]=useState("")
     const [password,setPassword]=useState("")
 
 
     var sendingUserInfoToBackEnd=async()=>{
         try{
-            const req = await axios.post("/api/user/signup",{FirstName,LastName,Email,password})
+            const req = await axios.post("/api/user/signup",{FirstName,LastName, email,password})
             const resp = await req.data
             console.log(resp)
         }catch(e){
-            console.log(e.response.data.error.message)
+            console.log(e)
         }
 
     }

@@ -8,38 +8,62 @@ import { connect } from 'react-redux';
 
 const Login = () => {
 
-    const [email, setEmail] = useState("amirsayuar221177@gmail.com");
-    const [password, setPassword] = useState("sex221177");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [error,setError]=useState(false)
 
+    console.log(error)
     var sendingInfoToBackEnd = async () => {
-
-        var resp = await axios.post("/api/user/login", {}, {
-            headers: {
-                'password': password,
-                'email': email
+        try{
+            var resp = await axios.post("/api/user/login", {}, {
+                headers: {
+                    'password': password,
+                    'email': email
+                }
+            });
+            const data = await resp.headers;
+            if(data.autorization!==""){
+                console.log(data)
+                props.sendingToActions(data.authorization)
             }
-        });
-        const data = await resp.headers;
-        if(data.autorization!==""){
-            props.sendingToActions(data.authorization)
-        }
-        else{
-            setError(true)
+            else{
+                setError(true)
+            }
+    
+        }catch(e){
+            console.log(e.response.data.error.message)
         }
 
+     
     };
+
+
+    var forgotPassword = async()=>{
+        // if (email!==""){
+        //     const resp = await axios.post(`/api/user/forgotpass/${email}`)
+        //     console.log(resp.data)
+        //     setError(false)
+
+        // }
+        // else{
+        //     setError(true)
+        // }
+        props.history.push(`/forgotpass/${email}`)
+
+    }
 
     return (
         <div className="loginBox">
             <div className="loginForm">
                 <h1>Login</h1>
+                {error? <h5 style={{color:'red'}}>please type your email</h5>:null}
                 <form noValidate >
                     <TextField onChange={e => setEmail(e.target.value)} value={email} className="form-item" label="Email" type="email" />
                     <TextField onChange={e => setPassword(e.target.value)} value={password} type="password" className="form-item" label="Password" />
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>
+                    <Button onClick={forgotPassword} style={{color:"blue"}}>forgot my password </Button>
                 </form>
             </div>
         </div>

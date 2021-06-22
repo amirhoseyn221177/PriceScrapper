@@ -1,7 +1,6 @@
 const route = require("express").Router();
-const { SignUp, Login } = require('../Functions/userInfo');
+const { SignUp, Login, forgotPassword, updatePassword } = require('../Functions/userInfo');
 const chalk = require("chalk");
-const { json } = require("express");
 
 
 
@@ -26,9 +25,10 @@ route.post("/login", async (req, res) => {
 });
 
 
-route.get("/signup", async (req, res) => {
+route.post("/signup", async (req, res) => {
     try {
         const { email, password, FirstName, LastName } = await req.body;
+        console.log(email)
         await SignUp(email, password, FirstName, LastName);
         res.status(200).json({ message: "user has been created" });
     } catch (e) {
@@ -41,6 +41,39 @@ route.get("/signup", async (req, res) => {
 
     }
 });
+
+
+route.post("/forgotpass/:email",async(req,res)=>{
+    try{
+        const email = req.params.email
+        console.log(email)
+        await forgotPassword(email)
+        res.status(200).json({message:"code was sent to your email"})
+    }catch(e){
+        console.log(e.message)
+        res.status(500).send({
+            error:{
+                message:e.message
+            }
+        })
+    }
+})
+
+
+route.post("/updatePass/:password/:email",async(req,res)=>{
+    try{
+        const {password,email} = req.params
+        await updatePassword(email,password)
+        res.status(200).json({message : "password changed successfully"})
+    }catch(e){
+        console.log(e.message)
+        res.status(500).send({
+            error:{
+                message:e.message
+            }
+        })
+    }
+})
 
 
 

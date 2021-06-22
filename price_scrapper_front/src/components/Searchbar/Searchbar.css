@@ -1,17 +1,15 @@
 .searchBar {
-    margin: 60px auto auto auto;
+    margin: 60px auto 10px auto;
     min-width: 800px;
     border: 1px black solid;
 }
 
 .searchDiv {
-    display: flex;
-    flex-direction: row;
+    display: inline-block;
 }
 
 .filterButton {
     width: 100px;
-    height: 20px;
 }
 
 .dialogTitle {

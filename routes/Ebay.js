@@ -5,11 +5,13 @@ const chalk = require("chalk");
 let ebay = new Ebay({
     clientID: "SatyakHa-Web-PRD-716b1f9e8-c247be31",
     clientSecret: "PRD-16b1f9e8c971-b22c-4866-9dad-2bc4",
+    countryCode: 'EBAY-ENCA',
     body: {
       grant_type: "client_credentials",
       //you may need to define the oauth scope
       scope: "https://api.ebay.com/oauth/api_scope",
     },
+
   });
 
 //   (async()=>{

@@ -94,8 +94,15 @@ var forgotPassword = async(email)=>{
     }
 
 
+<<<<<<< HEAD
 
     
+=======
+    User.findOne({email:"amirsayuar221177@gmail.com"})
+    .then(user=>{
+        console.log(user)
+    })
+>>>>>>> 2c652dde8e980e6e782977bdfa9e86e4d0d4b404
 
 
 

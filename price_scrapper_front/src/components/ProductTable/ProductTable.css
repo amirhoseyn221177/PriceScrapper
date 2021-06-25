@@ -7,3 +7,9 @@
     margin: auto;
     height: 100%;
 }
+
+.MuiList-root.MuiList-padding {
+    width: 200px;
+    float: right;
+    padding-right: 10px;
+}

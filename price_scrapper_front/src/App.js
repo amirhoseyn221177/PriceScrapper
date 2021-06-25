@@ -13,7 +13,7 @@ function  App(){
       
         <NavBar />
         <MainComponent />
-        <Footer />
+        {/* <Footer /> */}
       </div>
   </BrowserRouter>
   );

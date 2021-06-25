@@ -6,7 +6,7 @@ let stock = new StockX()
 
 route.post("/search",async(req,res)=>{
     try{
-        let searchQuery = req.body.searchString
+        let searchQuery = req.body.searchText
         // await stock.login({
         //     user:"abdullah2211772211@gmail.com",
         //     password:"Sex221177"

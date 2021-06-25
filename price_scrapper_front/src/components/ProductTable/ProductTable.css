@@ -1,6 +1,12 @@
 .productTable {
     position: absolute;
-    top:  55%;
+    top:  54%;
     left: 50%;
     transform: translate(-50%,-50%);
+    z-index: -1;
+    margin: 0;
+    overflow-y: scroll;
+    height: 85%;
+    display: block;
+
 }

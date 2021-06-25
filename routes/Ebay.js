@@ -8,25 +8,21 @@ let ebay = new Ebay({
     countryCode: 'EBAY-ENCA',
     body: {
       grant_type: "client_credentials",
-      //you may need to define the oauth scope
       scope: "https://api.ebay.com/oauth/api_scope",
     },
 
   });
 
-//   (async()=>{
-//      const data = await ebay.getAccessToken()
-//      console.log(data)
-//   })()
 
 route.post("/search", async (req, res) => {
     try {
         let {searchText ,limit} = await req.body
         let product =  await ebay.findItemsByKeywords({
             keywords : searchText,
-            limit
+            limit: 20
         })
         res.status(200).json({result : product[0].searchResult})
+        
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({

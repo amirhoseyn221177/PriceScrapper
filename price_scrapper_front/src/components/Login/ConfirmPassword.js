@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router';
 import './Login.css';
 import { TextField, Button } from '@material-ui/core';
-import queryString from 'query-string';
 import axios from 'axios';
 
 

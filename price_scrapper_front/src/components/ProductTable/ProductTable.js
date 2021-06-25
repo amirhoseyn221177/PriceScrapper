@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import './ProductTable.css';
+import { Button } from '@material-ui/core';
 import ProductCard from '../ProductCard/ProductCard';
 
 const ProductTable = () => {

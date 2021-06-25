@@ -42,3 +42,9 @@
     display: flex;
     flex-direction: row;
 }
+
+.searchBar{
+    position: relative;
+    width: 40%;
+    left: 30%;
+}

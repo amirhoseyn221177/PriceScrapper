@@ -6,7 +6,39 @@
     z-index: -1;
     margin: 0;
     overflow-y: scroll;
-    height: 85%;
+    height: 65%;
     display: block;
+}
 
+.filterButton {
+    width: 100px;
+    height: 20px;
+}
+
+.dialogTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dialogContent {
+    height: 10vh;
+}
+
+.MuiList-root.MuiList-padding {
+    width: 200px;
+    float: right;
+    padding-right: 10px;
+}
+
+.searchBar {
+    margin: 60px auto auto auto;
+    max-width: 800px;
+    min-width: 800px;
+    border: 1px black solid;
+} 
+
+.searchDiv {
+    display: flex;
+    flex-direction: row;
 }

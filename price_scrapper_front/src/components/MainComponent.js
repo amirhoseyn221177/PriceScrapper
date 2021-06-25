@@ -1,14 +1,12 @@
 import React, { Fragment } from 'react';
 import { withRouter,Switch,Route } from 'react-router';
 import Login from './Login/Login'
-import ProductTable from './ProductTable/ProductTable'
 import Register from './Register/Register'
 import ProductDetail from './ProductPage/ProductDetail'
 import ForgotPassword from './Login/ConfirmPassword'
+import ProductTable from './ProductTable/ProductTable';
 
 var Main = props => {
-
-
 
     if(props.location.pathname==="/home") props.history.push("/")
 

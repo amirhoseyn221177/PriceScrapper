@@ -19,29 +19,57 @@ const ProductTable = (props) => {
             setEbayArray(ebayArrayFromAPI);
             setStockXArray(stockXArrayFromAPI);
             setAmazonArray(amazonArrayFromAPI);
-            console.log("ebay array is: ", ebayArray)
-            console.log("ebay array length from setter", ebayArray.length )
+            // console.log("ebay array is: ", ebayArray)
+            // console.log("ebay array length from setter", ebayArray.length )
         } catch (e) {
             console.log(e)
         }
     }
 
     var loadProductCards = () => {
-        console.log("has waited for previous")
+        // console.log("has waited for previous")
         let currProductsArray = [];
-        console.log("length", ebayArray.length)
+        // console.log("length", ebayArray.length)
         for (let i = 0; i < ebayArray.length; i++) {
+            console.log(ebayArray[i])
             let title = ebayArray[i].title[0];
             let vendor = "Ebay";
-            let price = ebayArray[i].sellingStatus[0].convertedCurrentPrice[0].value
-            let currency = ebayArray[i].sellingStatus[0].convertedCurrentPrice[0].convertedCurrentPrice
-  //          let image = ebayArray[i]?.pictureURLLarge[0] ?? "";
+            let price = ebayArray[i].sellingStatus[0].convertedCurrentPrice[0].__value__
+            let currency = ebayArray[i].sellingStatus[0].convertedCurrentPrice[0]["@currencyId"]
+            let image;
+            if (ebayArray[i].galleryURL != null) {
+                image = ebayArray[i].galleryURL[0]
+            } else {
+                image = ""
+            }
 
-            let ebayObject = {title, vendor, price, currency};
-            console.log("object", ebayObject)
-
+            let ebayObject = {title, vendor, price, currency, image};
             currProductsArray.push(ebayObject)
-            console.log("getting populated: ", currProductsArray)
+        }
+
+        for (let i = 0; i < stockXArray.length; i++) {
+            let title = stockXArray[i].name;
+            let vendor = "StockX";
+            let price = stockXArray[i].price;
+            let currency = "USD";
+            let image = stockXArray[i].thumbnail_url;
+
+            let stockXObject = {title, vendor, price, currency, image};
+            currProductsArray.push(stockXObject);
+
+        }
+
+        for (let i = 0; i < amazonArray.length; i++) {
+            console.log("Amazon product", amazonArray[i])
+            let title = amazonArray[i].title;
+            let vendor = "Amazon";
+            let price = amazonArray[i].price.current_price;
+            let currency = amazonArray[i].price.currency;
+            let image = amazonArray[i].thumbnail;
+
+            let amazonObject = {title, vendor, price, currency, image};
+            currProductsArray.push(amazonObject);
+
         }
         setproductInfoArray(currProductsArray) 
     }
@@ -49,35 +77,33 @@ const ProductTable = (props) => {
     var createProductCards = () => {
         let allCards = []
         for (let i = 2; i < productInfoArray.length; i += 3) {
-            // <tr>
-            //     <td><ProductCard /></td>
-            //     <td><ProductCard /></td>
-            //     <td><ProductCard /></td>
-            // </tr>
             allCards.push(
                 <tr>
                     <td>
                         <ProductCard 
-                            title={productInfoArray[i].title}
+                            cardTitle={productInfoArray[i].title}
                             vendor={productInfoArray[i].vendor}
                             price={productInfoArray[i].price}
                             currency={productInfoArray[i].currency}
+                            image={productInfoArray[i].image}
                         />
                     </td>
                     <td>
                         <ProductCard 
-                            title={productInfoArray[i-1].title}
+                            cardTitle={productInfoArray[i-1].title}
                             vendor={productInfoArray[i-1].vendor}
                             price={productInfoArray[i-1].price}
                             currency={productInfoArray[i-1].currency}
+                            image={productInfoArray[i-1].image}
                         />
                     </td>
                     <td>
                         <ProductCard 
-                            title={productInfoArray[i-2].title}
+                            cardTitle={productInfoArray[i-2].title}
                             vendor={productInfoArray[i-2].vendor}
                             price={productInfoArray[i-2].price}
                             currency={productInfoArray[i-2].currency}
+                            image={productInfoArray[i-2].image}
                         />
                     </td>
                 </tr>
@@ -86,7 +112,7 @@ const ProductTable = (props) => {
         setproductCardsJSX(allCards)
     }
 
-    useEffect(loadProductCards, [ebayArray]);
+    useEffect(loadProductCards, [ebayArray, stockXArray, amazonArray]);
     useEffect(createProductCards, [productInfoArray]);
 
     return (

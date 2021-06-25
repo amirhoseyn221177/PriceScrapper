@@ -8,7 +8,7 @@ const ProductCard = (props) => {
     
     return (
         <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="" />
+            <Card.Img variant="top" src={props.image} width="100" height="180" />
             <Card.Body className="cardBody">
                 <Card.Title>{props.cardTitle}</Card.Title>
                 <Card.Text>

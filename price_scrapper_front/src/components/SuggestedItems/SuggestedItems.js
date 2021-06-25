@@ -70,7 +70,7 @@ const SuggestedItems = () => {
     return (
         <div
             style={{
-                paddingBottom: '30px',
+                paddingBottom: '60px',
                 position: 'relative'
             }}
         >
@@ -90,7 +90,7 @@ const SuggestedItems = () => {
                 keyBoardControl
                 minimumTouchDrag={80}
                 renderButtonGroupOutside={false}
-                renderDotsOutside
+                renderDotsOutside={false}
                 responsive={responsive}
                 showDots
                 sliderClass=""

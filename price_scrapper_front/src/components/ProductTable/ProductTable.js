@@ -81,13 +81,14 @@ const ProductTable = (props) => {
             let price = await item.sellingStatus[0].convertedCurrentPrice[0].__value__;
             let currency = await item.sellingStatus[0].convertedCurrentPrice[0]["@currencyId"];
             let image;
+            let itemURL = ebayArray[i].viewItemURL[0];
             if (item.galleryURL != null) {
                 image = await item.galleryURL[0];
             } else {
                 image = "";
             }
 
-            let ebayObject = { title, vendor, price, currency, image };
+            let ebayObject = {title, vendor, price, currency, image, itemURL};
             currProductsArray.push(ebayObject);
         });
 
@@ -97,8 +98,9 @@ const ProductTable = (props) => {
             let price = stockXArray[i].price;
             let currency = "USD";
             let image = stockXArray[i].thumbnail_url;
+            let itemURL = stockXArray[i].url;
 
-            let stockXObject = { title, vendor, price, currency, image };
+            let stockXObject = {title, vendor, price, currency, image, itemURL};
             currProductsArray.push(stockXObject);
 
         }
@@ -110,8 +112,9 @@ const ProductTable = (props) => {
             let price = amazonArray[i].price.current_price;
             let currency = amazonArray[i].price.currency;
             let image = amazonArray[i].thumbnail;
+            let itemURL = amazonArray[i].url;
 
-            let amazonObject = { title, vendor, price, currency, image };
+            let amazonObject = {title, vendor, price, currency, image, itemURL};
             currProductsArray.push(amazonObject);
 
         }
@@ -137,6 +140,7 @@ const ProductTable = (props) => {
                             price={productInfoArray[i].price}
                             currency={productInfoArray[i].currency}
                             image={productInfoArray[i].image}
+                            itemURL = {productInfoArray[i].itemURL}
                         />
                     </td>
                     <td>
@@ -146,6 +150,7 @@ const ProductTable = (props) => {
                             price={productInfoArray[i - 1].price}
                             currency={productInfoArray[i - 1].currency}
                             image={productInfoArray[i - 1].image}
+                            itemURL = {productInfoArray[i-1].itemURL}
                         />
                     </td>
                     <td>
@@ -155,6 +160,7 @@ const ProductTable = (props) => {
                             price={productInfoArray[i - 2].price}
                             currency={productInfoArray[i - 2].currency}
                             image={productInfoArray[i - 2].image}
+                            itemURL = {productInfoArray[i-2].itemURL}
                         />
                     </td>
                 </tr>

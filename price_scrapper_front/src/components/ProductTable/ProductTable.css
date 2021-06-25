@@ -10,3 +10,9 @@
     display: block;
 
 }
+
+.searchBar{
+    position: relative;
+    width: 40%;
+    left: 30%;
+}

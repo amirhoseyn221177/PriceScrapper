@@ -4,14 +4,15 @@ import { Button } from '@material-ui/core';
 import { Link } from "react-router-dom";
 import './ProductCard.css'
 
-const ProductCard = () => {
+const ProductCard = (props) => {
+    
     return (
         <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src="holder.js/100px180" />
+            <Card.Img variant="top" src={props.image} width="100" height="180" />
             <Card.Body className="cardBody">
-                <Card.Title>Product 1</Card.Title>
+                <Card.Title>{props.cardTitle}</Card.Title>
                 <Card.Text>
-                    Best price at Ebay for $1
+                    Best price at {props.vendor} for {props.price} {props.currency}
                 </Card.Text>
                 <Link to="/productDetail">
                 <Button variant="contained" color="primary">

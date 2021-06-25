@@ -6,7 +6,7 @@ import axios from 'axios';
 import { savingToStorage } from '../Actions/actions';
 import { connect } from 'react-redux';
 
-const Login = () => {
+const Login = (props) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { savingToStorage } from '../Actions/actions';
 import { connect } from 'react-redux';
 
-const Login = props => {
+const Login = (props) => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -58,8 +58,8 @@ const Login = props => {
                 <h1>Login</h1>
                 {error? <h5 style={{color:'red'}}>please type your email</h5>:null}
                 <form noValidate >
-                    <TextField onChange={e => setEmail(e.target.value)} value={email} id="standard-basic" className="form-item" label="Email" type="email" />
-                    <TextField onChange={e => setPassword(e.target.value)} value={password} type="password" id="standard-basic" className="form-item" label="Password" />
+                    <TextField onChange={e => setEmail(e.target.value)} value={email} className="form-item" label="Email" type="email" />
+                    <TextField onChange={e => setPassword(e.target.value)} value={password} type="password" className="form-item" label="Password" />
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>

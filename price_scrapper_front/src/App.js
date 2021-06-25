@@ -13,8 +13,7 @@ function  App(){
     <div className="App">
         <NavBar />
         <MainComponent />
-        <SuggestedItems />
-        <Footer />
+        {/* <Footer /> */}
       </div>
   </BrowserRouter>
   );

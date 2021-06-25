@@ -1,15 +1,12 @@
 .productTable {
-    margin: auto;
-    padding: 20px;
-}
+    position: absolute;
+    top:  54%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: -1;
+    margin: 0;
+    overflow-y: scroll;
+    height: 85%;
+    display: block;
 
-.tableDiv {
-    margin: auto;
-    height: 100%;
-}
-
-.MuiList-root.MuiList-padding {
-    width: 200px;
-    float: right;
-    padding-right: 10px;
 }

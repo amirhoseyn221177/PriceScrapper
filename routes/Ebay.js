@@ -22,8 +22,7 @@ route.post("/search", async (req, res) => {
             limit: 20
         })
         res.status(200).json({result : product[0].searchResult})
-        console.log(res.status(200).json({result : product[0].searchResult})
-        )
+        
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({

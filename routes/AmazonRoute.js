@@ -6,9 +6,9 @@ const chalk = require("chalk");
 route.post("/search", async (req, res) => {
     try {
         console.log("AMAZON");
-        console.log(req.body.searchString);
+        console.log(req.body.searchText);
         // let { searchParam, country } = await req.body;
-        let searchParam = req.body.searchString
+        let searchParam = req.body.searchText
         let country = "CA"
 
         const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "CA" }); //default country is Canada

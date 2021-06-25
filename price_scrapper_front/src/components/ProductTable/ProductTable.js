@@ -125,29 +125,30 @@ const ProductTable = (props) => {
             currProductsArray.push(ebayObject);
         });
 
-        stockXArray.map (async(item)=> {
-            let title = await item.name;
+        for (let i = 0; i < stockXArray.length; i++) {
+            let title = stockXArray[i].name;
             let vendor = "StockX";
-            let price = await item.price;
+            let price = stockXArray[i].price;
             let currency = "USD";
-            let image = await item.thumbnail_url;
+            let image = stockXArray[i].thumbnail_url;
 
             let stockXObject = { title, vendor, price, currency, image };
             currProductsArray.push(stockXObject);
-        
-        })
 
-        amazonArray.map (async(item)=> {
-            let title = await item.title;
+        }
+
+        for (let i = 0; i < amazonArray.length; i++) {
+            console.log("Amazon product", amazonArray[i]);
+            let title = amazonArray[i].title;
             let vendor = "Amazon";
-            let price = await item.price.current_price;
-            let currency = await item.price.currency;
-            let image = await item.thumbnail;
+            let price = amazonArray[i].price.current_price;
+            let currency = amazonArray[i].price.currency;
+            let image = amazonArray[i].thumbnail;
 
             let amazonObject = { title, vendor, price, currency, image };
             currProductsArray.push(amazonObject);
 
-        })
+        }
         setproductInfoArray(currProductsArray);
     };
 
@@ -281,13 +282,6 @@ const ProductTable = (props) => {
                         </th>
                     </tr>
                 </thead>
-            <SearchBar
-            className="searchBar"
-                id="Search-Bar"
-                value={searchText}
-                onChange={newValue => setSearchText(newValue)}
-                onRequestSearch={() => callAPIBundle()}
-            />            <Table className="productTable">
                 <tbody>
                     {productCardsJSX}
                 </tbody>

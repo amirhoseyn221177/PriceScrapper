@@ -45,37 +45,57 @@ const SuggestedItems = () => {
 
     const responsive = {
         desktop: {
-            breakpoint: { max: 3000, min: 1024 },
-            items: 3,
-            slidesToSlide: 3 // optional, default to 1.
-        },
-        tablet: {
-            breakpoint: { max: 1024, min: 464 },
-            items: 2,
-            slidesToSlide: 2 // optional, default to 1.
+            breakpoint: {
+                max: 3000,
+                min: 1024
+            },
+            items: 4
         },
         mobile: {
-            breakpoint: { max: 464, min: 0 },
-            items: 1,
-            slidesToSlide: 1 // optional, default to 1.
+            breakpoint: {
+                max: 464,
+                min: 0
+            },
+            items: 1
+        },
+        tablet: {
+            breakpoint: {
+                max: 1024,
+                min: 464
+            },
+            items: 2
         }
     };
 
     return (
-        <div className="carouselDiv">
+        <div
+            style={{
+                paddingBottom: '30px',
+                position: 'relative'
+            }}
+        >
             <h2>Items you might like:</h2>
             <Carousel
-                responsive={responsive}
-                autoPlay={false}
+                additionalTransfrom={0}
+                arrows
+                autoPlay
                 autoPlaySpeed={5000}
-                showDots={true}
-                ssr={true}
-                infinite={true}
-                deviceType={"desktop"}
-                customTransition="all .5"
-                transitionDuration={500}
+                className=""
+                containerClass="container-with-dots"
+                dotListClass=""
+                draggable
+                focusOnSelect={false}
+                infinite
+                itemClass=""
+                keyBoardControl
+                minimumTouchDrag={80}
                 renderButtonGroupOutside={false}
-                renderDotsOutside={false}
+                renderDotsOutside
+                responsive={responsive}
+                showDots
+                sliderClass=""
+                slidesToSlide={1}
+                swipeable
             >
                 {
                     items.map((item, idx) => {

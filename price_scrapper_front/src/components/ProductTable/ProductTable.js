@@ -7,6 +7,8 @@ import ProductCard from '../ProductCard/ProductCard';
 import axios from "axios";
 import SearchBar from "material-ui-search-bar";
 import './ProductTable.css';
+import { connect } from "react-redux";
+import { ChosenItem } from "../Actions/actions";
 
 const ProductTable = (props) => {
     const [ebayArray, setEbayArray] = useState([]);
@@ -109,19 +111,19 @@ const ProductTable = (props) => {
     var loadProductCards = async () => {
         let currProductsArray = [];
         ebayArray.map(async (item, i) => {
-            console.log(item);
             let title = await item.title[0];
             let vendor = "Ebay";
             let price = await item.sellingStatus[0].convertedCurrentPrice[0].__value__;
             let currency = await item.sellingStatus[0].convertedCurrentPrice[0]["@currencyId"];
             let image;
+            let itemURL = await item.viewItemURL[0];
             if (item.galleryURL != null) {
                 image = await item.galleryURL[0];
             } else {
                 image = "";
             }
 
-            let ebayObject = { title, vendor, price, currency, image };
+            let ebayObject = {title, vendor, price, currency, image, itemURL};
             currProductsArray.push(ebayObject);
         });
 
@@ -131,8 +133,10 @@ const ProductTable = (props) => {
             let price =await item.price;
             let currency = "USD";
             let image =await item.thumbnail_url;
+            let itemURL = await item.url;
 
-            let stockXObject = { title, vendor, price, currency, image };
+
+            let stockXObject = {title, vendor, price, currency, image, itemURL};
             currProductsArray.push(stockXObject);
 
         })
@@ -143,8 +147,10 @@ const ProductTable = (props) => {
             let price = await item.price.current_price;
             let currency = await item.price.currency;
             let image = await item.thumbnail;
+            let itemURL = await item.url;
 
-            let amazonObject = { title, vendor, price, currency, image };
+
+            let amazonObject = {title, vendor, price, currency, image, itemURL};
             currProductsArray.push(amazonObject);
 
         })
@@ -158,6 +164,14 @@ const ProductTable = (props) => {
         await callStockxAPI()
     }
 
+    var goToProductPage=(item)=>{
+        console.log(item)
+        props.sendingItemArray(item)
+        props.history.push('/productdetail')
+
+    };
+
+
     var createProductCards = () => {
         let allCards = [];
         for (let i = 2; i < productInfoArray.length; i += 3) {
@@ -165,29 +179,37 @@ const ProductTable = (props) => {
                 <tr>
                     <td>
                         <ProductCard
+                            onClick={()=>{
+                                goToProductPage(productInfoArray[i])}
+                            }
                             cardTitle={productInfoArray[i].title}
                             vendor={productInfoArray[i].vendor}
                             price={productInfoArray[i].price}
                             currency={productInfoArray[i].currency}
                             image={productInfoArray[i].image}
+                            itemURL = {productInfoArray[i].itemURL}
                         />
                     </td>
                     <td>
                         <ProductCard
+                            onClick={()=>goToProductPage(productInfoArray[i-1])}
                             cardTitle={productInfoArray[i - 1].title}
                             vendor={productInfoArray[i - 1].vendor}
                             price={productInfoArray[i - 1].price}
                             currency={productInfoArray[i - 1].currency}
                             image={productInfoArray[i - 1].image}
+                            itemURL = {productInfoArray[i-1].itemURL}
                         />
                     </td>
                     <td>
                         <ProductCard
+                            onClick={()=>goToProductPage(productInfoArray[i-2])}
                             cardTitle={productInfoArray[i - 2].title}
                             vendor={productInfoArray[i - 2].vendor}
                             price={productInfoArray[i - 2].price}
                             currency={productInfoArray[i - 2].currency}
                             image={productInfoArray[i - 2].image}
+                            itemURL = {productInfoArray[i-2].itemURL}
                         />
                     </td>
                 </tr>
@@ -289,5 +311,11 @@ const ProductTable = (props) => {
     );
 }
 
-export default ProductTable;
+
+const mapToProps=dispatch=>{
+    return{
+        sendingItemArray : (item)=>dispatch(ChosenItem(item))
+    }
+}
+export default connect(null,mapToProps) (ProductTable);
 

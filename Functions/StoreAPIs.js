@@ -31,7 +31,7 @@ var EbayResult = async (searchText,startPoint) => {
 var StockXResult = async (searchQuery,startPoint) => {
             await stock.login({
             user:"abdullah2211772211@gmail.com",
-            password:"Sex221177"
+            password:"Amir221177"
         })
     const product = await stock.newSearchProducts(searchQuery, { limit: 20 });
     return { result: product.splice(startPoint*3,3), totalLength: product.length };

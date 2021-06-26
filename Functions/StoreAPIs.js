@@ -17,24 +17,24 @@ let stock = new StockX()
 
 var AmazonResult = async (searchParam, country = null, startPoint) => {
     const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "CA" }); //default country is Canada
-    return { result: products.result.splice(startPoint,3), totalLength: products.result.length };
+    return { result: products.result.splice(startPoint*3,3), totalLength: products.result.length };
 };
 
 
 var EbayResult = async (searchText,startPoint) => {
+    console.log(startPoint)
     let product = await ebay.findItemsByKeywords({ keywords: searchText });
-    console.log(product[0].searchResult[0].item.splice(1,1))
-    return { result: product[0].searchResult[0].item.splice(startPoint,3), totalLength: product[0].searchResult[0].count };
+    return { result: product[0].searchResult[0].item.splice(startPoint*3,3), totalLength: product[0].searchResult[0].item.length };
 };
 
 
 var StockXResult = async (searchQuery,startPoint) => {
-            // await stock.login({
-        //     user:"abdullah2211772211@gmail.com",
-        //     password:"Sex221177"
-        // })
+            await stock.login({
+            user:"abdullah2211772211@gmail.com",
+            password:"Sex221177"
+        })
     const product = await stock.newSearchProducts(searchQuery, { limit: 20 });
-    return { result: product.splice(startPoint,3), totalLength: product.length };
+    return { result: product.splice(startPoint*3,3), totalLength: product.length };
 
 };
 

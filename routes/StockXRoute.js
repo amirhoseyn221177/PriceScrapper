@@ -8,6 +8,7 @@ route.post("/search",async(req,res)=>{
     try{
         let searchQuery = req.body.searchText
         let startPoint = req.body.startPoint
+        console.log(req.body)
         const respond = await StockXResult(searchQuery,startPoint)
         res.status(200).json(respond)
     }catch(e){

@@ -6,3 +6,12 @@ export const savingToStorage=(token)=>{
         token
     }
 }
+
+
+
+export const ChosenItem = item =>{
+    return{
+        type:'item',
+        item
+    }
+}

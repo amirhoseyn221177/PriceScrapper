@@ -8,7 +8,7 @@ import axios from 'axios';
 
 const ForgotPassword = props=>{
     const [pass , setPass]=useState("")
-    const [email , _]= useState(props.match.params.email)
+    const [email ]= useState(props.match.params.email)
 
 
     var changePass=async()=>{

@@ -1,6 +1,6 @@
 .productTable {
     position: absolute;
-    top:  64%;
+    top:  74%;
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: -1;
@@ -51,8 +51,8 @@
 
 .pagination{
     position: relative;
-    width: 30%;
-    top: 80%;
+    width: 35%;
+    top: 100%;
     left: 35%;
     float: left;
 
@@ -62,7 +62,7 @@
 .sort{
     position: relative;
     width: 30%;
-    top: 65%;
+    top: 85%;
     left: 25%;
 }
 
@@ -71,4 +71,6 @@
     position: absolute;
     width: 60%;
     height: 10%;
+    z-index: 100;
+    left: 3%;
 }

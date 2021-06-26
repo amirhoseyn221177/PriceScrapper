@@ -16,7 +16,7 @@ var Main = props => {
                 <Route exact path="/" component={ProductTable} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
-                <Route exact path="/productDetail" component={ProductDetail} />
+                <Route exact path="/productdetail" component={ProductDetail} />
                 <Route exact path="/forgotpass/:email" component={ForgotPassword}/>
             </Switch>
         </Fragment>

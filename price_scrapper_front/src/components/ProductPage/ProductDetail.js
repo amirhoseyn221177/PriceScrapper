@@ -3,6 +3,10 @@ import { Card  } from 'react-bootstrap'
 import { withRouter} from 'react-router';
 import { Button } from '@material-ui/core';
 import './ProductDetail.css'
+<<<<<<< HEAD
+=======
+import SuggestedItems from '../SuggestedItems/SuggestedItems';
+>>>>>>> 1d534f9437b0dc3ad950317ac12edb687976069b
 import { connect } from 'react-redux';
 
 const ProductDetail = (props) => {
@@ -37,7 +41,7 @@ const ProductDetail = (props) => {
                     Buy product!
                 </Button>
             </a>
-           
+           <SuggestedItems />
         </div>
     )
 }

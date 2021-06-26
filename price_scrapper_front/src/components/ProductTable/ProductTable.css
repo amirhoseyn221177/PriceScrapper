@@ -12,7 +12,7 @@
 
 .filterButton {
     width: 100px;
-    height: 20px;
+    height: 40px;
 }
 
 .dialogTitle {
@@ -43,13 +43,21 @@
     flex-direction: row;
 }
 
+<<<<<<< HEAD
 .searchFilter{
+=======
+.searchFilter {
+>>>>>>> 1d534f9437b0dc3ad950317ac12edb687976069b
     left: 25%;
     position: relative;
 }
 
 
+<<<<<<< HEAD
 .pagination{
+=======
+.pagination {
+>>>>>>> 1d534f9437b0dc3ad950317ac12edb687976069b
     position: relative;
     width: 35%;
     top: 100%;
@@ -58,8 +66,12 @@
 
 }
 
+<<<<<<< HEAD
 
 .sort{
+=======
+.sort {
+>>>>>>> 1d534f9437b0dc3ad950317ac12edb687976069b
     position: relative;
     width: 30%;
     top: 85%;
@@ -67,7 +79,11 @@
 }
 
 
+<<<<<<< HEAD
 .filterPag{
+=======
+.filterPage {
+>>>>>>> 1d534f9437b0dc3ad950317ac12edb687976069b
     position: absolute;
     width: 60%;
     height: 10%;

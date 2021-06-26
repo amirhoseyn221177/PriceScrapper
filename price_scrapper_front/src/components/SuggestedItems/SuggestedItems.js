@@ -74,7 +74,7 @@ const SuggestedItems = () => {
                 position: 'relative'
             }}
         >
-            <h2>Items you might like:</h2>
+            <h2>Other items you might like:</h2>
             <Carousel
                 additionalTransfrom={0}
                 arrows

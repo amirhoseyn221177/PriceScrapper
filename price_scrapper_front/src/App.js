@@ -12,7 +12,7 @@ function  App(){
     <div className="App">
         <NavBar />
         <MainComponent />
-        {/* <Footer /> */}
+        <Footer />
       </div>
   </BrowserRouter>
   );

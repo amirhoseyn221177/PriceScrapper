@@ -12,7 +12,7 @@
 
 .filterButton {
     width: 100px;
-    height: 20px;
+    height: 40px;
 }
 
 .dialogTitle {
@@ -43,13 +43,13 @@
     flex-direction: row;
 }
 
-.searchFilter{
+.searchFilter {
     left: 25%;
     position: relative;
 }
 
 
-.pagination{
+.pagination {
     position: relative;
     width: 35%;
     top: 100%;
@@ -58,8 +58,7 @@
 
 }
 
-
-.sort{
+.sort {
     position: relative;
     width: 30%;
     top: 85%;
@@ -67,7 +66,7 @@
 }
 
 
-.filterPag{
+.filterPage {
     position: absolute;
     width: 60%;
     height: 10%;

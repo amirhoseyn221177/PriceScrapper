@@ -39,8 +39,7 @@ const ProductTable = (props) => {
     const [totalItem, setTotalItem] = useState(0);
     const [startPoint,setStartPoint]=useState(0)
     const [amazonNumber,setAmazonNumber]=useState(0)
-    const [ebayNumber,setEbayNumber]=useState(0)
-    const [stockNumber,setStockNumber]=useState(0)
+    const [ebayNumber,setEbayNumber]= useState(0)
     const handleClickListItem = (event) => {
         console.log(37);
         setAnchorEl(event.currentTarget);
@@ -103,7 +102,6 @@ const ProductTable = (props) => {
             var stockxResponse = await axios.post("/api/stockx/search", { searchText, startPoint });
             const stockxJSON = await stockxResponse.data;
             const stockxItemArr = await stockxJSON.result;
-            setStockNumber(stockxJSON.totalLength)
             setStockXArray(stockxItemArr);
         } catch (e) {
             console.log(e);
@@ -115,6 +113,11 @@ const ProductTable = (props) => {
     useEffect(async () => {
         await callAPIBundle()
     }, []);
+
+
+    useEffect(()=>{
+        setTotalItem(ebayNumber>amazonNumber ? ebayNumber/3:amazonNumber/3)
+    },[ebayNumber,amazonNumber])
 
 
 
@@ -174,10 +177,11 @@ const ProductTable = (props) => {
     var callAPIBundle = async () => {
         await callEbayAPI();
         await callAmazonAPI();
-         await callStockxAPI();
+        //  await callStockxAPI();
         // console.log(stockNumber)
         // setTotalItem(amazonNumber+ebayNumber)
     };
+
 
 
 
@@ -270,9 +274,9 @@ const ProductTable = (props) => {
         await callAPIBundle()
     },[startPoint])
 
-    useEffect(()=>{
-        setTotalItem(amazonNumber+ebayNumber+stockNumber)
-    },[stockNumber,amazonNumber,ebayNumber])
+    // useEffect(()=>{
+    //     setTotalItem(amazonNumber+ebayNumber+stockNumber)
+    // },[stockNumber,amazonNumber,ebayNumber])
 
 
     useMemo(async () => {
@@ -334,11 +338,7 @@ const ProductTable = (props) => {
                     </DialogContent>
                 </Dialog>
             </div>
-<<<<<<< HEAD
-            <div className="filterPag" >
-=======
             <div className="filterPage" >
->>>>>>> 1d534f9437b0dc3ad950317ac12edb687976069b
                 <Pagination onChange={(e,value)=>setStartPoint(value)}
                 className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
                 <List className="sort" component="nav" aria-label="Device settings">

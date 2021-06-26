@@ -334,7 +334,7 @@ const ProductTable = (props) => {
                     </DialogContent>
                 </Dialog>
             </div>
-            <div className="filterPag" >
+            <div className="filterPage" >
                 <Pagination onChange={(e,value)=>setStartPoint(value)}
                 className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
                 <List className="sort" component="nav" aria-label="Device settings">

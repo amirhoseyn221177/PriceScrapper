@@ -1,12 +1,12 @@
 .productTable {
     position: absolute;
-    top:  54%;
+    top:  74%;
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: -1;
     margin: 0;
     overflow-y: scroll;
-    height: 65%;
+    height: 75%;
     display: block;
 }
 
@@ -41,4 +41,36 @@
 .searchDiv {
     display: flex;
     flex-direction: row;
+}
+
+.searchFilter{
+    left: 25%;
+    position: relative;
+}
+
+
+.pagination{
+    position: relative;
+    width: 35%;
+    top: 100%;
+    left: 35%;
+    float: left;
+
+}
+
+
+.sort{
+    position: relative;
+    width: 30%;
+    top: 85%;
+    left: 25%;
+}
+
+
+.filterPag{
+    position: absolute;
+    width: 60%;
+    height: 10%;
+    z-index: 100;
+    left: 3%;
 }

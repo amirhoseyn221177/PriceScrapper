@@ -1,18 +1,16 @@
 const route = require("express").Router();
-const amazonScraper = require('amazon-buddy');
 const chalk = require("chalk");
+const { AmazonResult } = require("../Functions/StoreAPIs");
 
 
 route.post("/search", async (req, res) => {
     try {
-        console.log("AMAZON");
-        console.log(req.body.searchText);
-        // let { searchParam, country } = await req.body;
         let searchParam = req.body.searchText
-        let country = "CA"
+        let country = req.body.country ? req.body.country : "CA"
+        let startPoint = req.body.startPoint
 
-        const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "CA" }); //default country is Canada
-        res.status(200).json({result:products.result});
+        const products = await AmazonResult(searchParam,country,startPoint)
+        res.status(200).json(products);
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({

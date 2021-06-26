@@ -7,30 +7,47 @@ import ProductCard from '../ProductCard/ProductCard';
 import axios from "axios";
 import SearchBar from "material-ui-search-bar";
 import './ProductTable.css';
-import { connect } from "react-redux";
+import Pagination from '@material-ui/lab/Pagination';
 import { ChosenItem } from "../Actions/actions";
+import { connect } from 'react-redux';
+const options = [
+    'Highest Rating',
+    'Lowest Rating',
+    'Highest Price',
+    'Lowest Price'
+];
+
+const categories = ["Clothing", "Shoes", "Computers", "Cars"];
+
 
 const ProductTable = (props) => {
+
     const [ebayArray, setEbayArray] = useState([]);
     const [stockXArray, setStockXArray] = useState([]);
     const [amazonArray, setAmazonArray] = useState([]);
     const [productInfoArray, setproductInfoArray] = useState([]);
     const [productCardsJSX, setproductCardsJSX] = useState([]);
-    const [paginationEbay, setPaginationEbay] = useState({ start: 0, limit: 5 });
-    const [paginationAmazon, setPaginationAmazon] = useState({ start: 0, limit: 5 });
-    const [paginationStockx, setPaginationStockx] = useState({ start: 0, limit: 5 });
-    const [searchText, setSearchText] = useState("iphone");
-
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
-
+    // const [paginationEbay, setPaginationEbay] = useState({ start: 0, limit: 5 });
+    // const [paginationAmazon, setPaginationAmazon] = useState({ start: 0, limit: 5 });
+    // const [paginationStockx, setPaginationStockx] = useState({ start: 0, limit: 5 });
+    const [searchText, setSearchText] = useState("yeezy");
+    const [chosenCategories, setChosenCategories] = useState([]);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedIndex, setSelectedIndex] = useState(1);
+    const [CategoryToggleOption, setCategoryToggle] = useState({ Clothing: false, Shoes: false, Computers: false, Cars: false });
     const [open, setOpen] = useState(false);
-
+    const [totalItem, setTotalItem] = useState(0);
+    const [startPoint,setStartPoint]=useState(0)
+    const [amazonNumber,setAmazonNumber]=useState(0)
+    const [ebayNumber,setEbayNumber]=useState(0)
+    const [stockNumber,setStockNumber]=useState(0)
     const handleClickListItem = (event) => {
+        console.log(37);
         setAnchorEl(event.currentTarget);
     };
 
     const handleMenuItemClick = (event, index) => {
+        console.log(42);
         setSelectedIndex(index);
         setAnchorEl(null);
     };
@@ -46,63 +63,60 @@ const ProductTable = (props) => {
         setOpen(false);
     };
 
-    const options = [
-        'Highest Rating',
-        'Lowest Rating',
-        'Highest Price',
-        'Lowest Price'
-    ];
 
-    const categories = ["Clothing", "Shoes", "Computers", "Cars"]
 
 
     var callAmazonAPI = async () => {
         try {
-            var amazonResponse = await axios.post("/api/amazon/search", { searchText });
+            var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
-            setAmazonArray(amazonItemArr)
+            setAmazonNumber(amazonJSON.totalLength)
+            setAmazonArray(amazonItemArr);
         } catch (e) {
             console.log(e);
 
         }
 
-    }
+    };
+
 
 
     var callEbayAPI = async () => {
         try {
-            var ebayResponse = await axios.post("/api/ebay/search", { searchText });
+            var ebayResponse = await axios.post("/api/ebay/search", { searchText, startPoint });
             const ebayJSON = await ebayResponse.data;
-            const ebayItemArr = await ebayJSON.result[0].item;
-            setEbayArray(ebayItemArr)
+            const ebayItemArr = await ebayJSON.result;
+            setEbayNumber(ebayJSON.totalLength)
+            setEbayArray(ebayItemArr);
+            // return ebayJSON.totalLength
         } catch (e) {
             console.log(e);
 
         }
 
-    }
+    };
 
 
     var callStockxAPI = async () => {
         try {
-            var stockxResponse = await axios.post("/api/stockx/search", { searchText });
+            var stockxResponse = await axios.post("/api/stockx/search", { searchText, startPoint });
             const stockxJSON = await stockxResponse.data;
             const stockxItemArr = await stockxJSON.result;
-            setStockXArray(stockxItemArr)
+            setStockNumber(stockxJSON.totalLength)
+            setStockXArray(stockxItemArr);
         } catch (e) {
-            console.log(e)
+            console.log(e);
         }
 
-    }
+    };
 
 
     useEffect(async () => {
-        console.log(91)
-        await callAmazonAPI()
-        await callStockxAPI()
-        await callEbayAPI()
-    }, [])
+        await callAPIBundle()
+    }, []);
+
+
 
 
 
@@ -123,25 +137,25 @@ const ProductTable = (props) => {
                 image = "";
             }
 
-            let ebayObject = {title, vendor, price, currency, image, itemURL};
+            let ebayObject = { title, vendor, price, currency, image, itemURL };
             currProductsArray.push(ebayObject);
         });
 
-        stockXArray.map (async(item)=> {
+        stockXArray.map(async (item) => {
             let title = await item.name;
             let vendor = "StockX";
-            let price =await item.price;
+            let price = await item.price;
             let currency = "USD";
-            let image =await item.thumbnail_url;
+            let image = await item.thumbnail_url;
             let itemURL = await item.url;
 
 
-            let stockXObject = {title, vendor, price, currency, image, itemURL};
+            let stockXObject = { title, vendor, price, currency, image, itemURL };
             currProductsArray.push(stockXObject);
 
-        })
+        });
 
-        amazonArray.map (async (item)=> {
+        amazonArray.map(async (item) => {
             let title = await item.title;
             let vendor = "Amazon";
             let price = await item.price.current_price;
@@ -149,25 +163,52 @@ const ProductTable = (props) => {
             let image = await item.thumbnail;
             let itemURL = await item.url;
 
-
-            let amazonObject = {title, vendor, price, currency, image, itemURL};
+            let amazonObject = { title, vendor, price, currency, image, itemURL };
             currProductsArray.push(amazonObject);
 
-        })
+        });
         setproductInfoArray(currProductsArray);
     };
 
 
     var callAPIBundle = async () => {
-        await callEbayAPI()
-        await callAmazonAPI()
-        await callStockxAPI()
-    }
+        await callEbayAPI();
+        await callAmazonAPI();
+         await callStockxAPI();
+        // console.log(stockNumber)
+        // setTotalItem(amazonNumber+ebayNumber)
+    };
 
-    var goToProductPage=(item)=>{
-        console.log(item)
-        props.sendingItemArray(item)
-        props.history.push('/productdetail')
+
+
+
+    var choosingCategories = (catName) => {
+        if (!chosenCategories.includes(catName)) {
+            setChosenCategories(prev => [...prev, catName]);
+            let obj = { ...CategoryToggleOption };
+            obj.catName = true;
+            setCategoryToggle(obj);
+        } else {
+            let obj = { ...CategoryToggleOption };
+            obj.catName = false;
+            setCategoryToggle(obj);
+            let clone = [...chosenCategories];
+            clone.forEach((item, i) => {
+                if (catName === item) {
+                    clone.splice(i, 1);
+                }
+            });
+            setChosenCategories(clone);
+        }
+    };
+
+
+
+
+    var goToProductPage = (item) => {
+        console.log(item);
+        props.sendingItemArray(item);
+        props.history.push('/productdetail');
 
     };
 
@@ -176,70 +217,92 @@ const ProductTable = (props) => {
         let allCards = [];
         for (let i = 2; i < productInfoArray.length; i += 3) {
             allCards.push(
-                <tr>
+                <tr key={productInfoArray[i].title}>
                     <td>
                         <ProductCard
-                            onClick={()=>{
-                                goToProductPage(productInfoArray[i])}
+                            onClick={() => {
+                                goToProductPage(productInfoArray[i]);
+                            }
                             }
                             cardTitle={productInfoArray[i].title}
                             vendor={productInfoArray[i].vendor}
                             price={productInfoArray[i].price}
                             currency={productInfoArray[i].currency}
                             image={productInfoArray[i].image}
-                            itemURL = {productInfoArray[i].itemURL}
+                            itemURL={productInfoArray[i].itemURL}
                         />
                     </td>
                     <td>
                         <ProductCard
-                            onClick={()=>goToProductPage(productInfoArray[i-1])}
+                            onClick={() => goToProductPage(productInfoArray[i - 1])}
                             cardTitle={productInfoArray[i - 1].title}
                             vendor={productInfoArray[i - 1].vendor}
                             price={productInfoArray[i - 1].price}
                             currency={productInfoArray[i - 1].currency}
                             image={productInfoArray[i - 1].image}
-                            itemURL = {productInfoArray[i-1].itemURL}
+                            itemURL={productInfoArray[i - 1].itemURL}
                         />
                     </td>
                     <td>
                         <ProductCard
-                            onClick={()=>goToProductPage(productInfoArray[i-2])}
+                            onClick={() => goToProductPage(productInfoArray[i - 2])}
                             cardTitle={productInfoArray[i - 2].title}
                             vendor={productInfoArray[i - 2].vendor}
                             price={productInfoArray[i - 2].price}
                             currency={productInfoArray[i - 2].currency}
                             image={productInfoArray[i - 2].image}
-                            itemURL = {productInfoArray[i-2].itemURL}
+                            itemURL={productInfoArray[i - 2].itemURL}
                         />
                     </td>
+
                 </tr>
             );
         }
+
         setproductCardsJSX(allCards);
     };
+
+
+
+
+
+    useMemo(async()=>{
+        await callAPIBundle()
+    },[startPoint])
+
+    useEffect(()=>{
+        setTotalItem(amazonNumber+ebayNumber+stockNumber)
+    },[stockNumber,amazonNumber,ebayNumber])
+
 
     useMemo(async () => {
         await loadProductCards();
     }, [ebayArray, stockXArray, amazonArray]);
-    useEffect(createProductCards, [productInfoArray]);
+
+    useEffect(()=>{
+        createProductCards()
+    }, [productInfoArray]);
 
     return (
         <Fragment>
             <div className="searchDiv">
-                <SearchBar
-                    className="searchBar"
-                    value={searchText}
-                    onChange={newValue => setSearchText(newValue)}
-                    onRequestSearch={() => callAPIBundle()}
-                />
-                <Button
-                    className="filterButton"
-                    variant="contained"
-                    color="primary"
-                    onClick={handleShow}
-                >
-                    Filter
-                </Button>
+                <div className="searchFilter">
+                    <SearchBar
+                        className="searchBar"
+                        value={searchText}
+                        onChange={newValue => setSearchText(newValue)}
+                        onRequestSearch={() => callAPIBundle()}
+                    />
+                    <Button
+                        className="filterButton"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleShow}
+                    >
+                        Filter
+                    </Button>
+                </div>
+
                 <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
                     <DialogTitle className="dialogTitle" disableTypography>
                         <h2>Filter by category</h2>
@@ -258,64 +321,65 @@ const ProductTable = (props) => {
                                                 <Checkbox
                                                     name="checkedB"
                                                     color="primary"
+                                                    onClick={() => choosingCategories(category)}
+                                                    checked={CategoryToggleOption.category}
                                                 />
                                             }
+
                                             label={category}
                                         />
-                                    )
+                                    );
                                 })}
                         </div>
                     </DialogContent>
                 </Dialog>
             </div>
+            <div className="filterPag" >
+                <Pagination onChange={(e,value)=>setStartPoint(value)}
+                className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
+                <List className="sort" component="nav" aria-label="Device settings">
+                    <ListItem
+                        button
+                        aria-haspopup="true"
+                        aria-controls="lock-menu"
+                        aria-label="Sort By:"
+                        onClick={handleClickListItem}
+                    >
+                        <ListItemText primary={"Sort by: " + options[selectedIndex]} />
+                    </ListItem>
+                </List>
+                <Menu
+                    id="lock-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleCloseSort}
+                >
+                    {options.map((option, index) => (
+                        <MenuItem
+                            key={option}
+                            selected={index === selectedIndex}
+                            onClick={(event) => handleMenuItemClick(event, index)}
+                        >
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Menu>
+            </div>
             <Table className="productTable">
-                <thead>
-                    <tr>
-                        <th colSpan='3'>
-                            <List component="nav" aria-label="Device settings">
-                                <ListItem
-                                    button
-                                    aria-haspopup="true"
-                                    aria-controls="lock-menu"
-                                    aria-label="Sort By:"
-                                    onClick={handleClickListItem}
-                                >
-                                    <ListItemText primary={"Sort by: " + options[selectedIndex]} />
-                                </ListItem>
-                            </List>
-                            <Menu
-                                id="lock-menu"
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={Boolean(anchorEl)}
-                                onClose={handleCloseSort}
-                            >
-                                {options.map((option, index) => (
-                                    <MenuItem
-                                        key={option}
-                                        selected={index === selectedIndex}
-                                        onClick={(event) => handleMenuItemClick(event, index)}
-                                    >
-                                        {option}
-                                    </MenuItem>
-                                ))}
-                            </Menu>
-                        </th>
-                    </tr>
-                </thead>
                 <tbody>
                     {productCardsJSX}
                 </tbody>
             </Table>
         </Fragment>
     );
-}
+};
 
 
-const mapToProps=dispatch=>{
-    return{
-        sendingItemArray : (item)=>dispatch(ChosenItem(item))
-    }
-}
-export default connect(null,mapToProps) (ProductTable);
+const mapToProps = dispatch => {
+    return {
+        sendingItemArray: (item) => dispatch(ChosenItem(item))
+    };
+};
+export default connect(null, mapToProps)(ProductTable);
 

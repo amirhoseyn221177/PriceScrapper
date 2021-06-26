@@ -1,17 +1,12 @@
-import React, {useState}from 'react';
+import React from 'react';
 import { Card  } from 'react-bootstrap'
 import { withRouter} from 'react-router';
-import {NavLink} from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import './ProductDetail.css'
-import qs from 'qs'
 import { connect } from 'react-redux';
 
 const ProductDetail = (props) => {
 
-   var goToBuy=()=>{
-       props.history.push(props.item.itemURL)
-   }
     return (
         <div>
             <Card style={{ width: '40rem', height: '30rem', position: 'relative', left: '31.5%', marginTop: '5%'}}>

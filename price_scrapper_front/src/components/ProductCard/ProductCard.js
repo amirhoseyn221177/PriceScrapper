@@ -7,12 +7,12 @@ import './ProductCard.css'
 
 const ProductCard = (props) => {
 
-    var goingToDetail = () => {
-        props.history.push({
-            pathname: '/productDetail',
-            search: `cardTitle=${props.cardTitle}&vendor=${props.vendor}&price=${props.price}&currency=${props.currency}&image=${props.image}&itemURL=${props.itemURL}`
-        });
-    };
+    // var goingToDetail = () => {
+    //     props.history.push({
+    //         pathname: '/productDetail',
+    //         search: `cardTitle=${props.cardTitle}&vendor=${props.vendor}&price=${props.price}&currency=${props.currency}&image=${props.image}&itemURL=${props.itemURL}`
+    //     });
+    // };
 
     return (
         <Card style={{ width: '18rem' }}>
@@ -27,7 +27,7 @@ const ProductCard = (props) => {
                     Details
                 </Button>
                 </Link> */}
-                <Button variant="contained" color="primary" onClick={goingToDetail}>
+                <Button  variant="contained" color="primary" onClick={props.onClick}>
                     Details
                 </Button>
             </Card.Body>

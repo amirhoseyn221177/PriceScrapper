@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Card  } from 'react-bootstrap'
 import { withRouter} from 'react-router';
 import { Button } from '@material-ui/core';
@@ -8,6 +8,11 @@ import { connect } from 'react-redux';
 
 const ProductDetail = (props) => {
 
+    console.log(props.item)
+
+    useEffect(()=>{
+        if(props.item.title==="") props.history.push("/")
+    })
     return (
         <div>
             <Card style={{ width: '40rem', height: '30rem', position: 'relative', left: '31.5%', marginTop: '5%'}}>

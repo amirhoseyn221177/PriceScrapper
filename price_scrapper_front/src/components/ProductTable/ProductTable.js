@@ -40,6 +40,7 @@ const ProductTable = (props) => {
     const [startPoint,setStartPoint]=useState(0)
     const [amazonNumber,setAmazonNumber]=useState(0)
     const [ebayNumber,setEbayNumber]= useState(0)
+    
     const handleClickListItem = (event) => {
         console.log(37);
         setAnchorEl(event.currentTarget);
@@ -116,7 +117,7 @@ const ProductTable = (props) => {
 
 
     useEffect(()=>{
-        setTotalItem(ebayNumber>amazonNumber ? ebayNumber/3:amazonNumber/3)
+        setTotalItem(ebayNumber>amazonNumber ? Math.ceil(ebayNumber/3)-1:Math.ceil(amazonNumber/3)-1)
     },[ebayNumber,amazonNumber])
 
 

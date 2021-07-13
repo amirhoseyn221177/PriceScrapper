@@ -40,7 +40,6 @@ const ProductTable = (props) => {
     const [startPoint,setStartPoint]=useState(0)
     const [amazonNumber,setAmazonNumber]=useState(0)
     const [ebayNumber,setEbayNumber]= useState(0)
-    
     const handleClickListItem = (event) => {
         console.log(37);
         setAnchorEl(event.currentTarget);

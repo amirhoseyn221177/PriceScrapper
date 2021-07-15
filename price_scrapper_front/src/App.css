@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.popupList {
+  list-style-type: none;
+}
+
+.popupItem {
+  text-decoration: none;
+}
+
+#alert-dialog-title {
+  text-align: center;
+}

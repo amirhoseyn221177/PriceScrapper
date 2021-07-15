@@ -13,7 +13,7 @@ const Profile = () => {
     }, [])
 
     function createViewedList() {
-        return items.map(
+        return items.slice(-3).map(
             (item, index) => {
                 return <ProductCard key={index} cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL}  />
             }
@@ -21,7 +21,7 @@ const Profile = () => {
     }
 
     function createWishlist() {
-        return wish.map(
+        return wish.slice(-3).map(
             (item, index) => {
                 return <ProductCard key={index} cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
             }

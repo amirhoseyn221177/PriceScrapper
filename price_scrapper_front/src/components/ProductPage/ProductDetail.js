@@ -5,8 +5,14 @@ import { Button } from '@material-ui/core';
 import './ProductDetail.css'
 import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
+import axios from 'axios'
 
 const ProductDetail = (props) => {
+
+    function addToWishlist(item) {
+        axios.post('/api/addToWishlist/', item)
+                .then(response => console.log(item));
+    }
 
     return (
         <div>
@@ -40,7 +46,7 @@ const ProductDetail = (props) => {
             </a>
             <br/>
             <br/>
-            <Button  variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={addToWishlist(props.item)}>
                     Add to wishlist
             </Button>
            <SuggestedItems />

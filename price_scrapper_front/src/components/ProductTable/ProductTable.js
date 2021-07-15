@@ -278,7 +278,10 @@ const ProductTable = (props) => {
     //     setTotalItem(amazonNumber+ebayNumber+stockNumber)
     // },[stockNumber,amazonNumber,ebayNumber])
 
-
+    function searchNow(searchValue) {
+        callAPIBundle()
+        setSearchText(searchValue)
+    }
     useMemo(async () => {
         await loadProductCards();
     }, [ebayArray, stockXArray, amazonArray]);
@@ -287,6 +290,11 @@ const ProductTable = (props) => {
         createProductCards()
     }, [productInfoArray]);
 
+    useEffect(() => {
+        const timeOutId = setTimeout(() => setSearchText(searchText), 500);
+        return () => clearTimeout(timeOutId);
+      }, [searchText]);
+
     return (
         <Fragment>
             <div className="searchDiv">
@@ -294,8 +302,8 @@ const ProductTable = (props) => {
                     <SearchBar
                         className="searchBar"
                         value={searchText}
-                        onChange={newValue => setSearchText(newValue)}
-                        onRequestSearch={() => callAPIBundle()}
+                        onChange={newValue => searchNow(newValue)}
+                        onCancelSearch={() => setSearchText("")}
                     />
                     <Button
                         className="filterButton"

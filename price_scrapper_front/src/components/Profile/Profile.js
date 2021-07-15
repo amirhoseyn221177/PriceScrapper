@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Profile.css';
 import axios from 'axios';
 import ProductCard from '../ProductCard/ProductCard';

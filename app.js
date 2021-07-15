@@ -30,6 +30,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 db
 
+
+app.get('/api/getRecentlyViewed', (req, res) => {
+  userModel.find({ "recentlyViewed": 1 })
+      .then(list => res.send(list))
+})
+
+app.get('/api/getWishlist', (req, res) => {
+  userModel.find({ "withList": 1 })
+      .then(list => res.send(list))
+})
+
 app.post('/api/recentlyViewed', jsonParser, (req, res) => {
   const userId = req.params.id;
   const viewedItem = {

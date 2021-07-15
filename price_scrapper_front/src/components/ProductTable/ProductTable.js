@@ -30,16 +30,16 @@ const ProductTable = (props) => {
     // const [paginationEbay, setPaginationEbay] = useState({ start: 0, limit: 5 });
     // const [paginationAmazon, setPaginationAmazon] = useState({ start: 0, limit: 5 });
     // const [paginationStockx, setPaginationStockx] = useState({ start: 0, limit: 5 });
-    const [searchText, setSearchText] = useState("yeezy");
+    const [searchText, setSearchText] = useState("");
     const [chosenCategories, setChosenCategories] = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(1);
     const [CategoryToggleOption, setCategoryToggle] = useState({ Clothing: false, Shoes: false, Computers: false, Cars: false });
     const [open, setOpen] = useState(false);
     const [totalItem, setTotalItem] = useState(0);
-    const [startPoint,setStartPoint]=useState(0)
-    const [amazonNumber,setAmazonNumber]=useState(0)
-    const [ebayNumber,setEbayNumber]= useState(0)
+    const [startPoint, setStartPoint] = useState(0)
+    const [amazonNumber, setAmazonNumber] = useState(0)
+    const [ebayNumber, setEbayNumber] = useState(0)
     const handleClickListItem = (event) => {
         console.log(37);
         setAnchorEl(event.currentTarget);
@@ -115,9 +115,9 @@ const ProductTable = (props) => {
     }, []);
 
 
-    useEffect(()=>{
-        setTotalItem(ebayNumber>amazonNumber ? ebayNumber/3:amazonNumber/3)
-    },[ebayNumber,amazonNumber])
+    useEffect(() => {
+        setTotalItem(ebayNumber > amazonNumber ? ebayNumber / 3 : amazonNumber / 3)
+    }, [ebayNumber, amazonNumber])
 
 
 
@@ -270,9 +270,9 @@ const ProductTable = (props) => {
 
 
 
-    useMemo(async()=>{
+    useMemo(async () => {
         await callAPIBundle()
-    },[startPoint])
+    }, [startPoint])
 
     // useEffect(()=>{
     //     setTotalItem(amazonNumber+ebayNumber+stockNumber)
@@ -283,7 +283,7 @@ const ProductTable = (props) => {
         await loadProductCards();
     }, [ebayArray, stockXArray, amazonArray]);
 
-    useEffect(()=>{
+    useEffect(() => {
         createProductCards()
     }, [productInfoArray]);
 
@@ -338,43 +338,47 @@ const ProductTable = (props) => {
                     </DialogContent>
                 </Dialog>
             </div>
-            <div className="filterPage" >
-                <Pagination onChange={(e,value)=>setStartPoint(value)}
-                className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
-                <List className="sort" component="nav" aria-label="Device settings">
-                    <ListItem
-                        button
-                        aria-haspopup="true"
-                        aria-controls="lock-menu"
-                        aria-label="Sort By:"
-                        onClick={handleClickListItem}
-                    >
-                        <ListItemText primary={"Sort by: " + options[selectedIndex]} />
-                    </ListItem>
-                </List>
-                <Menu
-                    id="lock-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseSort}
-                >
-                    {options.map((option, index) => (
-                        <MenuItem
-                            key={option}
-                            selected={index === selectedIndex}
-                            onClick={(event) => handleMenuItemClick(event, index)}
+            {searchText !== "" ?
+                <div>
+                    <div className="filterPage" >
+                        <Pagination onChange={(e, value) => setStartPoint(value)}
+                            className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
+                        <List className="sort" component="nav" aria-label="Device settings">
+                            <ListItem
+                                button
+                                aria-haspopup="true"
+                                aria-controls="lock-menu"
+                                aria-label="Sort By:"
+                                onClick={handleClickListItem}
+                            >
+                                <ListItemText primary={"Sort by: " + options[selectedIndex]} />
+                            </ListItem>
+                        </List>
+                        <Menu
+                            id="lock-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleCloseSort}
                         >
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Menu>
-            </div>
-            <Table className="productTable">
-                <tbody>
-                    {productCardsJSX}
-                </tbody>
-            </Table>
+                            {options.map((option, index) => (
+                                <MenuItem
+                                    key={option}
+                                    selected={index === selectedIndex}
+                                    onClick={(event) => handleMenuItemClick(event, index)}
+                                >
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </div>
+                    <Table className="productTable">
+                        <tbody>
+                            {productCardsJSX}
+                        </tbody>
+                    </Table>
+                </div>
+                : <div />}
         </Fragment>
     );
 };

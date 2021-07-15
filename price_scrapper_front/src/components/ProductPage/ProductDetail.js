@@ -11,7 +11,7 @@ const ProductDetail = (props) => {
 
     function addToWishlist(item) {
         axios.post('/api/addToWishlist/', item)
-                .then(response => console.log(item));
+                .then(response => console.log(response.data));
     }
 
     return (

@@ -30,6 +30,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 db
 
+app.post('/api/recentlyViewed', jsonParser, (req, res) => {
+  const userId = req.params.id;
+  const viewedItem = {
+    title: req.body.title,
+    vendor: req.body.vendor,
+    price: req.body.price,
+    currency: req.body.currency,
+    itemURL: req.body.itemURL,
+    image: req.body.image
+  }
+
+  userModel.findById(userId).then(user => {
+    user.wishList.push(viewedItem);
+  })
+
+});
+
 app.post('/api/addToWishlist', jsonParser, (req, res) => {
   const userId = req.params.id;
   const newItem = {

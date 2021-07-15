@@ -207,12 +207,16 @@ const ProductTable = (props) => {
     };
 
 
-
+    function addToRecentlyViewed(item) {
+        axios.post('/api/recentlyViewed/', item)
+                .then(response => console.log(response.data));
+    }
 
     var goToProductPage = (item) => {
         console.log(item);
         props.sendingItemArray(item);
         props.history.push('/productdetail');
+        addToRecentlyViewed(item)
 
     };
 

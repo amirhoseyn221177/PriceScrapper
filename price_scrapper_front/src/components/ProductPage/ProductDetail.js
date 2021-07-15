@@ -38,6 +38,11 @@ const ProductDetail = (props) => {
                     Buy product!
                 </Button>
             </a>
+            <br/>
+            <br/>
+            <Button  variant="contained" color="primary">
+                    Add to wishlist
+            </Button>
            <SuggestedItems />
         </div>
     )

@@ -1,0 +1,12 @@
+.profileDiv {
+    margin-top: 100px;
+}
+
+.profileDiv h1 {
+    text-align: center;
+}
+
+.viewedList, .wishList {
+    list-style-type: none;
+    text-align:  center;
+}

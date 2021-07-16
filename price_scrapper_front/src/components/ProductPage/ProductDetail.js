@@ -24,6 +24,11 @@ const ProductDetail = (props) => {
     //     });
     // };
 
+    console.log(props.item)
+
+    useEffect(()=>{
+        if(props.item.title==="") props.history.push("/")
+    })
     return (
         <div>
             <Card style={{ width: '40rem', height: '30rem', position: 'relative', left: '31.5%', marginTop: '5%'}}>

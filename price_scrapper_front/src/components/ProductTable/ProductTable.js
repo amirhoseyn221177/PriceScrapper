@@ -37,6 +37,9 @@ const ProductTable = (props) => {
     const [CategoryToggleOption, setCategoryToggle] = useState({ Clothing: false, Shoes: false, Computers: false, Cars: false });
     const [open, setOpen] = useState(false);
     const [totalItem, setTotalItem] = useState(0);
+    const [startPoint, setStartPoint] = useState(0);
+    const [amazonNumber, setAmazonNumber] = useState(0);
+    const [ebayNumber, setEbayNumber] = useState(0);
     const [startPoint,setStartPoint]=useState(0)
     const [amazonNumber,setAmazonNumber]=useState(0)
     const [ebayNumber,setEbayNumber]= useState(0)
@@ -70,7 +73,7 @@ const ProductTable = (props) => {
             var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
-            setAmazonNumber(amazonJSON.totalLength)
+            setAmazonNumber(amazonJSON.totalLength);
             setAmazonArray(amazonItemArr);
         } catch (e) {
             console.log(e);
@@ -86,7 +89,7 @@ const ProductTable = (props) => {
             var ebayResponse = await axios.post("/api/ebay/search", { searchText, startPoint });
             const ebayJSON = await ebayResponse.data;
             const ebayItemArr = await ebayJSON.result;
-            setEbayNumber(ebayJSON.totalLength)
+            setEbayNumber(ebayJSON.totalLength);
             setEbayArray(ebayItemArr);
             // return ebayJSON.totalLength
         } catch (e) {
@@ -111,10 +114,13 @@ const ProductTable = (props) => {
 
 
     useEffect(async () => {
-        await callAPIBundle()
+        await callAPIBundle();
     }, []);
 
 
+    useEffect(() => {
+        setTotalItem(ebayNumber > amazonNumber ? Math.ceil(ebayNumber / 3) - 1 : Math.ceil(amazonNumber / 3) - 1);
+    }, [ebayNumber, amazonNumber]);
     useEffect(()=>{
         setTotalItem(ebayNumber>amazonNumber ? ebayNumber/3:amazonNumber/3)
     },[ebayNumber,amazonNumber])
@@ -273,9 +279,9 @@ const ProductTable = (props) => {
 
 
 
-    useMemo(async()=>{
-        await callAPIBundle()
-    },[startPoint])
+    useMemo(async () => {
+        await callAPIBundle();
+    }, [startPoint]);
 
     // useEffect(()=>{
     //     setTotalItem(amazonNumber+ebayNumber+stockNumber)
@@ -286,8 +292,8 @@ const ProductTable = (props) => {
         await loadProductCards();
     }, [ebayArray, stockXArray, amazonArray]);
 
-    useEffect(()=>{
-        createProductCards()
+    useEffect(() => {
+        createProductCards();
     }, [productInfoArray]);
 
     return (
@@ -342,8 +348,8 @@ const ProductTable = (props) => {
                 </Dialog>
             </div>
             <div className="filterPage" >
-                <Pagination onChange={(e,value)=>setStartPoint(value)}
-                className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
+                <Pagination onChange={(e, value) => setStartPoint(value)}
+                    className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
                 <List className="sort" component="nav" aria-label="Device settings">
                     <ListItem
                         button

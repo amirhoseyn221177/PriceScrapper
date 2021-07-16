@@ -9,39 +9,56 @@ import {
     Typography
 } from "@material-ui/core";
 
-const SuggestedItems = () => {
-    var items = [
-        {
-            image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-            name: "Product1",
-            price: "$1"
-        },
-        {
-            image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-            name: "Product2",
-            price: "$2"
-        },
-        {
-            image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-            name: "Product3",
-            price: "$3"
-        },
-        {
-            image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-            name: "Product4",
-            price: "$4"
-        },
-        {
-            image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-            name: "Product5",
-            price: "$5"
-        },
-        {
-            image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-            name: "Product6",
-            price: "$6"
+const SuggestedItems = (props) => {
+    var itemsTemp = props.allItems
+    var items = []
+    for (let i = 0; i < itemsTemp.length; i++) {
+        let object = {
+            image: itemsTemp[i].image,
+            name: itemsTemp[i].title,
+            price: itemsTemp[i].price
         }
-    ]
+        items.push(object)
+    }
+
+    var goToItemFromCarousel = (index) => {
+        props.history.push({
+            pathname: '/productdetail',
+            state: itemsTemp[index]
+        });
+    }
+    // var items = [
+    //     {
+    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
+    //         name: "Product1",
+    //         price: "$1"
+    //     },
+    //     {
+    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
+    //         name: "Product2",
+    //         price: "$2"
+    //     },
+    //     {
+    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
+    //         name: "Product3",
+    //         price: "$3"
+    //     },
+    //     {
+    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
+    //         name: "Product4",
+    //         price: "$4"
+    //     },
+    //     {
+    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
+    //         name: "Product5",
+    //         price: "$5"
+    //     },
+    //     {
+    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
+    //         name: "Product6",
+    //         price: "$6"
+    //     }
+    // ]
 
     const responsive = {
         desktop: {
@@ -107,6 +124,7 @@ const SuggestedItems = () => {
                                 }}
                             >
                                 <CardMedia
+                                    onClick={() => props.setProductIndex(idx)}
                                     image={item.image}
                                     title={item.name}
                                     style={{

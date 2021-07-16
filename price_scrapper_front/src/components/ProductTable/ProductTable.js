@@ -209,23 +209,26 @@ const ProductTable = (props) => {
 
 
 
-    var goToProductPage = (item) => {
+    var goToProductPage = (item, index) => {
         console.log(item);
         props.sendingItemArray(item);
-        props.history.push('/productdetail');
-
+        props.history.push({
+            pathname: '/productdetail',
+            state: {productInfoArray, index}
+        });
     };
 
 
     var createProductCards = () => {
         let allCards = [];
+        console.log("PRODUCT ARRAY", productInfoArray)
         for (let i = 2; i < productInfoArray.length; i += 3) {
             allCards.push(
                 <tr key={productInfoArray[i].title}>
                     <td>
                         <ProductCard
                             onClick={() => {
-                                goToProductPage(productInfoArray[i]);
+                                goToProductPage(productInfoArray[i], i, productInfoArray);
                             }
                             }
                             cardTitle={productInfoArray[i].title}
@@ -238,7 +241,7 @@ const ProductTable = (props) => {
                     </td>
                     <td>
                         <ProductCard
-                            onClick={() => goToProductPage(productInfoArray[i - 1])}
+                            onClick={() => goToProductPage(productInfoArray[i - 1], i-1, productInfoArray)}
                             cardTitle={productInfoArray[i - 1].title}
                             vendor={productInfoArray[i - 1].vendor}
                             price={productInfoArray[i - 1].price}
@@ -249,7 +252,7 @@ const ProductTable = (props) => {
                     </td>
                     <td>
                         <ProductCard
-                            onClick={() => goToProductPage(productInfoArray[i - 2])}
+                            onClick={() => goToProductPage(productInfoArray[i - 2], i-2, productInfoArray)}
                             cardTitle={productInfoArray[i - 2].title}
                             vendor={productInfoArray[i - 2].vendor}
                             price={productInfoArray[i - 2].price}

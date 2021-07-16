@@ -21,12 +21,12 @@ const SuggestedItems = (props) => {
         items.push(object)
     }
 
-    var goToItemFromCarousel = (index) => {
-        props.history.push({
-            pathname: '/productdetail',
-            state: itemsTemp[index]
-        });
-    }
+    // var goToItemFromCarousel = (index) => {
+    //     props.history.push({
+    //         pathname: '/productdetail',
+    //         state: itemsTemp[index]
+    //     });
+    // }
     // var items = [
     //     {
     //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",

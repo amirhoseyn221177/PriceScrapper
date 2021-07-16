@@ -5,9 +5,9 @@ const { EbayResult } = require("../Functions/StoreAPIs");
 
 route.post("/search", async (req, res) => {
     try {
-        let {searchText ,startPoint} = await req.body
+        let {searchText ,startPoint,sortVariable} = await req.body
         console.log(req.body)
-        const respond = await EbayResult(searchText,startPoint)
+        const respond = await EbayResult(searchText,startPoint,sortVariable)
         res.status(200).json(respond)
     } catch (e) {
         console.log(chalk.red(e.message));

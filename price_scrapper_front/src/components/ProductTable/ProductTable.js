@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Table } from 'react-bootstrap';
 import { List, ListItemText, ListItem, Menu, MenuItem } from '@material-ui/core';
 import { Button, Dialog, FormControlLabel, IconButton, Checkbox, DialogTitle, DialogContent } from "@material-ui/core";
@@ -23,26 +23,20 @@ const categories = ["Clothing", "Shoes", "Computers", "Cars"];
 const ProductTable = (props) => {
 
     const [ebayArray, setEbayArray] = useState([]);
-    const [stockXArray, setStockXArray] = useState([]);
+    // const [stockXArray, setStockXArray] = useState([]);
     const [amazonArray, setAmazonArray] = useState([]);
     const [productInfoArray, setproductInfoArray] = useState([]);
     const [productCardsJSX, setproductCardsJSX] = useState([]);
-    // const [paginationEbay, setPaginationEbay] = useState({ start: 0, limit: 5 });
-    // const [paginationAmazon, setPaginationAmazon] = useState({ start: 0, limit: 5 });
-    // const [paginationStockx, setPaginationStockx] = useState({ start: 0, limit: 5 });
     const [searchText, setSearchText] = useState("yeezy");
     const [chosenCategories, setChosenCategories] = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedIndex, setSelectedIndex] = useState(1);
+    const [selectedIndex, setSelectedIndex] = useState(2);
     const [CategoryToggleOption, setCategoryToggle] = useState({ Clothing: false, Shoes: false, Computers: false, Cars: false });
     const [open, setOpen] = useState(false);
     const [totalItem, setTotalItem] = useState(0);
-    const [startPoint, setStartPoint] = useState(0);
-    const [amazonNumber, setAmazonNumber] = useState(0);
+    const [startPoint, setStartPoint] = useState(1);
     const [ebayNumber, setEbayNumber] = useState(0);
-    const [startPoint,setStartPoint]=useState(0)
-    const [amazonNumber,setAmazonNumber]=useState(0)
-    const [ebayNumber,setEbayNumber]= useState(0)
+    const [amazonNumber, setAmazonNumber] = useState(0);
     const handleClickListItem = (event) => {
         console.log(37);
         setAnchorEl(event.currentTarget);
@@ -68,9 +62,10 @@ const ProductTable = (props) => {
 
 
 
+
     var callAmazonAPI = async () => {
         try {
-            var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint });
+            var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
             setAmazonNumber(amazonJSON.totalLength);
@@ -86,7 +81,7 @@ const ProductTable = (props) => {
 
     var callEbayAPI = async () => {
         try {
-            var ebayResponse = await axios.post("/api/ebay/search", { searchText, startPoint });
+            var ebayResponse = await axios.post("/api/ebay/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const ebayJSON = await ebayResponse.data;
             const ebayItemArr = await ebayJSON.result;
             setEbayNumber(ebayJSON.totalLength);
@@ -100,30 +95,31 @@ const ProductTable = (props) => {
     };
 
 
-    var callStockxAPI = async () => {
-        try {
-            var stockxResponse = await axios.post("/api/stockx/search", { searchText, startPoint });
-            const stockxJSON = await stockxResponse.data;
-            const stockxItemArr = await stockxJSON.result;
-            setStockXArray(stockxItemArr);
-        } catch (e) {
-            console.log(e);
-        }
 
-    };
+    // var callStockxAPI = async () => {
+    //     try {
+    //         var stockxResponse = await axios.post("/api/stockx/search", { searchText, startPoint });
+    //         const stockxJSON = await stockxResponse.data;
+    //         const stockxItemArr = await stockxJSON.result;
+    //         setStockXArray(stockxItemArr);
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+
+    // };
 
 
     useEffect(async () => {
+        setStartPoint(1);
         await callAPIBundle();
-    }, []);
+    }, [selectedIndex]);
 
 
     useEffect(() => {
         setTotalItem(ebayNumber > amazonNumber ? Math.ceil(ebayNumber / 3) - 1 : Math.ceil(amazonNumber / 3) - 1);
     }, [ebayNumber, amazonNumber]);
-    useEffect(()=>{
-        setTotalItem(ebayNumber>amazonNumber ? ebayNumber/3:amazonNumber/3)
-    },[ebayNumber,amazonNumber])
+
+
 
 
 
@@ -150,19 +146,19 @@ const ProductTable = (props) => {
             currProductsArray.push(ebayObject);
         });
 
-        stockXArray.map(async (item) => {
-            let title = await item.name;
-            let vendor = "StockX";
-            let price = await item.price;
-            let currency = "USD";
-            let image = await item.thumbnail_url;
-            let itemURL = await item.url;
+        // stockXArray.map(async (item) => {
+        //     let title = await item.name;
+        //     let vendor = "StockX";
+        //     let price = await item.price;
+        //     let currency = "USD";
+        //     let image = await item.thumbnail_url;
+        //     let itemURL = await item.url;
 
 
-            let stockXObject = { title, vendor, price, currency, image, itemURL };
-            currProductsArray.push(stockXObject);
+        //     let stockXObject = { title, vendor, price, currency, image, itemURL };
+        //     currProductsArray.push(stockXObject);
 
-        });
+        // });
 
         amazonArray.map(async (item) => {
             let title = await item.title;
@@ -220,17 +216,39 @@ const ProductTable = (props) => {
         props.sendingItemArray(item);
         props.history.push({
             pathname: '/productdetail',
-            state: {productInfoArray, index}
+            state: { productInfoArray, index }
         });
     };
 
 
     var createProductCards = () => {
         let allCards = [];
-        console.log("PRODUCT ARRAY", productInfoArray)
         for (let i = 2; i < productInfoArray.length; i += 3) {
             allCards.push(
                 <tr key={productInfoArray[i].title}>
+                    <td>
+                        <ProductCard
+                            onClick={() => goToProductPage(productInfoArray[i - 2], i - 2, productInfoArray)}
+                            cardTitle={productInfoArray[i - 2].title}
+                            vendor={productInfoArray[i - 2].vendor}
+                            price={productInfoArray[i - 2].price}
+                            currency={productInfoArray[i - 2].currency}
+                            image={productInfoArray[i - 2].image}
+                            itemURL={productInfoArray[i - 2].itemURL}
+                        />
+                    </td>
+
+                    <td>
+                        <ProductCard
+                            onClick={() => goToProductPage(productInfoArray[i - 1], i - 1, productInfoArray)}
+                            cardTitle={productInfoArray[i - 1].title}
+                            vendor={productInfoArray[i - 1].vendor}
+                            price={productInfoArray[i - 1].price}
+                            currency={productInfoArray[i - 1].currency}
+                            image={productInfoArray[i - 1].image}
+                            itemURL={productInfoArray[i - 1].itemURL}
+                        />
+                    </td>
                     <td>
                         <ProductCard
                             onClick={() => {
@@ -245,28 +263,7 @@ const ProductTable = (props) => {
                             itemURL={productInfoArray[i].itemURL}
                         />
                     </td>
-                    <td>
-                        <ProductCard
-                            onClick={() => goToProductPage(productInfoArray[i - 1], i-1, productInfoArray)}
-                            cardTitle={productInfoArray[i - 1].title}
-                            vendor={productInfoArray[i - 1].vendor}
-                            price={productInfoArray[i - 1].price}
-                            currency={productInfoArray[i - 1].currency}
-                            image={productInfoArray[i - 1].image}
-                            itemURL={productInfoArray[i - 1].itemURL}
-                        />
-                    </td>
-                    <td>
-                        <ProductCard
-                            onClick={() => goToProductPage(productInfoArray[i - 2], i-2, productInfoArray)}
-                            cardTitle={productInfoArray[i - 2].title}
-                            vendor={productInfoArray[i - 2].vendor}
-                            price={productInfoArray[i - 2].price}
-                            currency={productInfoArray[i - 2].currency}
-                            image={productInfoArray[i - 2].image}
-                            itemURL={productInfoArray[i - 2].itemURL}
-                        />
-                    </td>
+
 
                 </tr>
             );
@@ -279,18 +276,21 @@ const ProductTable = (props) => {
 
 
 
+    let dontRunFirstTime = useRef(true);
     useMemo(async () => {
+        if (dontRunFirstTime.current) {
+            dontRunFirstTime.current = false;
+            return;
+        }
         await callAPIBundle();
     }, [startPoint]);
 
-    // useEffect(()=>{
-    //     setTotalItem(amazonNumber+ebayNumber+stockNumber)
-    // },[stockNumber,amazonNumber,ebayNumber])
+
 
 
     useMemo(async () => {
         await loadProductCards();
-    }, [ebayArray, stockXArray, amazonArray]);
+    }, [ebayArray, amazonArray]);
 
     useEffect(() => {
         createProductCards();
@@ -348,7 +348,7 @@ const ProductTable = (props) => {
                 </Dialog>
             </div>
             <div className="filterPage" >
-                <Pagination onChange={(e, value) => setStartPoint(value)}
+                <Pagination style={{ position: 'relative', zIndex: "-10" }} page ={startPoint} onChange={(e, value) => setStartPoint(value)}
                     className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
                 <List className="sort" component="nav" aria-label="Device settings">
                     <ListItem
@@ -358,7 +358,7 @@ const ProductTable = (props) => {
                         aria-label="Sort By:"
                         onClick={handleClickListItem}
                     >
-                        <ListItemText primary={"Sort by: " + options[selectedIndex]} />
+                        <ListItemText primary={`Sort by: ${options[selectedIndex]}`} />
                     </ListItem>
                 </List>
                 <Menu

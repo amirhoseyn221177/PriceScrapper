@@ -30,52 +30,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 db
 
-
-app.get('/api/getRecentlyViewed', (req, res) => {
-  userModel.find({ "recentlyViewed": 1 })
-      .then(list => res.send(list))
-})
-
-app.get('/api/getWishlist', (req, res) => {
-  userModel.find({ "wishList": 1 })
-      .then(list => res.send(list))
-})
-
-app.post('/api/recentlyViewed', jsonParser, (req, res) => {
-  const userId = req.params.id;
-  const viewedItem = {
-    title: req.body.title,
-    vendor: req.body.vendor,
-    price: req.body.price,
-    currency: req.body.currency,
-    itemURL: req.body.itemURL,
-    image: req.body.image
-  }
-
-  userModel.findById(userId).then(user => {
-    user.wishList.push(viewedItem);
-  })
-
-});
-
-app.post('/api/addToWishlist', jsonParser, (req, res) => {
-  const userId = req.params.id;
-  const newItem = {
-    title: req.body.title,
-    vendor: req.body.vendor,
-    price: req.body.price,
-    currency: req.body.currency,
-    itemURL: req.body.itemURL,
-    image: req.body.image
-  }
-
-  userModel.findById(userId).then(user => {
-    user.wishList.push(newItem);
-  })
-
-});
-
-
 app.use("/api/user",UserLogin)
 app.use("/api/stockx",stockX)
 app.use("/api/amazon",amazon)

@@ -1,11 +1,10 @@
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card  } from 'react-bootstrap'
 import { withRouter} from 'react-router';
 import { Button } from '@material-ui/core';
 import './ProductDetail.css'
 import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
-import { ChosenItem } from "../Actions/actions";
 
 
 const ProductDetail = (props) => {

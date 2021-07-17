@@ -47,4 +47,11 @@
 
 #alert-dialog-title {
   text-align: center;
+.star {
+  cursor: pointer;
+  transition: color 200ms;
+}
+
+input[type="radio"] {
+  display: none;
 }

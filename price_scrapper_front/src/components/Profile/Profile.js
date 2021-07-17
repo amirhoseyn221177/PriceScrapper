@@ -26,7 +26,7 @@ const Profile = () => {
         <div className="profileDiv">
             <div>
                 <h1>Recently Viewed</h1>
-                <div>
+                {/* <div>
                     <ul className="viewedList" id="list">
                         {
                             items.map(
@@ -38,10 +38,10 @@ const Profile = () => {
                             )
                         }
                     </ul>
-                </div>
+                </div> */}
                 <div>
                     <h1>Wishlist</h1>
-                    <ul className="wishList">
+                    {/* <ul className="wishList">
                         {
                             wish.map(
                                 (item, index) => {
@@ -51,7 +51,7 @@ const Profile = () => {
                                 }
                             )
                         }
-                    </ul>
+                    </ul> */}
                 </div>
             </div>
         </div>

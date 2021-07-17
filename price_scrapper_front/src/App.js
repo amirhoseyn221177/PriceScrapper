@@ -18,16 +18,16 @@ function App() {
   }
 
   useEffect(() => {
-    let visited = localStorage["alreadyVisited"];
+    let visited = sessionStorage["alreadyVisited"];
     if(visited) {
          setOpen(false)
     } else {
-         localStorage["alreadyVisited"] = true;
+         sessionStorage["alreadyVisited"] = true;
          setOpen(true)
     }
   })
 
-  window.addEventListener("beforeunload", () => localStorage.removeItem('alreadyVisited'));
+  window.addEventListener("onbeforeunload", () => localStorage.removeItem('alreadyVisited'));
 
   return (
     <BrowserRouter>

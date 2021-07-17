@@ -12,7 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 function App() {
   const [open, setOpen] = useState(true);
-
+  
   const handleClose = () => {
     setOpen(false);
   }
@@ -27,7 +27,15 @@ function App() {
     }
   })
 
-  window.addEventListener("onbeforeunload", () => localStorage.removeItem('alreadyVisited'));
+  function checkLogin(){
+    if (localStorage.hasOwnProperty("token")) {
+      sessionStorage["alreadyVisited"] = true;
+    } else {
+      localStorage.removeItem('alreadyVisited')
+    }
+  }
+
+  window.addEventListener("onbeforeunload", checkLogin());
 
   return (
     <BrowserRouter>

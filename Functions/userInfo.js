@@ -99,6 +99,7 @@ var getRecentViewdItems = async (token) => {
     const { username } = TokenDecoder(token);
     const recentViewsIds = await User.findOne({ email: username }).select('viewedItems');
     const viewedItems = await Item.find({ '_id': { $in: recentViewsIds.viewedItems } });
+    console.log(viewedItems);
     return viewedItems;
 
 
@@ -119,7 +120,7 @@ var addTorecentViews = async (token, itemObject) => {
 var addToWishList = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
     const item = new Item(itemObject);
-    await Item.create(itemObject);
+    await Item.create(item);
     await User.updateOne({ email: username }, {
         $addToSet: { WishListItems: item }
     });
@@ -131,6 +132,7 @@ var getWishListItems = async(token)=>{
     const { username } = TokenDecoder(token);
     const wishListIds = await User.findOne({ email: username }).select('WishListItems');
     const wishedItems = await Item.find({ '_id': { $in: wishListIds.WishListItems } });
+    console.log(wishedItems)
     return wishedItems;
 
 }

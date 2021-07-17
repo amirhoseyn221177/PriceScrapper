@@ -3,7 +3,7 @@ import NavBar from './components/Header/Header'
 import { Link, BrowserRouter } from 'react-router-dom'
 import Footer from './components/Footer/Footer'
 import MainComponent from './components/MainComponent';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -16,6 +16,18 @@ function App() {
   const handleClose = () => {
     setOpen(false);
   }
+
+  useEffect(() => {
+    let visited = localStorage["alreadyVisited"];
+    if(visited) {
+         setOpen(false)
+    } else {
+         localStorage["alreadyVisited"] = true;
+         setOpen(true)
+    }
+  })
+
+  window.addEventListener("beforeunload", () => localStorage.removeItem('alreadyVisited'));
 
   return (
     <BrowserRouter>

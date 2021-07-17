@@ -7,7 +7,6 @@ import { savingToStorage } from '../Actions/actions';
 import { connect } from 'react-redux';
 
 const Login = (props) => {
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error,setError]=useState(false)
@@ -25,6 +24,7 @@ const Login = (props) => {
             if(data.autorization!==""){
                 console.log(data)
                 props.sendingToActions(data.authorization)
+                props.history.push(`/home`)
             }
             else{
                 setError(true)

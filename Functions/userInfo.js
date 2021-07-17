@@ -101,7 +101,19 @@ var forgotPassword = async(email)=>{
 
 
 
+    // var getAllTheUsers = async()=>{
+    //     let allusers = await User.find({})
+    //     console.log(allusers)
+    // }
 
+
+    // var deleteAllUsers = async()=>{
+    //     await User.deleteMany({})
+    // }
+
+
+    // // getAllTheUsers() 
+    // deleteAllUsers()
 
 
 module.exports={

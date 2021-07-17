@@ -18,8 +18,9 @@ const Register = props => {
             const req = await axios.post("/api/user/signup",{FirstName,LastName, email,password})
             const resp = await req.data
             console.log(resp)
+            props.history.push('/login')
         }catch(e){
-            console.log(e)
+            e.response.data.error.message ? console.log(e.response.data.error.message) : console.log(e)
         }
 
     }

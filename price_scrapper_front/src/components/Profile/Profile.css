@@ -7,6 +7,10 @@
 }
 
 .viewedList, .wishList {
+    display: flex;
     list-style-type: none;
     text-align:  center;
+    height:10%;
+    width:90%;
+    overflow:scroll;
 }

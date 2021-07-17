@@ -37,6 +37,18 @@
   }
 }
 
+.popupList {
+  list-style-type: none;
+}
+
+.popupItem {
+  text-decoration: none;
+}
+
+#alert-dialog-title {
+  text-align: center;
+}
+
 .star {
   cursor: pointer;
   transition: color 200ms;

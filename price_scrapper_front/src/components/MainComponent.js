@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { withRouter,Switch,Route } from 'react-router';
 import Login from './Login/Login'
 import Register from './Register/Register'
+import Profile from './Profile/Profile'
 import ProductDetail from './ProductPage/ProductDetail'
 import ForgotPassword from './Login/ConfirmPassword'
 import ProductTable from './ProductTable/ProductTable';
@@ -16,6 +17,7 @@ var Main = props => {
                 <Route exact path="/" component={ProductTable} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
+                <Route exact path="/profile" component={Profile} />
                 <Route exact path="/productdetail" component={ProductDetail} />
                 <Route exact path="/forgotpass/:email" component={ForgotPassword}/>
             </Switch>

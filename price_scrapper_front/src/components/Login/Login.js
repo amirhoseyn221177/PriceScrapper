@@ -12,7 +12,6 @@ const Login = (props) => {
     const [password, setPassword] = useState("");
     const [error,setError]=useState(false)
 
-    console.log(error)
     var sendingInfoToBackEnd = async () => {
         try{
             var resp = await axios.post("/api/user/login", {}, {

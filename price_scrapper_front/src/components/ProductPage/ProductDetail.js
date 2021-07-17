@@ -29,7 +29,7 @@ const ProductDetail = (props) => {
 
     function addToWishlist(item) {
         axios.post('/api/addToWishlist/', item)
-                .then(response => console.log(response.data));
+            .then(response => console.log(response.data));
     }
 
     useEffect(() => {
@@ -67,9 +67,12 @@ const ProductDetail = (props) => {
             </a>
             <br />
             <br />
-            <Button variant="contained" color="primary" onClick={addToWishlist(props.item)}>
-                Add to wishlist
-            </Button>
+            {
+                localStorage.getItem("token") ?
+                    <Button variant="contained" color="primary" onClick={addToWishlist(props.item)}>
+                        Add to wishlist
+                    </Button> : null
+            }
             <SuggestedItems
                 allItems={props.location.state.productInfoArray} setProductIndex={setProductIndex}
             />

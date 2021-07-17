@@ -8,8 +8,9 @@ route.post("/search", async (req, res) => {
         let searchParam = req.body.searchText
         let country = req.body.country ? req.body.country : "CA"
         let startPoint = req.body.startPoint
-
-        const products = await AmazonResult(searchParam,country,startPoint)
+        let sortVariable = req.body.sortVariable
+        console.log(sortVariable)
+        const products = await AmazonResult(searchParam,country,startPoint, sortVariable)
         res.status(200).json(products);
     } catch (e) {
         console.log(chalk.red(e.message));

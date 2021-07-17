@@ -56,7 +56,6 @@ route.post("/addToRecent", async (req, res) => {
 
 
 route.post("/addToWishList", async (req, res) => {
-    console.log(req.body)
     try {
         let { token, itemObject } = await req.body;
         await addToWishList(token, itemObject);

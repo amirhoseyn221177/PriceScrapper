@@ -29,7 +29,7 @@ const ProductDetail = (props) => {
 
     function addToWishlist() {
         const item = props.item
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFAYS5jb20iLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlhdCI6MTYyNjUxMTI4NCwiZXhwIjoxNjI2NTE4NDg0fQ.uUS6CqOE_miT8UGRwf4miJh9j5KQabsYlGc8DljBV68"
+        let token = localStorage.getItem("token").split(" ")[1]
         axios.post('/api/items/addToWishList', {token, item})
             .then(response => console.log(response.data));
     }

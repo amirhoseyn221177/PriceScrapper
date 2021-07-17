@@ -37,7 +37,7 @@ app.get('/api/getRecentlyViewed', (req, res) => {
 })
 
 app.get('/api/getWishlist', (req, res) => {
-  userModel.find({ "withList": 1 })
+  userModel.find({ "wishList": 1 })
       .then(list => res.send(list))
 })
 

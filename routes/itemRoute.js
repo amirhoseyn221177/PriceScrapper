@@ -22,7 +22,6 @@ route.get('/getRecentlyViewed', async (req, res) => {
 
 
 route.get("/getWishList", async (req, res) => {
-    console.log(req.body)
     try {
         let token = await req.body.token;
         let items = await getWishListItems(token);
@@ -39,7 +38,6 @@ route.get("/getWishList", async (req, res) => {
 
 
 route.post("/addToRecent", async (req, res) => {
-    console.log(req.body)
     try {
         let { token, itemObject } = await req.body;
         await addTorecentViews(token, itemObject);
@@ -61,7 +59,7 @@ route.post("/addToWishList", async (req, res) => {
     console.log(req.body)
     try {
         let { token, itemObject } = await req.body;
-        await addToWishList(token, itemObject)
+        await addToWishList(token, itemObject);
         res.status(200).json({ message: "item added to the wish list" })
     } catch (e) {
         console.log(chalk.red(e.message));

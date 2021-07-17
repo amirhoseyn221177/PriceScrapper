@@ -27,7 +27,8 @@ const ProductDetail = (props) => {
 
     console.log(props.item)
 
-    function addToWishlist(item) {
+    function addToWishlist() {
+        const item = props.item
         let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFAYS5jb20iLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlhdCI6MTYyNjUxMTI4NCwiZXhwIjoxNjI2NTE4NDg0fQ.uUS6CqOE_miT8UGRwf4miJh9j5KQabsYlGc8DljBV68"
         axios.post('/api/items/addToWishList', {token, item})
             .then(response => console.log(response.data));
@@ -70,7 +71,7 @@ const ProductDetail = (props) => {
             <br />
             {
                 localStorage.getItem("token") ?
-                    <Button variant="contained" color="primary" onClick={addToWishlist(props.item)}>
+                    <Button variant="contained" color="primary" onClick={() => {addToWishlist()}}>
                         Add to wishlist
                     </Button> : null
             }

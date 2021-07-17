@@ -9,8 +9,8 @@ const Profile = () => {
     const [wish, setWish] = useState([]);
 
     useEffect(() => {
-        let token = localStorage.getItem("token")
-        axios.get('/api/items/getRecentlyViewed', token).then(response => setItems(response.data))
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFAYS5jb20iLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlhdCI6MTYyNjUxMTI4NCwiZXhwIjoxNjI2NTE4NDg0fQ.uUS6CqOE_miT8UGRwf4miJh9j5KQabsYlGc8DljBV68"
+        axios.get('/api/items/getRecentlyViewed').then(response => setItems(response.data))
         axios.get('/api/items/getWishList').then(response => setWish(response.data))
     }, [])
 

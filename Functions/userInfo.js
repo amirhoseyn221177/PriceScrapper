@@ -118,6 +118,7 @@ var addTorecentViews = async (token, itemObject) => {
 
 var addToWishList = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
+    const item = new Item(itemObject);
     await Item.create(itemObject);
     await User.updateOne({ email: username }, {
         $addToSet: { WishListItems: item }

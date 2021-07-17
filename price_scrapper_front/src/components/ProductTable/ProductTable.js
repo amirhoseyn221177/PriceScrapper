@@ -10,6 +10,7 @@ import './ProductTable.css';
 import Pagination from '@material-ui/lab/Pagination';
 import { ChosenItem } from "../Actions/actions";
 import { connect } from 'react-redux';
+
 const options = [
     'Highest Rating',
     'Lowest Rating',
@@ -211,15 +212,16 @@ const ProductTable = (props) => {
         }
     };
 
-
     function addToRecentlyViewed(item) {
-        axios.post('/api/recentlyViewed/', item)
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFAYS5jb20iLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlhdCI6MTYyNjUxMTI4NCwiZXhwIjoxNjI2NTE4NDg0fQ.uUS6CqOE_miT8UGRwf4miJh9j5KQabsYlGc8DljBV68"
+        axios.post('/api/items/addToRecent', { token, item } )
             .then(response => console.log(response.data));
     }
 
     var goToProductPage = (item, index) => {
         console.log(item);
         props.sendingItemArray(item);
+        addToRecentlyViewed(item);
         props.history.push({
             pathname: '/productdetail',
             state: { productInfoArray, index }

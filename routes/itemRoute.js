@@ -1,6 +1,7 @@
 const route = require("express").Router();
 const { User, mostPopularItems } = require("../Mongoose/models");
-const { getRecentViewdItems, getWishListItems, addTorecentViews, addToWishList } = require("../Functions/userInfo");
+const { TokenDecoder, getRecentViewdItems, getWishListItems, addTorecentViews, addToWishList } = require("../Functions/userInfo");
+const chalk = require("chalk");
 
 route.get('/getRecentlyViewed', async (req, res) => {
     try {
@@ -21,6 +22,7 @@ route.get('/getRecentlyViewed', async (req, res) => {
 
 
 route.get("/getWishList", async (req, res) => {
+    console.log(req.body)
     try {
         let token = await req.body.token;
         let items = await getWishListItems(token);
@@ -33,38 +35,42 @@ route.get("/getWishList", async (req, res) => {
             }
         });
     }
+})
 
 
-    route.post('addtorecent', async (req, res) => {
-        try {
-            let { token, itemObject } = await req.body;
-            await addTorecentViews(token, itemObject);
-            res.status.json({message : "item added to recentViews"})
-        } catch (e) {
-            console.log(chalk.red(e.message));
-            res.status(500).send({
-                error: {
-                    message: e.message
-                }
-            });
+route.post("/addToRecent", async (req, res) => {
+    console.log(req.body)
+    try {
+        let { token, itemObject } = await req.body;
+        await addTorecentViews(token, itemObject);
+        res.status(200).json({ message: "item added to recentViews" })
+    } catch (e) {
+        console.log(chalk.red(e.message));
+        res.status(500).send({
+            error: {
+                message: e.message
+            }
+        });
 
-        }
+    }
 
-    });
-
-
-    route.post('/addtowishlist',async(req,res)=>{
-        try{
-            let { token, itemObject } = await req.body;
-            await addToWishList(token, itemObject)
-            res.status(200).json({message : "item added to the wish list"})
-        }catch(e){
-            console.log(chalk.red(e.message));
-            res.status(500).send({
-                error: {
-                    message: e.message
-                }
-            });
-        }
-    })
 });
+
+
+route.post("/addToWishList", async (req, res) => {
+    console.log(req.body)
+    try {
+        let { token, itemObject } = await req.body;
+        await addToWishList(token, itemObject)
+        res.status(200).json({ message: "item added to the wish list" })
+    } catch (e) {
+        console.log(chalk.red(e.message));
+        res.status(500).send({
+            error: {
+                message: e.message
+            }
+        });
+    }
+});
+
+module.exports = route;

@@ -16,20 +16,21 @@ const allSchemas = ()=>{
         FirstName:{type:String,require:true},
         LastName:{type:String,require:true},
         forgotPassword:{type:Number},
-        viewedItems : [{type : mongoose.Schema.Types.ObjectId , ref:"mostPopularItems"}]
+        viewedItems : [{type : mongoose.Schema.Types.ObjectId , ref:"Item"}],
+        WishListItems :[{type:mongoose.Schema.Types.ObjectId, ref:"Item"}]
     })
 
 
 
-    const mostPopularItems = mongoose.Schema({
-        name:{type: String , require : true},
+    const Item = mongoose.Schema({
+        itemName:{type: String , require : true},
         store : {type : String , require : true},
         category : {type : String, require :true},
-        itemSotreCode :{type : String, require : true}
+        itemStoreCode :{type : String, require : true}
 
     })
 
-    mongoose.model("mostPopularItems" , mostPopularItems)
+    mongoose.model("Item" , Item)
     mongoose.model("User",User)
 
 }

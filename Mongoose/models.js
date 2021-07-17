@@ -1,9 +1,9 @@
 const mongoose = require("./DBSetup")
 
 let User = mongoose.model("User")
-let mostPopularItems  = mongoose.model("mostPopularItems")
+let Item  = mongoose.model("Item")
 
 module.exports={
     User,
-    mostPopularItems
+    Item
 }

@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core';
 import './ProductDetail.css'
 import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
+import StarRating from "./StarRating";
 
 
 const ProductDetail = (props) => {
@@ -45,7 +46,7 @@ const ProductDetail = (props) => {
                 Price: {props.location.state.productInfoArray[index].price} {props.location.state.productInfoArray[index].currency}
             </p>
             <p>
-                Rating: 
+                <StarRating/>
             </p>
             <p>
                 Description:

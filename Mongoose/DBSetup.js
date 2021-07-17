@@ -24,7 +24,8 @@ const allSchemas = ()=>{
     const mostPopularItems = mongoose.Schema({
         name:{type: String , require : true},
         store : {type : String , require : true},
-        category : {type : String, require :true}
+        category : {type : String, require :true},
+        itemSotreCode :{type : String, require : true}
 
     })
 

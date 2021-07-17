@@ -4,8 +4,9 @@ const { TokenDecoder, getRecentViewdItems, getWishListItems, addTorecentViews, a
 const chalk = require("chalk");
 
 route.get('/getRecentlyViewed', async (req, res) => {
+    console.log(req.headers.authorization)
     try {
-        let token = await req.body.token;
+        let token = await req.headers.authorization;
         const items = await getRecentViewdItems(token);
         res.status(200).json({ items });
     } catch (e) {
@@ -23,7 +24,7 @@ route.get('/getRecentlyViewed', async (req, res) => {
 
 route.get("/getWishList", async (req, res) => {
     try {
-        let token = await req.body.token;
+        let token = await req.headers.authorization;
         let items = await getWishListItems(token);
         res.status(200).json({ items });
     } catch (e) {

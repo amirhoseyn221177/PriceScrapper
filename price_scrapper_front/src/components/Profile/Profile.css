@@ -11,13 +11,13 @@
     list-style-type: none;
     text-align:  center;
     height: 10%;
-    width: 65%;
+    width: 70%;
     overflow:scroll;
 }
 
 .viewedDiv, .wishDiv {
     position: fixed;
-    left: 20%;
+    left: 15%;
     width: 100%;
     text-align: center;
 }

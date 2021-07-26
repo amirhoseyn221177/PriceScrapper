@@ -117,13 +117,13 @@ const Profile = () => {
                         <div>
                             <form noValidate>
                                 <ul className="profilePage">
-                                    <li>
+                                    <li key="profileName">
                                         <div className="form-name">
                                             <label>Name: </label>
                                             <label>User name</label>
                                         </div>
                                     </li>
-                                    <li>
+                                    <li key="profileEmail">
                                         <div className="form-email">
                                             <label>Email: </label>
                                             <label>User email</label>
@@ -140,19 +140,19 @@ const Profile = () => {
                                 <div>
                                     <form noValidate>
                                         <ul className="profilePage">
-                                            <li>
+                                            <li key="updateName">
                                                 <div className="form-name">
                                                     <label>Name: </label>
                                                     <TextField className="textField" />
                                                 </div>
                                             </li>
-                                            <li>
+                                            <li key="updateEmail">
                                                 <div className="form-email">
-                                                    <   label>Email: </label>
+                                                    <label>Email: </label>
                                                     <TextField className="textField" type="password" />
                                                 </div>
                                             </li>
-                                            <li>
+                                            <li key="updatePassword">
                                                 <div className="form-password">
                                                     <label>Password: </label>
                                                     <TextField className="textField" type="password" />
@@ -174,7 +174,7 @@ const Profile = () => {
                                         {
                                             items.map(
                                                 (item, index) => {
-                                                    return <li>
+                                                    return <li key={index} >
                                                         <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                     </li>
                                                 }
@@ -192,7 +192,7 @@ const Profile = () => {
                                             {
                                                 items.map(
                                                     (item, index) => {
-                                                        return <li>
+                                                        return <li key={index} >
                                                             <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                         </li>
                                                     }

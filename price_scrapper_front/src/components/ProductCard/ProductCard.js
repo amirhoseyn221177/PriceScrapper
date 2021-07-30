@@ -9,7 +9,7 @@ const ProductCard = (props) => {
 
 
     return (
-        <Card>
+        <Card className="productCard">
             <Card.Img className="cardImg" variant="top" src={props.image} width="100" height="180" />
             <Card.Body className="cardBody">
                 <div className="titleDiv">

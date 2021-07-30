@@ -11,3 +11,18 @@ button.MuiButton-containedPrimary:hover {
 .cardBody {
     padding: 30px;
 }
+
+.cardTitle {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  .cardImg {
+      margin-top: 25px;
+  }
+
+  .titleDiv {
+      height: 10px;
+      width: 100%;
+  }

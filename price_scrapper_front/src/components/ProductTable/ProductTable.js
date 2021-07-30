@@ -364,7 +364,7 @@ const ProductTable = (props) => {
                 </Dialog>
             </div>
             {searchText !== "" ?
-                <div>
+                <div className="optionsDiv">
                     <div className="filterPage" >
                         <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
                             className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />

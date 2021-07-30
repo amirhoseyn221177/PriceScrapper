@@ -38,7 +38,7 @@ const ProductDetail = (props) => {
         if (props.item.title === "") props.history.push("/")
     })
     return (
-        <div>
+        <div className="cardInfo">
             <Card style={{ width: '40rem', height: '30rem', position: 'relative', left: '31.5%', marginTop: '5%' }}>
                 <Card.Img variant="top" src={props.location.state.productInfoArray[index].image} width='640' height='480' />
                 <Card.Body className="cardBody">

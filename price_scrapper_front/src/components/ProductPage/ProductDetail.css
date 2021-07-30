@@ -3,18 +3,19 @@ button.MuiButton-containedPrimary:hover {
     background-color: white;
 }
 
-.card {
+#cardDetail {
     border: 1px solid black;
     margin: 30px;
+    width: 40rem;
+    height: 30rem;
+    margin: 0 auto;
 }
 
 .cardBody {
     padding: 30px;
 }
 
-.center {
-    text-align: center;
-    margin-top: 5%;
-    margin-left: 33%;
+.cardInfo {
+    padding-top: 5%;
 }
 

@@ -6,7 +6,8 @@ import {
     Card,
     CardContent,
     CardMedia,
-    Typography
+    Typography,
+    Tooltip
 } from "@material-ui/core";
 
 const SuggestedItems = (props) => {
@@ -134,7 +135,9 @@ const SuggestedItems = (props) => {
                                     }}
                                 />
                                 <CardContent>
-                                    <Typography>{item.name}</Typography>
+                                <Tooltip title={item.name} placement="left" arrow>
+                                            <Typography className="itemName">{item.name}</Typography>
+                                        </Tooltip>
                                     <Typography>{item.price}</Typography>
                                 </CardContent>
                             </Card>
@@ -142,7 +145,7 @@ const SuggestedItems = (props) => {
                     })
                 }
             </Carousel>
-        </div>
+        </div >
     );
 }
 

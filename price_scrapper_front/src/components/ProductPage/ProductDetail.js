@@ -38,8 +38,8 @@ const ProductDetail = (props) => {
         if (props.item.title === "") props.history.push("/")
     })
     return (
-        <div>
-            <Card style={{ width: '40rem', height: '30rem', position: 'relative', left: '31.5%', marginTop: '5%' }}>
+        <div className="cardInfo">
+            <Card id="cardDetail">
                 <Card.Img variant="top" src={props.location.state.productInfoArray[index].image} width='640' height='480' />
                 <Card.Body className="cardBody">
                 </Card.Body>

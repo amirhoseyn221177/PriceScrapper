@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Profile.css';
+import { Drawer, List, Divider, ListItem, ListItemText, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import ProductCard from '../ProductCard/ProductCard';
 
@@ -7,6 +8,7 @@ const Profile = () => {
 
     // const [items, setItems] = useState([]);
     // const [wish, setWish] = useState([]);
+    const [drawer, setDrawer] = useState("Recently Viewed");
 
     // useEffect(() => {
     //     let token = localStorage.getItem("token").split(" ")[1];
@@ -93,36 +95,114 @@ const Profile = () => {
 
     return (
         <div className="profileDiv">
-            <div>
-                <h1>Recently Viewed</h1>
-                <div>
-                    <ul className="viewedList" id="list">
-                        {
-                            items.map(
-                                (item, index) => {
-                                    return <li>
-                                        <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+            <Drawer
+                variant="permanent"
+                anchor="left"
+                className="drawer"
+            >
+                <Divider />
+                <List>
+                    {['Profile', 'Update Profile', 'Recently Viewed', 'Wishlist'].map((text, index) => (
+                        <ListItem button key={text} onClick={() => setDrawer(text)}>
+                            <ListItemText primary={text} />
+                        </ListItem>
+                    ))}
+                </List>
+                <Divider />
+            </Drawer>
+            {
+                drawer === "Profile" ?
+                    (<div className="centerDiv">
+                        <h1>Profile</h1>
+                        <div>
+                            <form noValidate>
+                                <ul className="profilePage">
+                                    <li key="profileName">
+                                        <div className="form-name">
+                                            <label>Name: </label>
+                                            <label>User name</label>
+                                        </div>
                                     </li>
-                                }
-                            )
-                        }
-                    </ul>
-                </div>
-                <div>
-                    <h1>Wishlist</h1>
-                    <ul className="wishList">
-                        {
-                            items.map(
-                                (item, index) => {
-                                    return <li>
-                                        <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                    <li key="profileEmail">
+                                        <div className="form-email">
+                                            <label>Email: </label>
+                                            <label>User email</label>
+                                        </div>
                                     </li>
-                                }
+                                </ul>
+                            </form>
+                        </div>
+                    </div>)
+                    : drawer === "Update Profile" ?
+                        (
+                            <div className="centerDiv">
+                                <h1>Update Profile</h1>
+                                <div>
+                                    <form noValidate>
+                                        <ul className="profilePage">
+                                            <li key="updateName">
+                                                <div className="form-name">
+                                                    <label>Name: </label>
+                                                    <TextField className="textField" />
+                                                </div>
+                                            </li>
+                                            <li key="updateEmail">
+                                                <div className="form-email">
+                                                    <label>Email: </label>
+                                                    <TextField className="textField" type="password" />
+                                                </div>
+                                            </li>
+                                            <li key="updatePassword">
+                                                <div className="form-password">
+                                                    <label>Password: </label>
+                                                    <TextField className="textField" type="password" />
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                    <div id="formBtn">
+                                        <Button id="updateBtn" >Update</Button>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                        : drawer === "Recently Viewed" ?
+                            (<div className="centerDiv">
+                                <h1>Recently Viewed</h1>
+                                <div className="viewedDiv">
+                                    <ul className="viewedList" id="list">
+                                        {
+                                            items.map(
+                                                (item, index) => {
+                                                    return <li key={index} >
+                                                        <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                    </li>
+                                                }
+                                            )
+                                        }
+                                    </ul>
+                                </div>
+                            </div>)
+                            :
+                            (
+                                <div className="centerDiv">
+                                    <h1>Wishlist</h1>
+                                    <div className="wishDiv">
+                                        <ul className="wishList">
+                                            {
+                                                items.map(
+                                                    (item, index) => {
+                                                        return <li key={index} >
+                                                            <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                        </li>
+                                                    }
+                                                )
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
                             )
-                        }
-                    </ul>
-                </div>
-            </div>
+            }
         </div>
     );
 };

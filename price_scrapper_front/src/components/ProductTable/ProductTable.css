@@ -1,3 +1,9 @@
+body{
+    width:100%;
+    overflow-x:hidden;
+    overflow-y:hidden;
+}
+
 .productTable {
     position: absolute;
     top:  74%;

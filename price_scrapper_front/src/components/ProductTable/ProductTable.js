@@ -42,6 +42,8 @@ const ProductTable = (props) => {
     const [ebayNumber, setEbayNumber] = useState(0);
     const [amazonNumber, setAmazonNumber] = useState(0);
     const [query , setQuery]= useState("")
+    const [checkboxStates, setCheckboxStates] = useState([true, true]) // Amazon, Ebay
+
     const handleClickListItem = (event) => {
         console.log(37);
         setAnchorEl(event.currentTarget);
@@ -182,12 +184,22 @@ const ProductTable = (props) => {
     };
 
 
-    var callAPIBundle = async () => {
-        await callEbayAPI();
-        await callAmazonAPI();
-        //  await callStockxAPI();
-        // console.log(stockNumber)
-        // setTotalItem(amazonNumber+ebayNumber)
+    var callAPIBundle = async (val) => {
+        console.log("Amazon state", checkboxStates[0])
+        console.log("Ebay state", checkboxStates[1])
+        if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
+            console.log("here1")
+            await callAmazonAPI();
+            await callEbayAPI();
+        } else if (checkboxStates[0]) {
+            console.log("here2")
+            setEbayArray([])
+            await callAmazonAPI();
+        } else if (checkboxStates[1]) {
+            console.log("here3")
+            setAmazonArray([])
+            await callEbayAPI();
+        } 
     };
 
 
@@ -298,7 +310,16 @@ const ProductTable = (props) => {
         await callAPIBundle();
     }, [startPoint]);
 
+    async function filterItemArray(val) {
+        console.log("LOOK AT ME", val)
+        setQuery(val)
+        searchNow(val)
+    }
 
+    function searchNow(searchValue) {
+        callAPIBundle()
+        setSearchText(searchValue)
+    }
 
 
     useMemo(async () => {
@@ -379,6 +400,31 @@ const ProductTable = (props) => {
             {searchText !== "" ?
                 <div className="optionsDiv">
                     <div className="filterPage" >
+                    <FormControlLabel
+                            control={<Checkbox name="SomeName" value="Amazon" />}
+                            label="Amazon"
+                            onChange={(e) => {
+                                console.log("CURRENT EBAY STATE", checkboxStates[1])
+                                let newCheckboxState = checkboxStates
+                                newCheckboxState[1] = !newCheckboxState[1]
+                                setCheckboxStates(newCheckboxState)
+                                console.log("NEW EBAY STATE", checkboxStates[1])
+                                filterItemArray(searchText)
+                            }}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox name="SomeName" value="Ebay" />}
+                            label="Ebay"
+                            onChange={(e) => {
+                                console.log("CURRENT AMAZON STATE", checkboxStates[0])
+                                let newCheckboxState = checkboxStates
+                                newCheckboxState[0] = !newCheckboxState[0]
+                                setCheckboxStates(newCheckboxState)
+                                console.log("NEW AMAZON STATE", checkboxStates[1])
+                                filterItemArray(searchText)
+                            }}
+                        />
+
                         <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
                             className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
                         <List className="sort" component="nav" aria-label="Device settings">

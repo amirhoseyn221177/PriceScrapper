@@ -41,13 +41,18 @@ const ProductTable = (props) => {
     const [startPoint, setStartPoint] = useState(1);
     const [ebayNumber, setEbayNumber] = useState(0);
     const [amazonNumber, setAmazonNumber] = useState(0);
+    const [checkboxStates, setCheckboxStates] = useState([true, true]) // Amazon, Ebay
     const [query , setQuery]= useState("")
     const [checkboxStates, setCheckboxStates] = useState([true, true]) // Amazon, Ebay
 
     const handleClickListItem = (event) => {
-        console.log(37);
+        console.log(event.currentTarget);
         setAnchorEl(event.currentTarget);
     };
+    // const handleClickVendorList = (event) => {
+    //     console.log(37);
+    //     setAnchorEl(event.currentTarget);
+    // };
 
     const handleMenuItemClick = (event, index) => {
         console.log(42);
@@ -247,8 +252,11 @@ const ProductTable = (props) => {
 
 
     var createProductCards = () => {
+        let i = 2;
+        let lim = productInfoArray.length;
         let allCards = [];
-        for (let i = 2; i < productInfoArray.length; i += 3) {
+        console.log(productInfoArray.length)
+        for (i = 2; i < lim; i += 3) {
             allCards.push(
                 <tr key={productInfoArray[i].title}>
                     <td>
@@ -352,8 +360,8 @@ const ProductTable = (props) => {
                 <div className="searchFilter">
                     <SearchBar
                         className="searchBar"
-                        value={query}
-                        onChange={newValue => setQuery(newValue)}
+                        value={searchText}
+                        onChange={newValue => filterItemArray(newValue)}
                         onCancelSearch={() => setSearchText("")}
                     />
                     <Button
@@ -467,7 +475,7 @@ const ProductTable = (props) => {
     );
 };
 
-
+                        
 const mapToProps = dispatch => {
     return {
         sendingItemArray: (item) => dispatch(ChosenItem(item))

@@ -5,11 +5,11 @@ form {
 
 .signUpForm {
     margin: auto;
-    background-color: #f1f5ff;
+    background-color: white;
     padding: 20px;
     border: 2px solid black;
     width: 400px;
-    height: 500px;
+    height: 550px;
     border-radius: 10px;
 }
 

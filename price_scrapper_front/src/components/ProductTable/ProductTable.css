@@ -10,8 +10,16 @@
     display: block;
 }
 
+.MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page.MuiPaginationItem-outlined.MuiPaginationItem-rounded {
+    background-color: white;
+}
+
 .MuiPaper-root.ForwardRef-root-1 {
     border-radius: 30px;
+}
+
+.filterDiv {
+    margin-top: 15px;
 }
 
 .filterButton {
@@ -45,6 +53,13 @@
 .searchDiv {
     display: flex;
     flex-direction: row;
+}
+
+.searchFilterNone {
+    top: 30%;
+    position: absolute;
+    width: 100%;
+    text-align:center;
 }
 
 .searchFilter {

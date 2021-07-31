@@ -37,6 +37,10 @@
   }
 }
 
+body {
+  background-color: aliceblue;
+}
+
 .popupList {
   list-style-type: none;
 }

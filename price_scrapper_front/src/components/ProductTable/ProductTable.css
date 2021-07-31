@@ -44,8 +44,8 @@
 }
 
 .searchFilter {
-    left: 25%;
-    position: relative;
+    width: 100%;
+    text-align:center;
 }
 
 

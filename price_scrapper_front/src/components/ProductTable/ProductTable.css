@@ -10,6 +10,10 @@
     display: block;
 }
 
+.MuiPaper-root.ForwardRef-root-1 {
+    border-radius: 30px;
+}
+
 .filterButton {
     width: 100px;
     height: 40px;

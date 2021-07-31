@@ -5,12 +5,15 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser=require('body-parser')
+const jsonParser = bodyParser.json()
 var cors=require('cors')
 var UserLogin = require('./routes/userAuth')
+var userItems = require('./routes/itemRoute')
 var db = require("./Mongoose/DBSetup")
 var stockX = require("./routes/StockXRoute")
 var amazon = require("./routes/AmazonRoute")
 var ebay = require("./routes/Ebay")
+const userModel = require('./Mongoose/models.js');
 require('dotenv').config();
 
 var app = express();
@@ -28,11 +31,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 db
 
-
+app.use("/api/items",userItems)
 app.use("/api/user",UserLogin)
 app.use("/api/stockx",stockX)
 app.use("/api/amazon",amazon)
 app.use("/api/ebay",ebay)
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

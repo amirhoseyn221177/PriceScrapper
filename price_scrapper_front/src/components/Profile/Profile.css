@@ -1,0 +1,73 @@
+.profileDiv {
+    margin-top: 100px;
+}
+
+.profileDiv h1 {
+    text-align: center;
+}
+
+.viewedList, .wishList {
+    display: flex;
+    list-style-type: none;
+    text-align:  center;
+    height: 10%;
+    width: 70%;
+    overflow:scroll;
+}
+
+.viewedDiv, .wishDiv {
+    position: fixed;
+    left: 15%;
+    width: 100%;
+    text-align: center;
+}
+
+.profilePage {
+    list-style-type: none;
+    margin-top: 10px;
+}
+
+.MuiPaper-root.MuiDrawer-paper.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.MuiPaper-elevation0 {
+    background-color:#2c56e0;
+    color: white;
+    top: 47px;
+    z-index: 0;
+}
+
+form {
+    margin: 50px 100px 10px 100px;
+  }
+
+.form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 10px;
+}
+
+.form-name, .form-email, .form-password {
+    margin: auto;
+}
+
+#formBtn {
+    margin: 50px 100px 10px 160px;
+}
+
+#updateBtn {
+    margin: 10px;
+    background-color:#2c56e0;
+    color: white;
+    width: 15%;
+}
+
+form ul li label {
+    margin-top: 3px;
+    float: left;
+}
+
+.textField {
+    float: right;
+}
+
+form ul li {
+    height: 60px;
+}

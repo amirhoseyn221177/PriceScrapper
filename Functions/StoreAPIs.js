@@ -17,16 +17,16 @@ let stock = new StockX();
 
 var AmazonResult = async (searchParam, country = null, startPoint, sortVariable = null) => {
     const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "CA" }); //default country is Canada
-    console.log(startPoint)
-    return { result: sortAmazonItems(sortVariable , products.result).splice((startPoint-1) * 3, 3), totalLength: products.result.length };
+    console.log(startPoint);
+    return { result: sortAmazonItems(sortVariable, products.result).splice((startPoint - 1) * 3, 3), totalLength: products.result.length };
 };
 
 
-var EbayResult = async (searchText, startPoint ,sortVariable = null) => {
+var EbayResult = async (searchText, startPoint, sortVariable = null) => {
     console.log(startPoint);
     let product = await ebay.findItemsByKeywords({ keywords: searchText });
     return {
-        result: sortEbayItems(sortVariable , product[0].searchResult[0].item).splice((startPoint-1) * 3, 3),
+        result: sortEbayItems(sortVariable, product[0].searchResult[0].item).splice((startPoint - 1) * 3, 3),
         totalLength: product[0].searchResult[0].item.length
     };
 };
@@ -48,7 +48,7 @@ var StockXResult = async (searchQuery, startPoint) => {
  * @param {*} items -- items that have to be sorted
  */
 var sortAmazonItems = (sortType = null, items) => {
-    console.log(sortType)
+    console.log(sortType);
     switch (sortType) {
         case "Highest Rating":
             return items.sort((a, b) => b.reviews.rating - a.reviews.rating);
@@ -58,7 +58,7 @@ var sortAmazonItems = (sortType = null, items) => {
             return items.sort((a, b) => b.price.current_price - a.price.current_price);
         case "Lowest Price":
             return items.sort((a, b) => a.price.current_price - b.price.current_price);
-        default :
+        default:
             return items.sort((a, b) => b.reviews.rating - a.reviews.rating);
 
     }
@@ -66,7 +66,7 @@ var sortAmazonItems = (sortType = null, items) => {
 
 var sortEbayItems = (sortType = null, items) => {
     switch (sortType) {
-         case "Highest Price":
+        case "Highest Price":
             return items.sort((a, b) => b.sellingStatus[0].convertedCurrentPrice[0].__value__ - a.sellingStatus[0].convertedCurrentPrice[0].__value__);
         case "Lowest Price":
             return items.sort((a, b) => a.sellingStatus[0].convertedCurrentPrice[0].__value__ - b.sellingStatus[0].convertedCurrentPrice[0].__value__);
@@ -74,7 +74,7 @@ var sortEbayItems = (sortType = null, items) => {
             return items.sort((a, b) => b.sellerInfo[0].positiveFeedbackPercent[0] - a.sellerInfo[0].positiveFeedbackPercent[0]);
         case "Lowest Rating":
             return items.sort((a, b) => a.sellerInfo[0].positiveFeedbackPercent[0] - b.sellerInfo[0].positiveFeedbackPercent[0]);
-        default :
+        default:
             return items.sort((a, b) => b.sellingStatus[0].convertedCurrentPrice[0].__value__ - a.sellingStatus[0].convertedCurrentPrice[0].__value__);
 
     }

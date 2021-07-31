@@ -23,9 +23,13 @@ const allSchemas = ()=>{
 
 
     const Item = mongoose.Schema({
-        itemName:{type: String , require : true},
-        store : {type : String , require : true},
+        title:{type: String , require : true},
+        vendor : {type : String , require : true},
+        price : {type : String , require : true},
+        currency : {type : String , require : true},
         category : {type : String, require :true},
+        image: {type : String, require :true},
+        imageURL : {type : String, require :true},
         itemStoreCode :{type : String, require : true}
 
     })

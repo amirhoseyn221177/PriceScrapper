@@ -34,7 +34,7 @@ var SignUp = async (email, password, FirstName, LastName) => {
 
 var Login = async (email, password) => {
     const user = await User.findOne({ email: email });
-    if (user) {
+    if (await user) {
         let hashPass = await user.password;
         let result = await bcrypt.compare(password, hashPass);
         if (result) {
@@ -42,7 +42,9 @@ var Login = async (email, password) => {
                 algorithm: 'HS256',
                 expiresIn: '2h'
             });
-            return `Bearer ${token}`;
+            return new Promise((res, rej) => {
+                res(`Bearer ${token}`);
+            });
         } else {
             throw new Error(" wrong password");
         }
@@ -95,9 +97,21 @@ var updatePassword = async (email, password) => {
 };
 
 
+var updateUserInfo = async (email = null, token, firstName = null, lastName = null, password) => {
+    const { username } = TokenDecoder(token);
+    console.log(username);
+    const user = await User.findOne({ email: username });
+    email !== null ? user.email = email : null;
+    firstName !== null ? user.FirstName = firstName : null;
+    lastName !== null ? user.LastName = lastName : null;
+    await user.save();
+};
+
+
 var getRecentViewdItems = async (token) => {
     const { username } = TokenDecoder(token);
     const recentViewsIds = await User.findOne({ email: username }).select('viewedItems');
+    console.log(recentViewsIds);
     const viewedItems = await Item.find({ '_id': { $in: recentViewsIds.viewedItems } });
     return viewedItems;
 
@@ -118,7 +132,8 @@ var addTorecentViews = async (token, itemObject) => {
 
 var addToWishList = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
-    await Item.create(itemObject);
+    const item = new Item(itemObject);
+    await Item.create(item);
     await User.updateOne({ email: username }, {
         $addToSet: { WishListItems: item }
     });
@@ -126,13 +141,14 @@ var addToWishList = async (token, itemObject) => {
 };
 
 
-var getWishListItems = async(token)=>{
+var getWishListItems = async (token) => {
     const { username } = TokenDecoder(token);
     const wishListIds = await User.findOne({ email: username }).select('WishListItems');
     const wishedItems = await Item.find({ '_id': { $in: wishListIds.WishListItems } });
+    console.log(wishedItems);
     return wishedItems;
 
-}
+};
 
 
 var TokenDecoder = token => {
@@ -161,12 +177,12 @@ var TokenDecoder = token => {
 // getRecentViewdItems("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXJzYXl5YXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJzZXgyMjExIiwiaWF0IjoxNjI2NTA5MTE3LCJleHAiOjE2MjY1MTYzMTd9.BXvtzDcfbzVfKv7c7-FNzwR5dCqrxv_mJoIL5t_ZxC0");
 
 
-// var getAllTheUsers = async () => {
-//     let allusers = await User.find({});
-//     let allItems = await Item.find({});
-//     // console.log(allItems)
-//     console.log(allusers);
-// };
+var getAllTheUsers = async () => {
+    let allusers = await User.find({});
+    let allItems = await Item.find({});
+    // console.log(allItems)
+    console.log(allusers);
+};
 
 
 // var deleteAllUsers = async()=>{
@@ -186,7 +202,8 @@ module.exports = {
     addTorecentViews,
     getRecentViewdItems,
     addToWishList,
-    getWishListItems
+    getWishListItems,
+    updateUserInfo
 };
 
 

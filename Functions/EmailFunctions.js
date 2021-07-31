@@ -1,20 +1,20 @@
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
 
-var AdminEmail = async()=>{
-    let adminAccount = await nodemailer.createTestAccount()
-    let trans =  nodemailer.createTransport({
+var AdminEmail = async () => {
+    let adminAccount = await nodemailer.createTestAccount();
+    let trans = nodemailer.createTransport({
         host: "smtp.ethereal.email",
-        port:587,
-        secure:false,
-        auth:{
-            user:adminAccount.user,
-            pass:adminAccount.pass
+        port: 587,
+        secure: false,
+        auth: {
+            user: adminAccount.user,
+            pass: adminAccount.pass
         }
-    })
+    });
 
-    return trans
-}
+    return trans;
+};
 
 
 
-module.exports=AdminEmail
+module.exports = AdminEmail;

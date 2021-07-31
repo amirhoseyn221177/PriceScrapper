@@ -1,12 +1,12 @@
 .productTable {
     position: absolute;
-    top:  74%;
+    top:  63%;
     left: 50%;
     transform: translate(-50%,-50%);
     z-index: -1;
     margin: 0;
     overflow-y: scroll;
-    height: 75%;
+    height: 65%;
     display: block;
 }
 
@@ -69,7 +69,7 @@
 .filterPage {
     position: absolute;
     width: 60%;
-    height: 10%;
+    height: 5%;
     z-index: 100;
     left: 3%;
 }

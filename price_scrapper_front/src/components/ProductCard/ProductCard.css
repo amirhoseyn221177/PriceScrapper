@@ -3,11 +3,28 @@ button.MuiButton-containedPrimary:hover {
     background-color: white;
 }
 
-.card {
+.productCard {
     border: 1px solid black;
     margin: 30px;
+    width: 18rem;
+    height: 24rem;
 }
 
 .cardBody {
     padding: 30px;
 }
+
+.cardTitle {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  .cardImg {
+      margin-top: 25px;
+  }
+
+  .titleDiv {
+      height: 10px;
+      width: 100%;
+  }

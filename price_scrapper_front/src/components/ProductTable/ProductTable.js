@@ -10,6 +10,7 @@ import './ProductTable.css';
 import Pagination from '@material-ui/lab/Pagination';
 import { ChosenItem } from "../Actions/actions";
 import { connect } from 'react-redux';
+
 const options = [
     'Highest Rating',
     'Lowest Rating',
@@ -27,7 +28,10 @@ const ProductTable = (props) => {
     const [amazonArray, setAmazonArray] = useState([]);
     const [productInfoArray, setproductInfoArray] = useState([]);
     const [productCardsJSX, setproductCardsJSX] = useState([]);
-    const [searchText, setSearchText] = useState("yeezy");
+    // const [paginationEbay, setPaginationEbay] = useState({ start: 0, limit: 5 });
+    // const [paginationAmazon, setPaginationAmazon] = useState({ start: 0, limit: 5 });
+    // const [paginationStockx, setPaginationStockx] = useState({ start: 0, limit: 5 });
+    const [searchText, setSearchText] = useState("");
     const [chosenCategories, setChosenCategories] = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(2);
@@ -37,6 +41,7 @@ const ProductTable = (props) => {
     const [startPoint, setStartPoint] = useState(1);
     const [ebayNumber, setEbayNumber] = useState(0);
     const [amazonNumber, setAmazonNumber] = useState(0);
+    const [query , setQuery]= useState("")
     const handleClickListItem = (event) => {
         console.log(37);
         setAnchorEl(event.currentTarget);
@@ -65,6 +70,7 @@ const ProductTable = (props) => {
 
     var callAmazonAPI = async () => {
         try {
+            console.log(searchText)
             var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
@@ -208,12 +214,16 @@ const ProductTable = (props) => {
         }
     };
 
-
-
+    function addToRecentlyViewed(item) {
+        let token = localStorage.getItem("token").split(" ")[1]
+        axios.post('/api/items/addToRecent', { token, item } )
+            .then(response => console.log(response.data));
+    }
 
     var goToProductPage = (item, index) => {
         console.log(item);
         props.sendingItemArray(item);
+        addToRecentlyViewed(item);
         props.history.push({
             pathname: '/productdetail',
             state: { productInfoArray, index }
@@ -296,15 +306,31 @@ const ProductTable = (props) => {
         createProductCards();
     }, [productInfoArray]);
 
+    useEffect(() => {
+        const timeOutId = setTimeout(() => setSearchText(searchText), 500);
+        return () => clearTimeout(timeOutId);
+    }, [searchText]);
+
+    useEffect(()=>{
+        const timeOut = setTimeout(() => {
+            setSearchText(query)
+        }, 2000);
+        return ()=> clearTimeout(timeOut)
+    },[query]);
+
+    useEffect(async()=>{
+        await callAPIBundle()
+    },[searchText])
+
     return (
         <Fragment>
             <div className="searchDiv">
                 <div className="searchFilter">
                     <SearchBar
                         className="searchBar"
-                        value={searchText}
-                        onChange={newValue => setSearchText(newValue)}
-                        onRequestSearch={() => callAPIBundle()}
+                        value={query}
+                        onChange={newValue => setQuery(newValue)}
+                        onCancelSearch={() => setSearchText("")}
                     />
                     <Button
                         className="filterButton"
@@ -347,43 +373,47 @@ const ProductTable = (props) => {
                     </DialogContent>
                 </Dialog>
             </div>
-            <div className="filterPage" >
-                <Pagination style={{ position: 'relative', zIndex: "-10" }} page ={startPoint} onChange={(e, value) => setStartPoint(value)}
-                    className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
-                <List className="sort" component="nav" aria-label="Device settings">
-                    <ListItem
-                        button
-                        aria-haspopup="true"
-                        aria-controls="lock-menu"
-                        aria-label="Sort By:"
-                        onClick={handleClickListItem}
-                    >
-                        <ListItemText primary={`Sort by: ${options[selectedIndex]}`} />
-                    </ListItem>
-                </List>
-                <Menu
-                    id="lock-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseSort}
-                >
-                    {options.map((option, index) => (
-                        <MenuItem
-                            key={option}
-                            selected={index === selectedIndex}
-                            onClick={(event) => handleMenuItemClick(event, index)}
+            {searchText !== "" ?
+                <div className="optionsDiv">
+                    <div className="filterPage" >
+                        <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
+                            className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
+                        <List className="sort" component="nav" aria-label="Device settings">
+                            <ListItem
+                                button
+                                aria-haspopup="true"
+                                aria-controls="lock-menu"
+                                aria-label="Sort By:"
+                                onClick={handleClickListItem}
+                            >
+                                <ListItemText primary={`Sort by: ${options[selectedIndex]}`} />
+                            </ListItem>
+                        </List>
+                        <Menu
+                            id="lock-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleCloseSort}
                         >
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Menu>
-            </div>
-            <Table className="productTable">
-                <tbody>
-                    {productCardsJSX}
-                </tbody>
-            </Table>
+                            {options.map((option, index) => (
+                                <MenuItem
+                                    key={option}
+                                    selected={index === selectedIndex}
+                                    onClick={(event) => handleMenuItemClick(event, index)}
+                                >
+                                    {option}
+                                </MenuItem>
+                            ))}
+                        </Menu>
+                    </div>
+                    <Table className="productTable">
+                        <tbody>
+                            {productCardsJSX}
+                        </tbody>
+                    </Table>
+                </div>
+                : <div />}
         </Fragment>
     );
 };

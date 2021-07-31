@@ -88,11 +88,12 @@ const SuggestedItems = (props) => {
     return (
         <div
             style={{
-                paddingBottom: '60px',
-                position: 'relative'
+                paddingBottom: '80px',
+                position: 'relative',
+                zIndex: 0
             }}
         >
-            <h2>Other items you might like:</h2>
+            <h2 className="h2Title">Other items you might like:</h2>
             <Carousel
                 additionalTransfrom={0}
                 arrows

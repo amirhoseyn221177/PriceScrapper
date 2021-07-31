@@ -4,18 +4,38 @@ button.MuiButton-containedPrimary:hover {
 }
 
 #cardDetail {
-    border: 1px solid black;
     margin: 30px;
-    width: 40rem;
-    height: 30rem;
+    width: 70rem;
+    margin: 0 auto;
+    border: 1px solid gainsboro;
+    border-width: medium;
+    border-radius: 30px;;
+    background-color: ghostwhite;
+}
+
+.cardDetailsBody {
+    padding-top: 20%;
+}
+
+.cardDetailsTitle {
+    text-align: center;
+    width: 90%;
     margin: 0 auto;
 }
 
-.cardBody {
-    padding: 30px;
+.column {
+    float: left;
+    width: 50%;
+  }
+  
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
-.cardInfo {
-    padding-top: 5%;
+.cardInfo::before {
+  display:block;
+  content: '';
+  height: 60px;
 }
-

@@ -20,7 +20,7 @@ const ProductDetail = (props) => {
     function averagePrice() {
         var itemsTemp = props.location.state.productInfoArray;
         var sum = 0;
-        for(let i = 0; i < itemsTemp.length; i++) {
+        for (let i = 0; i < itemsTemp.length; i++) {
             console.log(itemsTemp[i].price);
             sum = sum + parseInt(itemsTemp[i].price);
         }
@@ -44,10 +44,10 @@ const ProductDetail = (props) => {
     function addToWishlist() {
         const item = props.item
         let token = localStorage.getItem("token")
-        if (token !== null){
+        if (token !== null) {
             token = token.split(" ")[1]
         }
-        axios.post('/api/items/addToWishList', {token, item})
+        axios.post('/api/items/addToWishList', { token, item })
             .then(response => console.log(response.data));
     }
 
@@ -56,45 +56,55 @@ const ProductDetail = (props) => {
     })
     return (
         <div className="cardInfo">
-            <Card id="cardDetail">
-                <Card.Img variant="top" src={props.location.state.productInfoArray[index].image} width='640' height='480' />
-                <Card.Body className="cardBody">
-                </Card.Body>
-            </Card>
-            <p >
-                Name: {props.location.state.productInfoArray[index].title}
-            </p>
-            <p>
-                Vendor: {props.location.state.productInfoArray[index].vendor}
-            </p>
-            <p>
-                Price: {props.location.state.productInfoArray[index].price} {props.location.state.productInfoArray[index].currency}
-            </p>
-            <p>
-                <StarRating />
-            </p>
-            <p>
-                Description:
-            </p>
-            <p>
-                Reviews:
-            </p>
-            <p>
-                Average Price: {averagePrice()}
-            </p>
-            <a href={props.item.itemURL}>
-                <Button variant="contained" color="primary">
-                    Buy product!
-                </Button>
-            </a>
-            <br />
-            <br />
-            {
-                localStorage.getItem("token") ?
-                    <Button variant="contained" color="primary" onClick={() => {addToWishlist()}}>
-                        Add to wishlist
-                    </Button> : null
-            }
+            <div className="cardContents">
+                <Card style={{height: '550px'}} id="cardDetail">
+                    <div class="row">
+                        <div class="column">
+                        <Card.Img style={{ paddingTop: '25%' }} variant="top" src={props.location.state.productInfoArray[index].image} width='300' height='200' />
+                        <br/>
+                        <br/>
+                        <Card.Title className="cardDetailsTitle">{props.location.state.productInfoArray[index].title}</Card.Title>
+                        </div>
+                        <div class="column">
+                        <Card.Body className="cardDetailsBody">
+                        <Card.Text>
+                            <p>
+                                Vendor: {props.location.state.productInfoArray[index].vendor}
+                            </p>
+                            <p>
+                                Price: {props.location.state.productInfoArray[index].price} {props.location.state.productInfoArray[index].currency}
+                            </p>
+                            <p>
+                                <StarRating />
+                            </p>
+                            <p>
+                                Description:
+                            </p>
+                            <p>
+                                Reviews:
+                            </p>
+                            <p>
+                                Average Price: {averagePrice()}
+                            </p>
+                            <a href={props.item.itemURL}>
+                                <Button variant="contained" color="primary">
+                                    Buy product!
+                                </Button>
+                            </a>
+                            <br />
+                             <br />
+                            {
+                                localStorage.getItem("token") ?
+                                    <Button variant="contained" color="primary" onClick={() => { addToWishlist() }}>
+                                        Add to wishlist
+                                    </Button> : null
+                            }
+                        </Card.Text>
+                    </Card.Body>
+                        </div>
+                    </div>
+                </Card>
+            </div>
             <SuggestedItems
                 allItems={props.location.state.productInfoArray} setProductIndex={setProductIndex}
             />

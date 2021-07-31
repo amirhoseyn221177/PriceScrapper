@@ -7,3 +7,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+.h2Title {
+    padding-bottom: 15px;
+}

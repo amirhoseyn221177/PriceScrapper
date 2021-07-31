@@ -19,7 +19,7 @@ const options = [
 ];
 
 const categories = ["Clothing", "Shoes", "Computers", "Cars"];
-
+let searchDivClass = "searchDivNone"
 
 const ProductTable = (props) => {
 
@@ -321,7 +321,7 @@ const ProductTable = (props) => {
 
     async function filterItemArray(val) {
         console.log("LOOK AT ME", val)
-        setQuery(newValue)
+        setQuery(val)
         searchNow(val)
         // console.log(val);
         // const newList = productInfoArray.filter((item) => item.vendor == val);
@@ -361,21 +361,26 @@ const ProductTable = (props) => {
     return (
         <Fragment>
             <div className="searchDiv">
-                <div className="searchFilter">
+                {
+                    searchText !== "" ? searchDivClass = "searchFilter" : searchDivClass = "searchFilterNone"
+                }
+                <div className={searchDivClass}>
                     <SearchBar
                         className="searchBar"
                         value={searchText}
                         onChange={newValue => filterItemArray(newValue)}
                         onCancelSearch={() => setSearchText("")}
                     />
-                    <Button
-                        className="filterButton"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleShow}
-                    >
-                        Filter
-                    </Button>
+                    <div className="filterDiv">
+                        <Button
+                            className="filterButton"
+                            variant="contained"
+                            color="primary"
+                            onClick={handleShow}
+                        >
+                            Filter
+                        </Button>
+                    </div>
                 </div>
 
                 <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>

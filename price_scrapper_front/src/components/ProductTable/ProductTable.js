@@ -41,10 +41,15 @@ const ProductTable = (props) => {
     const [startPoint, setStartPoint] = useState(1);
     const [ebayNumber, setEbayNumber] = useState(0);
     const [amazonNumber, setAmazonNumber] = useState(0);
+    const [checkboxStates, setCheckboxStates] = useState([true, true]) // Amazon, Ebay
     const handleClickListItem = (event) => {
-        console.log(37);
+        console.log(event.currentTarget);
         setAnchorEl(event.currentTarget);
     };
+    // const handleClickVendorList = (event) => {
+    //     console.log(37);
+    //     setAnchorEl(event.currentTarget);
+    // };
 
     const handleMenuItemClick = (event, index) => {
         console.log(42);
@@ -180,9 +185,20 @@ const ProductTable = (props) => {
     };
 
 
-    var callAPIBundle = async () => {
-        await callEbayAPI();
-        await callAmazonAPI();
+    var callAPIBundle = async (val) => {
+        console.log("Amazon state", checkboxStates[0])
+        console.log("Ebay state", checkboxStates[1])
+        if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
+            console.log("here1")
+            await callAmazonAPI();
+            await callEbayAPI();
+        } else if (checkboxStates[0]) {
+            console.log("here2")
+            await callAmazonAPI();
+        } else if (checkboxStates[1]) {
+            console.log("here3")
+            await callEbayAPI();
+        } 
         //  await callStockxAPI();
         // console.log(stockNumber)
         // setTotalItem(amazonNumber+ebayNumber)
@@ -213,9 +229,9 @@ const ProductTable = (props) => {
     };
 
     function addToRecentlyViewed(item) {
-        let token = localStorage.getItem("token").split(" ")[1]
-        axios.post('/api/items/addToRecent', { token, item } )
-            .then(response => console.log(response.data));
+        // let token = localStorage.getItem("token").split(" ")[1]
+        // axios.post('/api/items/addToRecent', { token, item } )
+        //     .then(response => console.log(response.data));
     }
 
     var goToProductPage = (item, index) => {
@@ -230,8 +246,24 @@ const ProductTable = (props) => {
 
 
     var createProductCards = () => {
+        let i = -1;
+        let lim = -1;
+        if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
+            console.log("hereA")
+            i = 2;
+            lim = productInfoArray.length
+        } else if (checkboxStates[0]) {
+            console.log("hereB")
+            i = 5;
+            lim = productInfoArray.length
+        } else if (checkboxStates[1]) {
+            console.log("hereC")
+            i = 2;
+            lim = productInfoArray.length  - 3
+        } 
         let allCards = [];
-        for (let i = 2; i < productInfoArray.length; i += 3) {
+        console.log(productInfoArray.length)
+        for (i = 2; i < lim; i += 3) {
             allCards.push(
                 <tr key={productInfoArray[i].title}>
                     <td>
@@ -293,7 +325,13 @@ const ProductTable = (props) => {
         await callAPIBundle();
     }, [startPoint]);
 
-
+    async function filterItemArray(val) {
+        console.log("LOOK AT ME", val)
+        searchNow(val)
+        // console.log(val);
+        // const newList = productInfoArray.filter((item) => item.vendor == val);
+        // setproductInfoArray(newList)
+    }
 
     function searchNow(searchValue) {
         callAPIBundle()
@@ -311,7 +349,6 @@ const ProductTable = (props) => {
         const timeOutId = setTimeout(() => setSearchText(searchText), 500);
         return () => clearTimeout(timeOutId);
     }, [searchText]);
-
     return (
         <Fragment>
             <div className="searchDiv">
@@ -319,7 +356,8 @@ const ProductTable = (props) => {
                     <SearchBar
                         className="searchBar"
                         value={searchText}
-                        onChange={newValue => searchNow(newValue)}
+                        // onChange={newValue => searchNow(newValue)}
+                        onChange={newValue => filterItemArray(newValue)}
                         onCancelSearch={() => setSearchText("")}
                     />
                     <Button
@@ -366,6 +404,39 @@ const ProductTable = (props) => {
             {searchText !== "" ?
                 <div>
                     <div className="filterPage" >
+                    <FormControlLabel
+                            control={<Checkbox name="SomeName" value="Amazon" />}
+                            label="Amazon"
+                            onChange={(e) => {
+                                // console.log("CURRENT EBAY STATE", ebayState)
+                                // let newEbayState = !ebayState
+                                // setEbayState(newEbayState)
+                                // console.log("NEW EBAY STATE", ebayState)
+                                console.log("CURRENT EBAY STATE", checkboxStates[1])
+                                let newCheckboxState = checkboxStates
+                                newCheckboxState[1] = !newCheckboxState[1]
+                                setCheckboxStates(newCheckboxState)
+                                console.log("NEW EBAY STATE", checkboxStates[1])
+                                filterItemArray(searchText)
+                            }}
+                        />
+                        <FormControlLabel
+                            control={<Checkbox name="SomeName" value="Ebay" />}
+                            label="Ebay"
+                            onChange={(e) => {
+                                // console.log("CURRENT AMAZON STATE", amazonState)
+                                // let newAmazonState = !amazonState
+                                // setAmazonState(newAmazonState)
+                                // console.log("NEW AMAZON STATE", amazonState)
+                                console.log("CURRENT AMAZON STATE", checkboxStates[0])
+                                let newCheckboxState = checkboxStates
+                                newCheckboxState[0] = !newCheckboxState[0]
+                                setCheckboxStates(newCheckboxState)
+                                console.log("NEW AMAZON STATE", checkboxStates[1])
+                                filterItemArray(searchText)
+                            }}
+                        />
+
                         <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
                             className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
                         <List className="sort" component="nav" aria-label="Device settings">
@@ -408,7 +479,7 @@ const ProductTable = (props) => {
     );
 };
 
-
+                        
 const mapToProps = dispatch => {
     return {
         sendingItemArray: (item) => dispatch(ChosenItem(item))

@@ -16,6 +16,20 @@ const ProductDetail = (props) => {
     var setProductIndex = (index) => {
         setIndex(index);
     }
+
+    function averagePrice() {
+        var itemsTemp = props.location.state.productInfoArray;
+        var sum = 0;
+        for(let i = 0; i < itemsTemp.length; i++) {
+            console.log(itemsTemp[i].price);
+            sum = sum + parseInt(itemsTemp[i].price);
+        }
+        console.log(sum);
+        console.log(itemsTemp.length);
+        console.log(sum / (itemsTemp.length + 1));
+        return (sum / (itemsTemp.length + 1)).toFixed(2)
+
+    }
     // var goToProductPage = () => {
     //     let item = props.location.state[index];
     //     // props.sendingItemArray(item);
@@ -29,7 +43,10 @@ const ProductDetail = (props) => {
 
     function addToWishlist() {
         const item = props.item
-        let token = localStorage.getItem("token").split(" ")[1]
+        let token = localStorage.getItem("token")
+        if (token !== null){
+            token = token.split(" ")[1]
+        }
         axios.post('/api/items/addToWishList', {token, item})
             .then(response => console.log(response.data));
     }
@@ -38,8 +55,8 @@ const ProductDetail = (props) => {
         if (props.item.title === "") props.history.push("/")
     })
     return (
-        <div>
-            <Card style={{ width: '40rem', height: '30rem', position: 'relative', left: '31.5%', marginTop: '5%' }}>
+        <div className="cardInfo">
+            <Card id="cardDetail">
                 <Card.Img variant="top" src={props.location.state.productInfoArray[index].image} width='640' height='480' />
                 <Card.Body className="cardBody">
                 </Card.Body>
@@ -61,6 +78,9 @@ const ProductDetail = (props) => {
             </p>
             <p>
                 Reviews:
+            </p>
+            <p>
+                Average Price: {averagePrice()}
             </p>
             <a href={props.item.itemURL}>
                 <Button variant="contained" color="primary">

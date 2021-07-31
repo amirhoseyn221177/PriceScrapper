@@ -42,6 +42,7 @@ const ProductTable = (props) => {
     const [ebayNumber, setEbayNumber] = useState(0);
     const [amazonNumber, setAmazonNumber] = useState(0);
     const [checkboxStates, setCheckboxStates] = useState([true, true]) // Amazon, Ebay
+    const [query , setQuery]= useState("")
     const handleClickListItem = (event) => {
         console.log(event.currentTarget);
         setAnchorEl(event.currentTarget);
@@ -74,6 +75,7 @@ const ProductTable = (props) => {
 
     var callAmazonAPI = async () => {
         try {
+            console.log(searchText)
             var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
@@ -231,9 +233,12 @@ const ProductTable = (props) => {
     };
 
     function addToRecentlyViewed(item) {
-        // let token = localStorage.getItem("token").split(" ")[1]
-        // axios.post('/api/items/addToRecent', { token, item } )
-        //     .then(response => console.log(response.data));
+        let token = localStorage.getItem("token")
+        if(token !== null){
+            token = token.split(" ")[1]
+        }
+        axios.post('/api/items/addToRecent', { token, item } )
+            .then(response => console.log(response.data));
     }
 
     var goToProductPage = (item, index) => {
@@ -250,19 +255,6 @@ const ProductTable = (props) => {
     var createProductCards = () => {
         let i = 2;
         let lim = productInfoArray.length;
-        // if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
-        //     console.log("hereA")
-        //     i = 2;
-        //     lim = productInfoArray.length
-        // } else if (checkboxStates[0]) {
-        //     console.log("hereB")
-        //     i = 5;
-        //     lim = productInfoArray.length
-        // } else if (checkboxStates[1]) {
-        //     console.log("hereC")
-        //     i = 2;
-        //     lim = productInfoArray.length  - 3
-        // } 
         let allCards = [];
         console.log(productInfoArray.length)
         for (i = 2; i < lim; i += 3) {
@@ -329,6 +321,7 @@ const ProductTable = (props) => {
 
     async function filterItemArray(val) {
         console.log("LOOK AT ME", val)
+        setQuery(newValue)
         searchNow(val)
         // console.log(val);
         // const newList = productInfoArray.filter((item) => item.vendor == val);
@@ -339,6 +332,8 @@ const ProductTable = (props) => {
         callAPIBundle()
         setSearchText(searchValue)
     }
+
+
     useMemo(async () => {
         await loadProductCards();
     }, [ebayArray, amazonArray]);
@@ -351,6 +346,18 @@ const ProductTable = (props) => {
         const timeOutId = setTimeout(() => setSearchText(searchText), 500);
         return () => clearTimeout(timeOutId);
     }, [searchText]);
+
+    useEffect(()=>{
+        const timeOut = setTimeout(() => {
+            setSearchText(query)
+        }, 2000);
+        return ()=> clearTimeout(timeOut)
+    },[query]);
+
+    useEffect(async()=>{
+        await callAPIBundle()
+    },[searchText])
+
     return (
         <Fragment>
             <div className="searchDiv">
@@ -358,7 +365,6 @@ const ProductTable = (props) => {
                     <SearchBar
                         className="searchBar"
                         value={searchText}
-                        // onChange={newValue => searchNow(newValue)}
                         onChange={newValue => filterItemArray(newValue)}
                         onCancelSearch={() => setSearchText("")}
                     />
@@ -404,7 +410,7 @@ const ProductTable = (props) => {
                 </Dialog>
             </div>
             {searchText !== "" ?
-                <div>
+                <div className="optionsDiv">
                     <div className="filterPage" >
                     <FormControlLabel
                             control={<Checkbox name="SomeName" value="Amazon" />}

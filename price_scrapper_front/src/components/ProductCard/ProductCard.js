@@ -1,22 +1,26 @@
-import React  from 'react'
+import React from 'react'
 import { Card } from 'react-bootstrap'
-import { Button } from '@material-ui/core';
-import { withRouter,} from 'react-router';
+import { Button, Tooltip} from '@material-ui/core';
+import { withRouter, } from 'react-router';
 import './ProductCard.css'
 
 const ProductCard = (props) => {
 
-   
+
 
     return (
-        <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={props.image} width="100" height="180" />
+        <Card className="productCard">
+            <Card.Img className="cardImg" variant="top" src={props.image} width="100" height="180" />
             <Card.Body className="cardBody">
-                <Card.Title>{props.cardTitle}</Card.Title>
+                <div className="titleDiv">
+                    <Tooltip title={props.cardTitle} arrow>
+                        <Card.Title className="cardTitle">{props.cardTitle}</Card.Title>
+                    </Tooltip>
+                </div>
                 <Card.Text>
                     Best price at {props.vendor} for {props.price} {props.currency}
                 </Card.Text>
-                <Button  variant="contained" color="primary" onClick={props.onClick}>
+                <Button variant="contained" color="primary" onClick={props.onClick}>
                     Details
                 </Button>
             </Card.Body>
@@ -24,4 +28,4 @@ const ProductCard = (props) => {
     )
 }
 
-export default withRouter (ProductCard);
+export default withRouter(ProductCard);

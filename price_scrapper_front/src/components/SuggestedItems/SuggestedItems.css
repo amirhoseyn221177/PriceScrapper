@@ -1,3 +1,9 @@
 .react-multi-carousel-list {
     padding-left: 8vh;
 }
+
+.itemName {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

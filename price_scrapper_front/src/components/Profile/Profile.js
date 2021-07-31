@@ -3,95 +3,145 @@ import './Profile.css';
 import { Drawer, List, Divider, ListItem, ListItemText, TextField, Button } from '@material-ui/core';
 import axios from 'axios';
 import ProductCard from '../ProductCard/ProductCard';
+import { withRouter } from 'react-router-dom';
 
-const Profile = () => {
+const Profile = (props) => {
 
-    // const [items, setItems] = useState([]);
+    const [recent, setRecent] = useState([]);
     // const [wish, setWish] = useState([]);
     const [drawer, setDrawer] = useState("Recently Viewed");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [newEmail, setNewEmail] = useState("");
+    const [password, setpassword] = useState("");
+    useEffect(async () => {
+        try {
+            let token = localStorage.getItem("token");
+            if (token !== "" && token !== null) {
+                token = token.split(" ")[1];
+                const resp = await axios.get("/api/items/getRecentlyViewed", {
+                    headers: {
+                        "Authorization": token
+                    }
+                });
+                const data = await resp.data;
+                console.log(data);
+                if (data.length > 0) setRecent(data);
+            }
+        } catch (e) {
+            console.log(e.response.data.error.message);
+            if (e.response.data.error.message.includes("jwt")) {
+                localStorage.removeItem("token");
+                props.history.push("/home");
+            }
+        }
 
-    // useEffect(() => {
-    //     let token = localStorage.getItem("token").split(" ")[1];
-    //     axios.get('/api/items/getRecentlyViewed', {
-    //         headers: {
-    //             "Authorization": token
-    //         }
-    //     }).then(response => setItems(response.data))
-    //     axios.get('/api/items/getWishList', {
-    //         headers: {
-    //             "Authorization": token
-    //         }
-    //     }).then(response => setWish(response.data))
-    // }, [])
+    }, []);
 
-    const items = [
-        {
-            cardTitle: "1",
-            vendor: "1",
-            price: "1",
-            currency: "1",
-            image: "1",
-            imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-        },
-        {
-            cardTitle: "2",
-            vendor: "2",
-            price: "2",
-            currency: "2",
-            image: "2",
-            imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-        },
-        {
-            cardTitle: "3",
-            vendor: "2",
-            price: "2",
-            currency: "2",
-            image: "2",
-            imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-        },
-        {
-            cardTitle: "4",
-            vendor: "2",
-            price: "2",
-            currency: "2",
-            image: "2",
-            imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-        },
-        {
-            cardTitle: "5",
-            vendor: "2",
-            price: "2",
-            currency: "2",
-            image: "2",
-            imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-        },
-        {
-            cardTitle: "6",
-            vendor: "2",
-            price: "2",
-            currency: "2",
-            image: "2",
-            imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+
+
+    // const items = [
+    //     {
+    //         cardTitle: "1",
+    //         vendor: "1",
+    //         price: "1",
+    //         currency: "1",
+    //         image: "1",
+    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+    //     },
+    //     {
+    //         cardTitle: "2",
+    //         vendor: "2",
+    //         price: "2",
+    //         currency: "2",
+    //         image: "2",
+    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+    //     },
+    //     {
+    //         cardTitle: "3",
+    //         vendor: "2",
+    //         price: "2",
+    //         currency: "2",
+    //         image: "2",
+    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+    //     },
+    //     {
+    //         cardTitle: "4",
+    //         vendor: "2",
+    //         price: "2",
+    //         currency: "2",
+    //         image: "2",
+    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+    //     },
+    //     {
+    //         cardTitle: "5",
+    //         vendor: "2",
+    //         price: "2",
+    //         currency: "2",
+    //         image: "2",
+    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+    //     },
+    //     {
+    //         cardTitle: "6",
+    //         vendor: "2",
+    //         price: "2",
+    //         currency: "2",
+    //         image: "2",
+    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+    //     }
+    //     ,
+    //     {
+    //         cardTitle: "7",
+    //         vendor: "2",
+    //         price: "2",
+    //         currency: "2",
+    //         image: "2",
+    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+    //     }
+    //     ,
+    //     {
+    //         cardTitle: "8",
+    //         vendor: "2",
+    //         price: "2",
+    //         currency: "2",
+    //         image: "2",
+    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
+    //     }
+    // ]
+
+    // useEffect(()=>{
+    //     if (drawer === "Progile") console.log(98)
+    //     else if (drawer === 'Update Profile'){
+    //         const 
+    //     }
+    //     else if (drawer === "Wishlist")
+
+    // },[drawer])
+
+    var updateProfile = async () => {
+        try {
+            await axios.post(`api/user/updateEmail/${newEmail}/${firstName}/${lastName}/${password}`, null, {
+                headers: {
+                    "Authorization": localStorage.getItem("token").split(" ")[1]
+                }
+            });
+            const resp = await axios.post('/api/user/login', null, {
+                headers: {
+                    "email": newEmail,
+                    "password": password
+                }
+            });
+            let newToken = await resp.headers.authorization;
+            localStorage.removeItem("token");
+            localStorage.setItem("token", newToken);
+            props.history.push("/");
+
+        } catch (e) {
+            console.log(e.response.data.error.message);
         }
-        ,
-        {
-            cardTitle: "7",
-            vendor: "2",
-            price: "2",
-            currency: "2",
-            image: "2",
-            imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-        }
-        ,
-        {
-            cardTitle: "8",
-            vendor: "2",
-            price: "2",
-            currency: "2",
-            image: "2",
-            imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-        }
-    ]
+    };
+
+
 
     return (
         <div className="profileDiv">
@@ -140,28 +190,34 @@ const Profile = () => {
                                 <div>
                                     <form noValidate>
                                         <ul className="profilePage">
-                                            <li key="updateName">
+                                            <li key="updateFirstName">
                                                 <div className="form-name">
-                                                    <label>Name: </label>
-                                                    <TextField className="textField" />
+                                                    <label>Firstname: </label>
+                                                    <TextField value={firstName} onChange={e => setFirstName(e.target.value)} className="textField" />
+                                                </div>
+                                            </li>
+                                            <li key="updateLastName">
+                                                <div className="form-name">
+                                                    <label>LastName: </label>
+                                                    <TextField value={lastName} onChange={e => setLastName(e.target.value)} className="textField" />
                                                 </div>
                                             </li>
                                             <li key="updateEmail">
                                                 <div className="form-email">
                                                     <label>Email: </label>
-                                                    <TextField className="textField" type="password" />
+                                                    <TextField value={newEmail} onChange={e => setNewEmail(e.target.value)} className="textField" type="email" />
                                                 </div>
                                             </li>
                                             <li key="updatePassword">
                                                 <div className="form-password">
                                                     <label>Password: </label>
-                                                    <TextField className="textField" type="password" />
+                                                    <TextField value={password} onChange={e => setpassword(e.target.value)} className="textField" type="password" />
                                                 </div>
                                             </li>
                                         </ul>
                                     </form>
                                     <div id="formBtn">
-                                        <Button id="updateBtn" >Update</Button>
+                                        <Button id="updateBtn" onClick={updateProfile} >Update</Button>
                                     </div>
                                 </div>
                             </div>
@@ -172,13 +228,15 @@ const Profile = () => {
                                 <div className="viewedDiv">
                                     <ul className="viewedList" id="list">
                                         {
-                                            items.map(
-                                                (item, index) => {
-                                                    return <li key={index} >
-                                                        <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
-                                                    </li>
-                                                }
-                                            )
+                                            recent.length > 0 ?
+                                                recent.map(
+                                                    (item, index) => {
+                                                        return <li key={index} >
+                                                            <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                        </li>;
+                                                    }
+                                                ) :
+                                                <div><p> no items detected</p></div>
                                         }
                                     </ul>
                                 </div>
@@ -190,13 +248,15 @@ const Profile = () => {
                                     <div className="wishDiv">
                                         <ul className="wishList">
                                             {
-                                                items.map(
-                                                    (item, index) => {
-                                                        return <li key={index} >
-                                                            <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
-                                                        </li>
-                                                    }
-                                                )
+                                                recent.length > 0 ?
+                                                    recent.map(
+                                                        (item, index) => {
+                                                            return <li key={index} >
+                                                                <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                            </li>;
+                                                        }
+                                                    ) :
+                                                    <div><p> no items detected</p></div>
                                             }
                                         </ul>
                                     </div>
@@ -207,4 +267,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default withRouter(Profile);

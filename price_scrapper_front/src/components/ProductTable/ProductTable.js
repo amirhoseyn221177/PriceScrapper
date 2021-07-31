@@ -41,6 +41,7 @@ const ProductTable = (props) => {
     const [startPoint, setStartPoint] = useState(1);
     const [ebayNumber, setEbayNumber] = useState(0);
     const [amazonNumber, setAmazonNumber] = useState(0);
+    const [query , setQuery]= useState("")
     const handleClickListItem = (event) => {
         console.log(37);
         setAnchorEl(event.currentTarget);
@@ -69,6 +70,7 @@ const ProductTable = (props) => {
 
     var callAmazonAPI = async () => {
         try {
+            console.log(searchText)
             var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
@@ -295,10 +297,7 @@ const ProductTable = (props) => {
 
 
 
-    function searchNow(searchValue) {
-        callAPIBundle()
-        setSearchText(searchValue)
-    }
+
     useMemo(async () => {
         await loadProductCards();
     }, [ebayArray, amazonArray]);
@@ -312,14 +311,25 @@ const ProductTable = (props) => {
         return () => clearTimeout(timeOutId);
     }, [searchText]);
 
+    useEffect(()=>{
+        const timeOut = setTimeout(() => {
+            setSearchText(query)
+        }, 2000);
+        return ()=> clearTimeout(timeOut)
+    },[query]);
+
+    useEffect(async()=>{
+        await callAPIBundle()
+    },[searchText])
+
     return (
         <Fragment>
             <div className="searchDiv">
                 <div className="searchFilter">
                     <SearchBar
                         className="searchBar"
-                        value={searchText}
-                        onChange={newValue => searchNow(newValue)}
+                        value={query}
+                        onChange={newValue => setQuery(newValue)}
                         onCancelSearch={() => setSearchText("")}
                     />
                     <Button

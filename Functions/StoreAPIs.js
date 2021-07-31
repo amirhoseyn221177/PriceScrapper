@@ -16,7 +16,7 @@ let ebay = new Ebay({
 
 
 var AmazonResult = async (searchParam, country = null, startPoint, sortVariable = null) => {
-    const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "CA" }); //default country is Canada
+    const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "US" }); //default country is Canada
     console.log(startPoint);
     return { result: sortAmazonItems(sortVariable, products.result).splice((startPoint - 1) * 3, 3), totalLength: products.result.length };
 };

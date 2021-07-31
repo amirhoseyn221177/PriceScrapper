@@ -30,7 +30,7 @@ const ProductDetail = (props) => {
     function addToWishlist() {
         const item = props.item
         let token = localStorage.getItem("token")
-        if (token){
+        if (token !== null){
             token = token.split(" ")[1]
         }
         axios.post('/api/items/addToWishList', {token, item})

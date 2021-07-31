@@ -215,7 +215,10 @@ const ProductTable = (props) => {
     };
 
     function addToRecentlyViewed(item) {
-        let token = localStorage.getItem("token").split(" ")[1]
+        let token = localStorage.getItem("token")
+        if(token !== null){
+            token = token.split(" ")[1]
+        }
         axios.post('/api/items/addToRecent', { token, item } )
             .then(response => console.log(response.data));
     }

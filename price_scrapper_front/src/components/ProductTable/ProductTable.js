@@ -82,7 +82,7 @@ const ProductTable = (props) => {
             setAmazonNumber(amazonJSON.totalLength);
             setAmazonArray(amazonItemArr);
         } catch (e) {
-            console.log(e);
+            console.log(e.response.error.data.message);
 
         }
 

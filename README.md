@@ -10,6 +10,7 @@
 - Amir Sayyar - e7h2b1
 
 ## Project Description:
+This project aims to assist people in finding the best/lowest price for products they wish to purchase. Our website compares prices among various vendors such as Amazon and Ebay in order to find the best price. This provides a centralized experience for consumers where they can look at the most popular e-commerce websites all on our website.
 
 ### Who is it for?
 - Everyday Consumers for online shopping.

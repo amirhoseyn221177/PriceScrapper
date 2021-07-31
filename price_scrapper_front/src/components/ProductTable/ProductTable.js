@@ -194,9 +194,11 @@ const ProductTable = (props) => {
             await callEbayAPI();
         } else if (checkboxStates[0]) {
             console.log("here2")
+            setEbayArray([])
             await callAmazonAPI();
         } else if (checkboxStates[1]) {
             console.log("here3")
+            setAmazonArray([])
             await callEbayAPI();
         } 
         //  await callStockxAPI();
@@ -246,21 +248,21 @@ const ProductTable = (props) => {
 
 
     var createProductCards = () => {
-        let i = -1;
-        let lim = -1;
-        if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
-            console.log("hereA")
-            i = 2;
-            lim = productInfoArray.length
-        } else if (checkboxStates[0]) {
-            console.log("hereB")
-            i = 5;
-            lim = productInfoArray.length
-        } else if (checkboxStates[1]) {
-            console.log("hereC")
-            i = 2;
-            lim = productInfoArray.length  - 3
-        } 
+        let i = 2;
+        let lim = productInfoArray.length;
+        // if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
+        //     console.log("hereA")
+        //     i = 2;
+        //     lim = productInfoArray.length
+        // } else if (checkboxStates[0]) {
+        //     console.log("hereB")
+        //     i = 5;
+        //     lim = productInfoArray.length
+        // } else if (checkboxStates[1]) {
+        //     console.log("hereC")
+        //     i = 2;
+        //     lim = productInfoArray.length  - 3
+        // } 
         let allCards = [];
         console.log(productInfoArray.length)
         for (i = 2; i < lim; i += 3) {

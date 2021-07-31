@@ -1,6 +1,6 @@
 var mongoose = require("mongoose")
 var chalk = require("chalk")
-var url = "mongodb://localhost:27017"
+var url = "mongodb+srv://cpsc455DB:Amir221177@cluster0.j4ek5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 
 
 mongoose.connect(url,{useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, autoIndex: true ,useFindAndModify:true},()=>{

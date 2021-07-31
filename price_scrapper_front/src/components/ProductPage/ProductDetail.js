@@ -22,7 +22,7 @@ const ProductDetail = (props) => {
         var sum = 0;
         for(let i = 0; i < itemsTemp.length; i++) {
             console.log(itemsTemp[i].price);
-            sum = sum + parseInt(itemsTemp[i].price);
+            sum = sum + parseInt(itemsTemp[i].price,10);
         }
         console.log(sum);
         console.log(itemsTemp.length);

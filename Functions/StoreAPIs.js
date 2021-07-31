@@ -1,6 +1,6 @@
 const amazonScraper = require('amazon-buddy');
 const Ebay = require("ebay-node-api");
-const StockX = require("stockx-api");
+// const StockX = require("stockx-api");
 
 let ebay = new Ebay({
     clientID: "SatyakHa-Web-PRD-716b1f9e8-c247be31",
@@ -12,7 +12,7 @@ let ebay = new Ebay({
     },
 
 });
-let stock = new StockX();
+// let stock = new StockX();
 
 
 var AmazonResult = async (searchParam, country = null, startPoint, sortVariable = null) => {
@@ -32,15 +32,15 @@ var EbayResult = async (searchText, startPoint, sortVariable = null) => {
 };
 //result: product[0].searchResult[0].item.splice(startPoint*3,3),
 
-var StockXResult = async (searchQuery, startPoint) => {
-    await stock.login({
-        user: "amirsayuar221177@gmail.com",
-        password: "Amir221177"
-    });
-    const product = await stock.newSearchProducts(searchQuery, { limit: 20 });
-    return { result: product.splice(startPoint * 3, 3), totalLength: product.length };
+// var StockXResult = async (searchQuery, startPoint) => {
+//     await stock.login({
+//         user: "amirsayuar221177@gmail.com",
+//         password: "Amir221177"
+//     });
+//     const product = await stock.newSearchProducts(searchQuery, { limit: 20 });
+//     return { result: product.splice(startPoint * 3, 3), totalLength: product.length };
 
-};
+// };
 
 /**
  * 
@@ -86,5 +86,5 @@ var sortEbayItems = (sortType = null, items) => {
 module.exports = {
     AmazonResult,
     EbayResult,
-    StockXResult
+    // StockXResult
 };

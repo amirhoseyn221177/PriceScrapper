@@ -21,6 +21,10 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 app.use(bodyParser.json())
 app.use(cors())
 app.use(logger('dev'));
@@ -33,7 +37,7 @@ db
 
 app.use("/api/items",userItems)
 app.use("/api/user",UserLogin)
-app.use("/api/stockx",stockX)
+// app.use("/api/stockx",stockX)
 app.use("/api/amazon",amazon)
 app.use("/api/ebay",ebay)
 

@@ -241,8 +241,9 @@ const ProductTable = (props) => {
             .then(response => console.log(response.data));
     }
 
-    var goToProductPage = (item, index) => {
+    var goToProductPage = (item, index,info) => {
         console.log(item);
+        console.log("this is index"+index)
         props.sendingItemArray(item);
         addToRecentlyViewed(item);
         props.history.push({
@@ -253,11 +254,8 @@ const ProductTable = (props) => {
 
 
     var createProductCards = () => {
-        let i = 2;
-        let lim = productInfoArray.length;
         let allCards = [];
-        console.log(productInfoArray.length)
-        for (i = 2; i < lim; i += 3) {
+        for (let i = 2; i < productInfoArray.length; i += 3) {
             allCards.push(
                 <tr key={productInfoArray[i].title}>
                     <td>
@@ -309,7 +307,6 @@ const ProductTable = (props) => {
 
 
 
-
     let dontRunFirstTime = useRef(true);
     useMemo(async () => {
         if (dontRunFirstTime.current) {
@@ -321,7 +318,7 @@ const ProductTable = (props) => {
 
     async function filterItemArray(val) {
         console.log("LOOK AT ME", val)
-        setQuery(newValue)
+        setQuery(val)
         searchNow(val)
         // console.log(val);
         // const newList = productInfoArray.filter((item) => item.vendor == val);
@@ -342,10 +339,6 @@ const ProductTable = (props) => {
         createProductCards();
     }, [productInfoArray]);
 
-    useEffect(() => {
-        const timeOutId = setTimeout(() => setSearchText(searchText), 500);
-        return () => clearTimeout(timeOutId);
-    }, [searchText]);
 
     useEffect(()=>{
         const timeOut = setTimeout(() => {
@@ -364,8 +357,8 @@ const ProductTable = (props) => {
                 <div className="searchFilter">
                     <SearchBar
                         className="searchBar"
-                        value={searchText}
-                        onChange={newValue => filterItemArray(newValue)}
+                        value={query}
+                        onChange={newValue => setQuery(newValue)}
                         onCancelSearch={() => setSearchText("")}
                     />
                     <Button
@@ -494,4 +487,3 @@ const mapToProps = dispatch => {
     };
 };
 export default connect(null, mapToProps)(ProductTable);
-

@@ -79,10 +79,11 @@ const ProductTable = (props) => {
             var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
+            console.log("this is amazon"+amazonItemArr)
             setAmazonNumber(amazonJSON.totalLength);
             setAmazonArray(amazonItemArr);
         } catch (e) {
-            console.log(e.response.error.data.message);
+            console.log(e.response.data.error.message);
 
         }
 

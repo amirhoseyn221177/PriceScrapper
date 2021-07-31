@@ -16,6 +16,20 @@ const ProductDetail = (props) => {
     var setProductIndex = (index) => {
         setIndex(index);
     }
+
+    function averagePrice() {
+        var itemsTemp = props.location.state.productInfoArray;
+        var sum = 0;
+        for(let i = 0; i < itemsTemp.length; i++) {
+            console.log(itemsTemp[i].price);
+            sum = sum + parseInt(itemsTemp[i].price);
+        }
+        console.log(sum);
+        console.log(itemsTemp.length);
+        console.log(sum / (itemsTemp.length + 1));
+        return (sum / (itemsTemp.length + 1)).toFixed(2)
+
+    }
     // var goToProductPage = () => {
     //     let item = props.location.state[index];
     //     // props.sendingItemArray(item);
@@ -64,6 +78,9 @@ const ProductDetail = (props) => {
             </p>
             <p>
                 Reviews:
+            </p>
+            <p>
+                Average Price: {averagePrice()}
             </p>
             <a href={props.item.itemURL}>
                 <Button variant="contained" color="primary">

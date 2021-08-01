@@ -4,12 +4,11 @@ button.MuiButton-containedPrimary:hover {
 }
 
 .productCard {
-    border: 1px solid gainsboro;
+    border: 1px solid black;
     margin: 30px;
     width: 18rem;
     height: 24rem;
     border-radius: 30px;
-    border-width: medium;
     background-color: ghostwhite;
 }
 

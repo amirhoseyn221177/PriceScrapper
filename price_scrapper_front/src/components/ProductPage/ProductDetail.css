@@ -7,9 +7,8 @@ button.MuiButton-containedPrimary:hover {
     margin: 30px;
     width: 70rem;
     margin: 0 auto;
-    border: 1px solid gainsboro;
-    border-width: medium;
-    border-radius: 30px;;
+    border: 1px solid black;
+    border-radius: 30px;
     background-color: ghostwhite;
 }
 

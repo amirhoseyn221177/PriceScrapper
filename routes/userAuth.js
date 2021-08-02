@@ -1,5 +1,5 @@
 const route = require("express").Router();
-const { SignUp, Login, forgotPassword, updatePassword, updateUserInfo } = require('../Functions/userInfo');
+const { SignUp, Login, forgotPassword, updatePassword, updateUserInfo, TokenDecoder } = require('../Functions/userInfo');
 const chalk = require("chalk");
 
 
@@ -7,12 +7,10 @@ const chalk = require("chalk");
 route.post("/login", async (req, res) => {
     try {
 
-        console.log(req.headers.password);
         const password = req.headers.password;
         const email = req.headers.email;
         const token = await Login(email, password);
-        console.log("line14" + token);
-        res.status(200).set("Authorization", token).send().end();
+        res.status(200).set("Authorization", "Bearer "+token).send().end();
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({
@@ -76,12 +74,12 @@ route.post("/updatePass/:password/:email", async (req, res) => {
 });
 
 
-route.post("/updateEmail/:email/:firstname/:lastname/:password", async (req, res) => {
+route.post("/updateEmail/:email/:firstname/:lastname", async (req, res) => {
     try {
         const token = req.headers.authorization;
-        const { email, firstname, lastname, password } = req.params;
-        const newToken = await updateUserInfo(email, token, firstname, lastname, password);
-        res.status(200).set("Authorization", newToken).json({ message: 'successful' });
+        const { email, firstname, lastname } = req.params;
+        let newToken = await updateUserInfo(email, token, firstname, lastname);
+        res.status(200).set("Authorization", "Bearer "+newToken).json({ message: 'successful' });
     } catch (e) {
         console.log(e.message);
         res.status(500).send({

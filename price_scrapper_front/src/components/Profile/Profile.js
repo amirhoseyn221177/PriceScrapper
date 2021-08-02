@@ -8,35 +8,41 @@ import { withRouter } from 'react-router-dom';
 const Profile = (props) => {
 
     const [recent, setRecent] = useState([]);
+    const [wishList, setWishList] = useState([]);
     // const [wish, setWish] = useState([]);
     const [drawer, setDrawer] = useState("Recently Viewed");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [newEmail, setNewEmail] = useState("");
-    const [password, setpassword] = useState("");
     useEffect(async () => {
         try {
             let token = localStorage.getItem("token");
             if (token !== "" && token !== null) {
-                token = token.split(" ")[1];
                 const resp = await axios.get("/api/items/getRecentlyViewed", {
                     headers: {
                         "Authorization": token
                     }
                 });
+
+                const WishResp = await axios.get("/api/items/getWishList",{
+                    headers:{
+                        "Authorization":token
+                    }
+                })
                 const data = await resp.data;
-                console.log(data);
-                if (data.length > 0) setRecent(data);
+                const WishData = await WishResp.data.items
+                console.log(WishData)
+                if (data.items.length > 0) setRecent(data.items);
+                if(WishData.length>0)setWishList(WishData)
             }
         } catch (e) {
             console.log(e.response.data.error.message);
-            if (e.response.data.error.message.includes("jwt")) {
-                localStorage.removeItem("token");
-                props.history.push("/home");
-            }
+            localStorage.removeItem("token");
+            props.history.push("/home");
         }
 
     }, []);
+
 
 
 
@@ -120,22 +126,16 @@ const Profile = (props) => {
 
     var updateProfile = async () => {
         try {
-            await axios.post(`api/user/updateEmail/${newEmail}/${firstName}/${lastName}/${password}`, null, {
+            const resp = await axios.post(`api/user/updateEmail/${newEmail}/${firstName}/${lastName}`, null, {
                 headers: {
                     "Authorization": localStorage.getItem("token").split(" ")[1]
                 }
             });
-            const resp = await axios.post('/api/user/login', null, {
-                headers: {
-                    "email": newEmail,
-                    "password": password
-                }
-            });
+  
             let newToken = await resp.headers.authorization;
             localStorage.removeItem("token");
             localStorage.setItem("token", newToken);
             props.history.push("/");
-
         } catch (e) {
             console.log(e.response.data.error.message);
         }
@@ -205,13 +205,7 @@ const Profile = (props) => {
                                             <li key="updateEmail">
                                                 <div className="form-email">
                                                     <label>Email: </label>
-                                                    <TextField value={newEmail} onChange={e => setNewEmail(e.target.value)} className="textField" type="email" />
-                                                </div>
-                                            </li>
-                                            <li key="updatePassword">
-                                                <div className="form-password">
-                                                    <label>Password: </label>
-                                                    <TextField value={password} onChange={e => setpassword(e.target.value)} className="textField" type="password" />
+                                                    <TextField  value={newEmail} onChange={e => setNewEmail(e.target.value)} className="textField" type="email" />
                                                 </div>
                                             </li>
                                         </ul>
@@ -232,7 +226,7 @@ const Profile = (props) => {
                                                 recent.map(
                                                     (item, index) => {
                                                         return <li key={index} >
-                                                            <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                            <ProductCard key={index} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                         </li>;
                                                     }
                                                 ) :
@@ -248,11 +242,11 @@ const Profile = (props) => {
                                     <div className="wishDiv">
                                         <ul className="wishList">
                                             {
-                                                recent.length > 0 ?
-                                                    recent.map(
+                                                wishList.length > 0 ?
+                                                    wishList.map(
                                                         (item, index) => {
                                                             return <li key={index} >
-                                                                <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                                <ProductCard key={index} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                             </li>;
                                                         }
                                                     ) :

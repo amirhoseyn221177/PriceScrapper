@@ -10,7 +10,6 @@ import StarRating from "./StarRating";
 
 
 const ProductDetail = (props) => {
-    console.log(props)
     const [index, setIndex] = useState(props.location.state.index);
     console.log(index)
     var setProductIndex = (index) => {
@@ -30,24 +29,18 @@ const ProductDetail = (props) => {
         return (sum / (itemsTemp.length + 1)).toFixed(2)
 
     }
-    // var goToProductPage = () => {
-    //     let item = props.location.state[index];
-    //     // props.sendingItemArray(item);
-    //     props.history.push({
-    //         pathname: '/productdetail',
-    //         state: props.location.state
-    //     });
-    // };
+
 
     console.log(props.item)
 
     function addToWishlist() {
         const item = props.item
         let token = localStorage.getItem("token")
-        if (token !== null){
-            token = token.split(" ")[1]
-        }
-        axios.post('/api/items/addToWishList', {token, item})
+        axios.post('/api/items/addToWishList',  {item},{
+            headers:{
+                "Authorization":token
+            }
+        })
             .then(response => console.log(response.data));
     }
 

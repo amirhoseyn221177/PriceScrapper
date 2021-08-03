@@ -245,13 +245,15 @@ const ProductTable = (props) => {
     }
 
     var goToProductPage = (item, index,info) => {
-        console.log(item);
-        console.log("this is index"+index)
         props.sendingItemArray(item);
         addToRecentlyViewed(item);
+        let base64Item = JSON.stringify(item)
+        base64Item = Buffer.from(base64Item).toString("base64")
+        let arr = JSON.stringify(productInfoArray)
+        let base64Products = Buffer.from(arr).toString("base64")
         props.history.push({
-            pathname: '/productdetail',
-            state: { productInfoArray, index }
+            pathname: `/productdetail/${base64Item}/${index}`,
+            search:`base64product=${base64Products}`
         });
     };
 

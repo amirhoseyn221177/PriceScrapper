@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {  useEffect, useState } from 'react';
 import Carousel from 'react-multi-carousel';
 import './SuggestedItems.css';
 import 'react-multi-carousel/lib/styles.css';
@@ -9,18 +9,29 @@ import {
     Typography,
     Tooltip
 } from "@material-ui/core";
+import { withRouter } from 'react-router-dom';
+import { ChosenItem } from '../Actions/actions';
+import { connect } from 'react-redux';
+import axios from 'axios';
 
 const SuggestedItems = (props) => {
-    var itemsTemp = props.allItems
-    var items = []
-    for (let i = 0; i < itemsTemp.length; i++) {
-        let object = {
-            image: itemsTemp[i].image,
-            name: itemsTemp[i].title,
-            price: itemsTemp[i].price
-        }
-        items.push(object)
-    }
+    const [items,setItems]= useState([])
+  
+    useEffect(()=>{
+        setItems(props.allItems)
+    },[props.allItems])
+    // useEffect(()=>{
+    //     props.allItems.forEach(item=>{
+    //         let object = {
+    //             image: item.image,
+    //             name: item.title,
+    //             price: item.price
+    //         }
+    //         setItems(prev=>[...prev,object])
+    //     })
+    // },[])
+
+    console.log(items)
 
     // var goToItemFromCarousel = (index) => {
     //     props.history.push({
@@ -61,6 +72,31 @@ const SuggestedItems = (props) => {
     //     }
     // ]
 
+
+    function addToRecentlyViewed(item) {
+        let token = localStorage.getItem("token")
+        if (token ==="" || token === null || token === undefined) return;
+        axios.post('/api/items/addToRecent', { item } ,{
+            headers:{
+                "Authorization" : token
+            }
+        })
+            .then(response => console.log(response.data));
+    }
+
+    var goToProductPage = (item,index) => {
+        props.sendingItemArray(item);
+        addToRecentlyViewed(item);
+        let base64Item = JSON.stringify(item)
+        base64Item = Buffer.from(base64Item).toString("base64")
+        let arr = JSON.stringify(items)
+        let base64Products = Buffer.from(arr).toString("base64")
+        props.history.push({
+            pathname: `/productdetail/${base64Item}/${index}`,
+            search:`base64product=${base64Products}`
+        });
+    };
+
     const responsive = {
         desktop: {
             breakpoint: {
@@ -84,7 +120,6 @@ const SuggestedItems = (props) => {
             items: 2
         }
     };
-
     return (
         <div
             style={{
@@ -102,13 +137,7 @@ const SuggestedItems = (props) => {
                 containerClass="container-with-dots"
                 dotListClass=""
                 draggable
-                focusOnSelect={false}
-                infinite
-                itemClass=""
-                keyBoardControl
-                minimumTouchDrag={80}
-                renderButtonGroupOutside={false}
-                renderDotsOutside={false}
+                focusOnSelect={false}setProductIndex
                 responsive={responsive}
                 showDots
                 sliderClass=""
@@ -125,9 +154,9 @@ const SuggestedItems = (props) => {
                                 }}
                             >
                                 <CardMedia
-                                    onClick={() => props.setProductIndex(idx)}
+                                    onClick={() => goToProductPage(item,idx)}
                                     image={item.image}
-                                    title={item.name}
+                                    title={item.title}
                                     style={{
                                         height: 100,
                                         width: 200,
@@ -135,8 +164,8 @@ const SuggestedItems = (props) => {
                                     }}
                                 />
                                 <CardContent>
-                                <Tooltip title={item.name} placement="left" arrow>
-                                            <Typography className="itemName">{item.name}</Typography>
+                                <Tooltip title={item.title} placement="left" arrow>
+                                            <Typography className="itemName">{item.title}</Typography>
                                         </Tooltip>
                                     <Typography>{item.price}</Typography>
                                 </CardContent>
@@ -149,4 +178,10 @@ const SuggestedItems = (props) => {
     );
 }
 
-export default SuggestedItems
+
+const mapToProps = dispatch => {
+    return {
+        sendingItemArray: (item) => dispatch(ChosenItem(item))
+    };
+};
+export default   connect(null, mapToProps) (withRouter(SuggestedItems))

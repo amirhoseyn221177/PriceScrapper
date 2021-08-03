@@ -44,7 +44,7 @@ const ProductDetail = (props) => {
 
     function addToWishlist() {
         let token = localStorage.getItem("token")
-        axios.post('/api/items/addToWishList',  {itemFromPath},{
+        axios.post('/api/items/addToWishList',  {item:itemFromPath},{
             headers:{
                 "Authorization":token
             }

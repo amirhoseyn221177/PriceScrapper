@@ -20,58 +20,6 @@ const SuggestedItems = (props) => {
     useEffect(()=>{
         setItems(props.allItems)
     },[props.allItems])
-    // useEffect(()=>{
-    //     props.allItems.forEach(item=>{
-    //         let object = {
-    //             image: item.image,
-    //             name: item.title,
-    //             price: item.price
-    //         }
-    //         setItems(prev=>[...prev,object])
-    //     })
-    // },[])
-
-    console.log(items)
-
-    // var goToItemFromCarousel = (index) => {
-    //     props.history.push({
-    //         pathname: '/productdetail',
-    //         state: itemsTemp[index]
-    //     });
-    // }
-    // var items = [
-    //     {
-    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-    //         name: "Product1",
-    //         price: "$1"
-    //     },
-    //     {
-    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-    //         name: "Product2",
-    //         price: "$2"
-    //     },
-    //     {
-    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-    //         name: "Product3",
-    //         price: "$3"
-    //     },
-    //     {
-    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-    //         name: "Product4",
-    //         price: "$4"
-    //     },
-    //     {
-    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-    //         name: "Product5",
-    //         price: "$5"
-    //     },
-    //     {
-    //         image: "https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1611947186-nmd-r1-athletic-shoe-adidas-1611947175.jpg",
-    //         name: "Product6",
-    //         price: "$6"
-    //     }
-    // ]
-
 
     function addToRecentlyViewed(item) {
         let token = localStorage.getItem("token")

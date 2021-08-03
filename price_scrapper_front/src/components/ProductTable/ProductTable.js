@@ -365,6 +365,9 @@ const ProductTable = (props) => {
                     searchText !== "" ? searchDivClass = "searchFilter" : searchDivClass = "searchFilterNone"
                 }
                 <div className={searchDivClass}>
+                    {
+                        searchText !== "" ? null : <h1>Search for the best prices amongst the most popular e-commerce vendors online!</h1>
+                    }
                     <SearchBar
                         className="searchBar"
                         value={searchText}

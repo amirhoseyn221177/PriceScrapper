@@ -4,12 +4,13 @@ button.MuiButton-containedPrimary:hover {
 }
 
 .productCard {
+    box-shadow: 10px 10px 8px #888888;
     border: 1px solid black;
     margin: 30px;
     width: 18rem;
     height: 24rem;
     border-radius: 30px;
-    background-color: ghostwhite;
+    /* background-color: ghostwhite; */
 }
 
 .cardBody {

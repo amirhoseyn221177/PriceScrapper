@@ -10,7 +10,7 @@ import StarRating from "./StarRating";
 import qs from 'qs'
 
 const ProductDetail = (props) => {
-    console.log(props.match)
+    console.log(13)
     const [index, setIndex] = useState(parseInt(props.match.params.index,10));
     const [itemFromPath,setItemFromPath]=useState({})
     const [productInfoFromPath,setProductsFromPath]=useState([])
@@ -24,8 +24,8 @@ const ProductDetail = (props) => {
         let base64  = props.match.params.item64
         let product64 =qs.parse(props.location.search)["?base64product"]
         let jsonItem = atob(base64)
-        setProductsFromPath(JSON.parse(atob(product64)))
         setItemFromPath(JSON.parse(jsonItem))
+        if(product64 !== undefined)setProductsFromPath(JSON.parse(atob(product64)))
     },[ props.match.params.item64])
 
     console.log(itemFromPath)
@@ -44,6 +44,8 @@ const ProductDetail = (props) => {
 
     function addToWishlist() {
         let token = localStorage.getItem("token")
+        delete itemFromPath["_id"]
+        console.log(itemFromPath)
         axios.post('/api/items/addToWishList',  {item:itemFromPath},{
             headers:{
                 "Authorization":token
@@ -114,11 +116,6 @@ const mapToState = state => {
         item: state.item,
     }
 }
-// const mapToProps = dispatch => {
-//     return {
-//         sendingItemArray: (item) => dispatch(ChosenItem(item))
-//     };
-// };
 
 export default connect(mapToState, null)(withRouter(ProductDetail));
 

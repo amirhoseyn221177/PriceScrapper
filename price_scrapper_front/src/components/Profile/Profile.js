@@ -4,6 +4,8 @@ import { Drawer, List, Divider, ListItem, ListItemText, TextField, Button } from
 import axios from 'axios';
 import ProductCard from '../ProductCard/ProductCard';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { ChosenItem } from '../Actions/actions';
 
 const Profile = (props) => {
 
@@ -142,6 +144,17 @@ const Profile = (props) => {
     };
 
 
+    var goToProductPage= (item,index)=>{
+        console.log(item)
+        console.log(index)
+        let base64Item = JSON.stringify(item)
+        base64Item = Buffer.from(base64Item).toString("base64")
+        props.history.push({
+            pathname: `/productdetail/${base64Item}/${index}`
+        });
+    }
+
+
 
     return (
         <div className="profileDiv">
@@ -226,7 +239,7 @@ const Profile = (props) => {
                                                 recent.map(
                                                     (item, index) => {
                                                         return <li key={index} >
-                                                            <ProductCard key={index} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                            <ProductCard key={index} onClick={()=>goToProductPage(item,index)} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                         </li>;
                                                     }
                                                 ) :
@@ -261,4 +274,11 @@ const Profile = (props) => {
     );
 };
 
-export default withRouter(Profile);
+
+
+const mapToProps = dispatch => {
+    return {
+        sendingItemArray: (item) => dispatch(ChosenItem(item))
+    };
+};
+export default connect(null,mapToProps) (withRouter(Profile));

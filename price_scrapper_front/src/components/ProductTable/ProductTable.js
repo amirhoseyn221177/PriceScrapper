@@ -246,6 +246,7 @@ const ProductTable = (props) => {
 
     var goToProductPage = (item, index,info) => {
         props.sendingItemArray(item);
+        console.log(item)
         addToRecentlyViewed(item);
         let base64Item = JSON.stringify(item)
         base64Item = Buffer.from(base64Item).toString("base64")

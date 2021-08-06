@@ -259,7 +259,7 @@ const Profile = (props) => {
                                                     wishList.map(
                                                         (item, index) => {
                                                             return <li key={index} >
-                                                                <ProductCard key={index} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                                <ProductCard key={index} onClick={()=>goToProductPage(item,index)}className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                             </li>;
                                                         }
                                                     ) :

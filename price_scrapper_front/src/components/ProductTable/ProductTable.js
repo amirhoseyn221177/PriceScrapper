@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { Table } from 'react-bootstrap';
+import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
 import { List, ListItemText, ListItem, Menu, MenuItem } from '@material-ui/core';
 import { Button, Dialog, FormControlLabel, IconButton, Checkbox, DialogTitle, DialogContent } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
@@ -259,8 +260,8 @@ const ProductTable = (props) => {
         let allCards = [];
         for (let i = 2; i < productInfoArray.length; i += 3) {
             allCards.push(
-                <tr key={productInfoArray[i].title}>
-                    <td>
+                <Tr key={productInfoArray[i].title}>
+                    <Td>
                         <ProductCard
                             onClick={() => goToProductPage(productInfoArray[i - 2], i - 2, productInfoArray)}
                             cardTitle={productInfoArray[i - 2].title}
@@ -270,9 +271,9 @@ const ProductTable = (props) => {
                             image={productInfoArray[i - 2].image}
                             itemURL={productInfoArray[i - 2].itemURL}
                         />
-                    </td>
+                    </Td>
 
-                    <td>
+                    <Td>
                         <ProductCard
                             onClick={() => goToProductPage(productInfoArray[i - 1], i - 1, productInfoArray)}
                             cardTitle={productInfoArray[i - 1].title}
@@ -282,8 +283,8 @@ const ProductTable = (props) => {
                             image={productInfoArray[i - 1].image}
                             itemURL={productInfoArray[i - 1].itemURL}
                         />
-                    </td>
-                    <td>
+                    </Td>
+                    <Td>
                         <ProductCard
                             onClick={() => {
                                 goToProductPage(productInfoArray[i], i, productInfoArray);
@@ -296,10 +297,10 @@ const ProductTable = (props) => {
                             image={productInfoArray[i].image}
                             itemURL={productInfoArray[i].itemURL}
                         />
-                    </td>
+                    </Td>
 
 
-                </tr>
+                </Tr>
             );
         }
 
@@ -486,12 +487,12 @@ const ProductTable = (props) => {
                                 />
                             </li>
                         </ul>
-                        </div>
                         <Table className="productTable">
-                            <tbody>
+                            <Tbody>
                                 {productCardsJSX}
-                            </tbody>
+                            </Tbody>
                         </Table>
+                        </div>
                 </div>
                 : <div />}
         </Fragment>

@@ -1,7 +1,7 @@
 .productTable {
     position: absolute;
-    top:  63%;
-    left: 50%;
+    top:  30%;
+    left: 60%;
     transform: translate(-50%,-50%);
     z-index: -1;
     margin: 0;
@@ -119,16 +119,17 @@
 }
 
 .vendors {
+    position: absolute;
     display: block;
     column-count: 1;
     width: 100%;
     height: 100%;
+    top: 30%;
+    left: 12%;
 }
 
 .vendors ul {
     list-style-type: none;
-    margin-top: 8%;
-    margin-left: 7%;
 }
 
 #vendor

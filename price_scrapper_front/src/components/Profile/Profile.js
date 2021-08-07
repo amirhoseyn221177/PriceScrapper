@@ -192,13 +192,13 @@ const Profile = (props) => {
                                         <ul className="profilePage">
                                             <li key="updateFirstName">
                                                 <div className="form-name">
-                                                    <label>Firstname: </label>
+                                                    <label>First Name: </label>
                                                     <TextField value={firstName} onChange={e => setFirstName(e.target.value)} className="textField" />
                                                 </div>
                                             </li>
                                             <li key="updateLastName">
                                                 <div className="form-name">
-                                                    <label>LastName: </label>
+                                                    <label>Last Name: </label>
                                                     <TextField value={lastName} onChange={e => setLastName(e.target.value)} className="textField" />
                                                 </div>
                                             </li>
@@ -236,7 +236,7 @@ const Profile = (props) => {
                                                         </li>;
                                                     }
                                                 ) :
-                                                <div><p> no items detected</p></div>
+                                                <div id="empty"><p> No recently viewed items</p></div>
                                         }
                                     </ul>
                                 </div>
@@ -256,7 +256,7 @@ const Profile = (props) => {
                                                             </li>;
                                                         }
                                                     ) :
-                                                    <div><p> no items detected</p></div>
+                                                    <div id="empty"><p> No items currently in wishlist</p></div>
                                             }
                                         </ul>
                                     </div>

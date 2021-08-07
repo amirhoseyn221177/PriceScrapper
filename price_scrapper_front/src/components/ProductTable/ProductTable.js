@@ -19,6 +19,7 @@ const options = [
 ];
 
 const categories = ["Clothing", "Shoes", "Computers", "Cars"];
+
 let searchDivClass = "searchDivNone"
 
 const ProductTable = (props) => {
@@ -42,7 +43,7 @@ const ProductTable = (props) => {
     const [ebayNumber, setEbayNumber] = useState(0);
     const [amazonNumber, setAmazonNumber] = useState(0);
     const [checkboxStates, setCheckboxStates] = useState([true, true]) // Amazon, Ebay
-    const [query , setQuery]= useState("")
+    const [query, setQuery] = useState("")
     const handleClickListItem = (event) => {
         console.log(event.currentTarget);
         setAnchorEl(event.currentTarget);
@@ -79,10 +80,11 @@ const ProductTable = (props) => {
             var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
+            console.log("this is amazon" + amazonItemArr)
             setAmazonNumber(amazonJSON.totalLength);
             setAmazonArray(amazonItemArr);
         } catch (e) {
-            console.log(e);
+            console.log(e.response.data.error.message);
 
         }
 
@@ -202,7 +204,7 @@ const ProductTable = (props) => {
             console.log("here3")
             setAmazonArray([])
             await callEbayAPI();
-        } 
+        }
         //  await callStockxAPI();
         // console.log(stockNumber)
         // setTotalItem(amazonNumber+ebayNumber)
@@ -234,15 +236,16 @@ const ProductTable = (props) => {
 
     function addToRecentlyViewed(item) {
         let token = localStorage.getItem("token")
-        if(token !== null){
+        if (token !== null) {
             token = token.split(" ")[1]
         }
-        axios.post('/api/items/addToRecent', { token, item } )
+        axios.post('/api/items/addToRecent', { token, item })
             .then(response => console.log(response.data));
     }
 
-    var goToProductPage = (item, index) => {
+    var goToProductPage = (item, index, info) => {
         console.log(item);
+        console.log("this is index" + index)
         props.sendingItemArray(item);
         addToRecentlyViewed(item);
         props.history.push({
@@ -253,11 +256,8 @@ const ProductTable = (props) => {
 
 
     var createProductCards = () => {
-        let i = 2;
-        let lim = productInfoArray.length;
         let allCards = [];
-        console.log(productInfoArray.length)
-        for (i = 2; i < lim; i += 3) {
+        for (let i = 2; i < productInfoArray.length; i += 3) {
             allCards.push(
                 <tr key={productInfoArray[i].title}>
                     <td>
@@ -309,7 +309,6 @@ const ProductTable = (props) => {
 
 
 
-
     let dontRunFirstTime = useRef(true);
     useMemo(async () => {
         if (dontRunFirstTime.current) {
@@ -342,117 +341,78 @@ const ProductTable = (props) => {
         createProductCards();
     }, [productInfoArray]);
 
-    useEffect(() => {
-        const timeOutId = setTimeout(() => setSearchText(searchText), 500);
-        return () => clearTimeout(timeOutId);
-    }, [searchText]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const timeOut = setTimeout(() => {
             setSearchText(query)
         }, 2000);
-        return ()=> clearTimeout(timeOut)
-    },[query]);
+        return () => clearTimeout(timeOut)
+    }, [query]);
 
-    useEffect(async()=>{
+    useEffect(async () => {
         await callAPIBundle()
-    },[searchText])
+    }, [searchText])
 
     return (
         <Fragment>
-            <div className="searchDiv">
+            {
+                searchText !== "" ? searchDivClass = "searchFilter" : searchDivClass = "searchFilterNone"
+            }
+            <div className={searchDivClass}>
                 {
-                    searchText !== "" ? searchDivClass = "searchFilter" : searchDivClass = "searchFilterNone"
+                    searchText !== "" ? null : <h1>Search for the best prices amongst the most popular e-commerce vendors online!</h1>
                 }
-                <div className={searchDivClass}>
-                    {
-                        searchText !== "" ? null : <h1>Search for the best prices amongst the most popular e-commerce vendors online!</h1>
-                    }
-                    <SearchBar
-                        className="searchBar"
-                        value={searchText}
-                        onChange={newValue => filterItemArray(newValue)}
-                        onCancelSearch={() => setSearchText("")}
-                    />
-                    <div className="filterDiv">
-                        <Button
-                            className="filterButton"
-                            variant="contained"
-                            color="primary"
-                            onClick={handleShow}
-                        >
-                            Filter
-                        </Button>
-                    </div>
+                <SearchBar
+                    className="searchBar"
+                    value={searchText}
+                    onChange={newValue => filterItemArray(newValue)}
+                    onCancelSearch={() => setSearchText("")}
+                />
+                <div className="filterDiv">
+                    <Button
+                        className="filterButton"
+                        variant="contained"
+                        color="primary"
+                        onClick={handleShow}
+                    >
+                        Filter
+                    </Button>
                 </div>
-
-                <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
-                    <DialogTitle className="dialogTitle" disableTypography>
-                        <h2>Filter by category</h2>
-                        <IconButton onClick={handleClose}>
-                            <CloseIcon />
-                        </IconButton>
-                    </DialogTitle>
-                    <DialogContent dividers className="dialogContent">
-                        <div>
-                            {categories.map(
-                                (category, index) => {
-                                    return (
-                                        <FormControlLabel
-                                            key={index}
-                                            control={
-                                                <Checkbox
-                                                    name="checkedB"
-                                                    color="primary"
-                                                    onClick={() => choosingCategories(category)}
-                                                    checked={CategoryToggleOption.category}
-                                                />
-                                            }
-
-                                            label={category}
-                                        />
-                                    );
-                                })}
-                        </div>
-                    </DialogContent>
-                </Dialog>
             </div>
+
+            <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+                <DialogTitle className="dialogTitle" disableTypography>
+                    <h2>Filter by category</h2>
+                    <IconButton onClick={handleClose}>
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent dividers className="dialogContent">
+                    <div>
+                        {categories.map(
+                            (category, index) => {
+                                return (
+                                    <FormControlLabel
+                                        key={index}
+                                        control={
+                                            <Checkbox
+                                                name="checkedB"
+                                                color="primary"
+                                                onClick={() => choosingCategories(category)}
+                                                checked={CategoryToggleOption.category}
+                                            />
+                                        }
+
+                                        label={category}
+                                    />
+                                );
+                            })}
+                    </div>
+                </DialogContent>
+            </Dialog>
             {searchText !== "" ?
                 <div className="optionsDiv">
                     <div className="filterPage" >
-                    <FormControlLabel
-                            control={<Checkbox name="SomeName" value="Amazon" />}
-                            label="Amazon"
-                            onChange={(e) => {
-                                // console.log("CURRENT EBAY STATE", ebayState)
-                                // let newEbayState = !ebayState
-                                // setEbayState(newEbayState)
-                                // console.log("NEW EBAY STATE", ebayState)
-                                console.log("CURRENT EBAY STATE", checkboxStates[1])
-                                let newCheckboxState = checkboxStates
-                                newCheckboxState[1] = !newCheckboxState[1]
-                                setCheckboxStates(newCheckboxState)
-                                console.log("NEW EBAY STATE", checkboxStates[1])
-                                filterItemArray(searchText)
-                            }}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox name="SomeName" value="Ebay" />}
-                            label="Ebay"
-                            onChange={(e) => {
-                                // console.log("CURRENT AMAZON STATE", amazonState)
-                                // let newAmazonState = !amazonState
-                                // setAmazonState(newAmazonState)
-                                // console.log("NEW AMAZON STATE", amazonState)
-                                console.log("CURRENT AMAZON STATE", checkboxStates[0])
-                                let newCheckboxState = checkboxStates
-                                newCheckboxState[0] = !newCheckboxState[0]
-                                setCheckboxStates(newCheckboxState)
-                                console.log("NEW AMAZON STATE", checkboxStates[1])
-                                filterItemArray(searchText)
-                            }}
-                        />
-
                         <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
                             className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
                         <List className="sort" component="nav" aria-label="Device settings">
@@ -463,7 +423,7 @@ const ProductTable = (props) => {
                                 aria-label="Sort By:"
                                 onClick={handleClickListItem}
                             >
-                                <ListItemText primary={`Sort by: ${options[selectedIndex]}`} />
+                                <ListItemText id="sortBy" primary={`Sort by: ${options[selectedIndex]}`} />
                             </ListItem>
                         </List>
                         <Menu
@@ -484,22 +444,64 @@ const ProductTable = (props) => {
                             ))}
                         </Menu>
                     </div>
-                    <Table className="productTable">
-                        <tbody>
-                            {productCardsJSX}
-                        </tbody>
-                    </Table>
+                    <div className="vendors">
+                        <ul className="vendorList">
+                            <li id="vendor">
+                                <h3>Vendors</h3>
+                            </li>
+                            <li id="vendor">
+                                <FormControlLabel
+                                    control={<Checkbox name="Amazon" value="Amazon" />}
+                                    label="Amazon"
+                                    onChange={(e) => {
+                                        // console.log("CURRENT EBAY STATE", ebayState)
+                                        // let newEbayState = !ebayState
+                                        // setEbayState(newEbayState)
+                                        // console.log("NEW EBAY STATE", ebayState)
+                                        console.log("CURRENT EBAY STATE", checkboxStates[1])
+                                        let newCheckboxState = checkboxStates
+                                        newCheckboxState[1] = !newCheckboxState[1]
+                                        setCheckboxStates(newCheckboxState)
+                                        console.log("NEW EBAY STATE", checkboxStates[1])
+                                        filterItemArray(searchText)
+                                    }}
+                                />
+                            </li>
+                            <li id="vendor">
+                                <FormControlLabel
+                                    control={<Checkbox name="Ebay" value="Ebay" />}
+                                    label="Ebay"
+                                    onChange={(e) => {
+                                        // console.log("CURRENT AMAZON STATE", amazonState)
+                                        // let newAmazonState = !amazonState
+                                        // setAmazonState(newAmazonState)
+                                        // console.log("NEW AMAZON STATE", amazonState)
+                                        console.log("CURRENT AMAZON STATE", checkboxStates[0])
+                                        let newCheckboxState = checkboxStates
+                                        newCheckboxState[0] = !newCheckboxState[0]
+                                        setCheckboxStates(newCheckboxState)
+                                        console.log("NEW AMAZON STATE", checkboxStates[1])
+                                        filterItemArray(searchText)
+                                    }}
+                                />
+                            </li>
+                        </ul>
+                        </div>
+                        <Table className="productTable">
+                            <tbody>
+                                {productCardsJSX}
+                            </tbody>
+                        </Table>
                 </div>
                 : <div />}
         </Fragment>
     );
 };
 
-                        
+
 const mapToProps = dispatch => {
     return {
         sendingItemArray: (item) => dispatch(ChosenItem(item))
     };
 };
 export default connect(null, mapToProps)(ProductTable);
-

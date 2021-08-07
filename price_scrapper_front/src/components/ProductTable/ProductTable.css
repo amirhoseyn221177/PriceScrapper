@@ -19,6 +19,30 @@
     box-shadow: 10px 10px 8px #888888;
 }
 
+.sort {
+    box-shadow: 10px 10px 8px #888888;
+    background-color: #3f51b5;
+    color: white;
+}
+
+.sort:hover {
+    background-color: white;
+    color: #3f51b5;
+}
+
+.MuiListItem-button:hover {
+    text-decoration: none;
+    background-color: white;
+    color: #3f51b5;
+}
+
+.MuiList-root.MuiList-padding {
+    text-align: center;
+    margin: 0 auto;
+    padding: 0;
+}
+    
+
 .filterDiv {
     margin-top: 15px;
 }
@@ -92,4 +116,23 @@
     height: 5%;
     z-index: 100;
     left: 3%;
+}
+
+.vendors {
+    display: block;
+    column-count: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.vendors ul {
+    list-style-type: none;
+    margin-top: 8%;
+    margin-left: 7%;
+}
+
+#vendor
+{
+    float: left;
+    clear: left;
 }

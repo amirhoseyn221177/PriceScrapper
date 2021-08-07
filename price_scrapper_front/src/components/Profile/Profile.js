@@ -11,11 +11,12 @@ const Profile = (props) => {
 
     const [recent, setRecent] = useState([]);
     const [wishList, setWishList] = useState([]);
-    // const [wish, setWish] = useState([]);
     const [drawer, setDrawer] = useState("Recently Viewed");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [newEmail, setNewEmail] = useState("");
+    const [fullName, setFullName]= useState("")
+    const [email , setEmail]= useState("")
     useEffect(async () => {
         try {
             let token = localStorage.getItem("token");
@@ -26,16 +27,18 @@ const Profile = (props) => {
                     }
                 });
 
-                const WishResp = await axios.get("/api/items/getWishList",{
-                    headers:{
-                        "Authorization":token
+                const WishResp = await axios.get("/api/items/getWishList", {
+                    headers: {
+                        "Authorization": token
                     }
-                })
+                });
+
                 const data = await resp.data;
-                const WishData = await WishResp.data.items
-                console.log(WishData)
+                const WishData = await WishResp.data.items;
+                console.log(WishData);
                 if (data.items.length > 0) setRecent(data.items);
-                if(WishData.length>0)setWishList(WishData)
+                if (WishData.length > 0) setWishList(WishData);
+                await getUserDetails()
             }
         } catch (e) {
             console.log(e.response.data.error.message);
@@ -44,6 +47,8 @@ const Profile = (props) => {
         }
 
     }, []);
+
+   
 
 
 
@@ -133,7 +138,7 @@ const Profile = (props) => {
                     "Authorization": localStorage.getItem("token").split(" ")[1]
                 }
             });
-  
+
             let newToken = await resp.headers.authorization;
             localStorage.removeItem("token");
             localStorage.setItem("token", newToken);
@@ -144,15 +149,31 @@ const Profile = (props) => {
     };
 
 
-    var goToProductPage= (item,index)=>{
-        console.log(item)
-        console.log(index)
-        let base64Item = JSON.stringify(item)
-        base64Item = Buffer.from(base64Item).toString("base64")
+    var goToProductPage = (item, index) => {
+        console.log(item);
+        console.log(index);
+        let base64Item = JSON.stringify(item);
+        base64Item = Buffer.from(base64Item).toString("base64");
         props.history.push({
             pathname: `/productdetail/${base64Item}/${index}`
         });
-    }
+    };
+
+
+    var getUserDetails = async () => {
+        try {
+            const resp = await axios.get('/api/user/userinfo', { headers: { authorization: localStorage.getItem("token") } });
+            const data = await resp.data
+            console.log(data)
+            if (data !== null || data  !== null || data !== ""){
+                setFullName(data.Name)
+                setEmail(data.username)
+            }
+        } catch (e) {
+            console.log(e.response);
+        }
+    };
+// {username: "polo", password: "sex221177", Name: "Amir  sayyar", iat: 1628317499, exp: 1628324699}
 
 
 
@@ -182,14 +203,12 @@ const Profile = (props) => {
                                 <ul className="profilePage">
                                     <li key="profileName">
                                         <div className="form-name">
-                                            <label>Name: </label>
-                                            <label>User name</label>
+                                            <label>Name: {fullName}</label>
                                         </div>
                                     </li>
                                     <li key="profileEmail">
                                         <div className="form-email">
-                                            <label>Email: </label>
-                                            <label>User email</label>
+                                            <label>Email: {email} </label>
                                         </div>
                                     </li>
                                 </ul>
@@ -218,7 +237,7 @@ const Profile = (props) => {
                                             <li key="updateEmail">
                                                 <div className="form-email">
                                                     <label>Email: </label>
-                                                    <TextField  value={newEmail} onChange={e => setNewEmail(e.target.value)} className="textField" type="email" />
+                                                    <TextField value={newEmail} onChange={e => setNewEmail(e.target.value)} className="textField" type="email" />
                                                 </div>
                                             </li>
                                         </ul>
@@ -239,7 +258,7 @@ const Profile = (props) => {
                                                 recent.map(
                                                     (item, index) => {
                                                         return <li key={index} >
-                                                            <ProductCard key={index} onClick={()=>goToProductPage(item,index)} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                            <ProductCard key={index} onClick={() => goToProductPage(item, index)} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                         </li>;
                                                     }
                                                 ) :
@@ -259,7 +278,7 @@ const Profile = (props) => {
                                                     wishList.map(
                                                         (item, index) => {
                                                             return <li key={index} >
-                                                                <ProductCard key={index} onClick={()=>goToProductPage(item,index)}className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                                <ProductCard key={index} onClick={() => goToProductPage(item, index)} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                             </li>;
                                                         }
                                                     ) :
@@ -281,4 +300,4 @@ const mapToProps = dispatch => {
         sendingItemArray: (item) => dispatch(ChosenItem(item))
     };
 };
-export default connect(null,mapToProps) (withRouter(Profile));
+export default connect(null, mapToProps)(withRouter(Profile));

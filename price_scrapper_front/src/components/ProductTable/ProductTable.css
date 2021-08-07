@@ -73,3 +73,12 @@
     z-index: 100;
     left: 3%;
 }
+
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 48%;
+}
+
+

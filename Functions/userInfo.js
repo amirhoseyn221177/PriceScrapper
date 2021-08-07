@@ -39,7 +39,7 @@ var Login = async (email, password) => {
 
     return new Promise(async(res,rej)=>{
         if (result) {
-                let token = jwt.sign({ username: email, password }, ACCESS_TOKEN, {
+                let token = jwt.sign({ username: email, password,Name:(user.FirstName + "" + user.LastName) }, ACCESS_TOKEN, {
                     algorithm: 'HS256',
                     expiresIn: '2h'
                 })
@@ -162,6 +162,12 @@ var getWishListItems = async (token) => {
 
 };
 
+var getUserDetails= (token)=>{
+    const userDetails = TokenDecoder(token)
+    delete userDetails.password
+    return userDetails
+}
+
 
 var TokenDecoder = token => {
     const object = jwt.verify(token.split(" ")[1], ACCESS_TOKEN);
@@ -222,7 +228,8 @@ module.exports = {
     getWishListItems,
     updateUserInfo,
     authenticate,
-    TokenDecoder
+    TokenDecoder,
+    getUserDetails
 };
 
 

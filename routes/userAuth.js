@@ -1,5 +1,5 @@
 const route = require("express").Router();
-const { SignUp, Login, forgotPassword, updatePassword, updateUserInfo, TokenDecoder } = require('../Functions/userInfo');
+const { SignUp, Login, forgotPassword, updatePassword, updateUserInfo, TokenDecoder, getUserDetails } = require('../Functions/userInfo');
 const chalk = require("chalk");
 
 
@@ -89,6 +89,22 @@ route.post("/updateEmail/:email/:firstname/:lastname", async (req, res) => {
         });
     }
 });
+
+
+route.get("/userinfo",async(req,res)=>{
+    try{
+        const token = req.headers.authorization
+        const userDetails = getUserDetails(token)
+        res.status(200).json(userDetails)
+    }catch(e){
+        console.log(e.message);
+        res.status(500).send({
+            error: {
+                message: e.message
+            }
+        });
+    }
+})
 
 
 

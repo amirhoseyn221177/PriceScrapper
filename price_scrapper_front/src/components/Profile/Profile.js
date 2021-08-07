@@ -203,12 +203,12 @@ const Profile = (props) => {
                                 <ul className="profilePage">
                                     <li key="profileName">
                                         <div className="form-name">
-                                            <label>Name: {fullName}</label>
+                                            <pre style={{fontSize:'large'}}>Name: {fullName}</pre>
                                         </div>
                                     </li>
                                     <li key="profileEmail">
                                         <div className="form-email">
-                                            <label>Email: {email} </label>
+                                            <pre style={{fontSize:'large' , position:'relative', right : '14%'}}>Email: {email} </pre>
                                         </div>
                                     </li>
                                 </ul>

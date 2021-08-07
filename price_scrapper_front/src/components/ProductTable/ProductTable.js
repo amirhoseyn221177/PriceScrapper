@@ -359,6 +359,7 @@ const ProductTable = (props) => {
     }, [ebayArray, amazonArray]);
 
     useEffect(() => {
+        console.log(362)
         createProductCards();
     }, [productInfoArray]);
 

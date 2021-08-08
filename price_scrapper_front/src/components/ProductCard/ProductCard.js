@@ -20,7 +20,7 @@ const ProductCard = (props) => {
                 <Card.Text>
                     Best price at {props.vendor} for {props.price} {props.currency}
                 </Card.Text>
-                <Button variant="contained" color="primary" onClick={props.onClick}>
+                <Button id="detailsBtn" variant="contained" color="primary" onClick={props.onClick}>
                     Details
                 </Button>
             </Card.Body>

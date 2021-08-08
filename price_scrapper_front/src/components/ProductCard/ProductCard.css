@@ -31,3 +31,7 @@ button.MuiButton-containedPrimary:hover {
       height: 10px;
       width: 100%;
   }
+
+  #detailsBtn {
+    box-shadow: 10px 10px 8px #888888;
+  }

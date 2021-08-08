@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
+import { Spinner } from 'react-bootstrap';
 import { List, ListItemText, ListItem, Menu, MenuItem } from '@material-ui/core';
 import { Button, Dialog, FormControlLabel, IconButton, Checkbox, DialogTitle, DialogContent } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
@@ -11,6 +12,8 @@ import './ProductTable.css';
 import Pagination from '@material-ui/lab/Pagination';
 import { ChosenItem } from "../Actions/actions";
 import { connect } from 'react-redux';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from '@material-ui/core/styles';
 
 const options = [
     'Highest Rating',
@@ -22,9 +25,18 @@ const options = [
 const categories = ["Clothing", "Shoes", "Computers", "Cars"];
 
 let searchDivClass = "searchDivNone"
+const useStyles = makeStyles((theme) => ({
+    root: {
+        display: 'flex',
+        '& > * + *': {
+            marginLeft: theme.spacing(2),
+        },
+    },
+}));
 
 const ProductTable = (props) => {
 
+    const classes = useStyles();
     const [ebayArray, setEbayArray] = useState([]);
     // const [stockXArray, setStockXArray] = useState([]);
     const [amazonArray, setAmazonArray] = useState([]);
@@ -43,8 +55,9 @@ const ProductTable = (props) => {
     const [startPoint, setStartPoint] = useState(1);
     const [ebayNumber, setEbayNumber] = useState(0);
     const [amazonNumber, setAmazonNumber] = useState(0);
-    const [checkboxStates, setCheckboxStates] = useState([true, true]) // Amazon, Ebay
-    const [query, setQuery] = useState("")
+    const [checkboxStates, setCheckboxStates] = useState([true, true]); // Amazon, Ebay
+    const [query, setQuery] = useState("");
+    const [shouldspinner, setSpinner] = useState(false);
     const handleClickListItem = (event) => {
         console.log(event.currentTarget);
         setAnchorEl(event.currentTarget);
@@ -77,11 +90,11 @@ const ProductTable = (props) => {
 
     var callAmazonAPI = async () => {
         try {
-            console.log(searchText)
+            console.log(searchText);
             var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
-            console.log("this is amazon" + amazonItemArr)
+            console.log("this is amazon" + amazonItemArr);
             setAmazonNumber(amazonJSON.totalLength);
             setAmazonArray(amazonItemArr);
         } catch (e) {
@@ -191,25 +204,27 @@ const ProductTable = (props) => {
 
 
     var callAPIBundle = async (val) => {
-        console.log("Amazon state", checkboxStates[0])
-        console.log("Ebay state", checkboxStates[1])
+        console.log("Amazon state", checkboxStates[0]);
+        console.log("Ebay state", checkboxStates[1]);
         if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
-            console.log("here1")
+            console.log("here1");
             await callAmazonAPI();
             await callEbayAPI();
         } else if (checkboxStates[0]) {
-            console.log("here2")
-            setEbayArray([])
+            console.log("here2");
+            setEbayArray([]);
             await callAmazonAPI();
         } else if (checkboxStates[1]) {
-            console.log("here3")
-            setAmazonArray([])
+            console.log("here3");
+            setAmazonArray([]);
             await callEbayAPI();
         }
         //  await callStockxAPI();
         // console.log(stockNumber)
         // setTotalItem(amazonNumber+ebayNumber)
     };
+
+
 
 
 
@@ -236,22 +251,27 @@ const ProductTable = (props) => {
     };
 
     function addToRecentlyViewed(item) {
-        let token = localStorage.getItem("token")
-        if (token !== null) {
-            token = token.split(" ")[1]
-        }
-        axios.post('/api/items/addToRecent', { token, item })
+        let token = localStorage.getItem("token");
+
+        axios.post('/api/items/addToRecent', { item }, {
+            headers: {
+                "Authorization": token
+            }
+        })
             .then(response => console.log(response.data));
     }
 
     var goToProductPage = (item, index, info) => {
-        console.log(item);
-        console.log("this is index" + index)
         props.sendingItemArray(item);
+        console.log(item);
         addToRecentlyViewed(item);
+        let base64Item = JSON.stringify(item);
+        base64Item = Buffer.from(base64Item).toString("base64");
+        let arr = JSON.stringify(productInfoArray);
+        let base64Products = Buffer.from(arr).toString("base64");
         props.history.push({
-            pathname: '/productdetail',
-            state: { productInfoArray, index }
+            pathname: `/productdetail/${base64Item}/${index}`,
+            search: `base64product=${base64Products}`
         });
     };
 
@@ -303,34 +323,36 @@ const ProductTable = (props) => {
                 </Tr>
             );
         }
-
         setproductCardsJSX(allCards);
+        setSpinner(false);
+
     };
 
 
 
 
     let dontRunFirstTime = useRef(true);
-    useMemo(async () => {
+    useEffect(async () => {
+        setSpinner(true)
         if (dontRunFirstTime.current) {
             dontRunFirstTime.current = false;
             return;
         }
-        await callAPIBundle();
+        await callAPIBundle()
     }, [startPoint]);
 
     async function filterItemArray(val) {
-        console.log("LOOK AT ME", val)
-        setQuery(val)
-        searchNow(val)
+        console.log("LOOK AT ME", val);
+        setQuery(val);
+        await searchNow(val);
         // console.log(val);
         // const newList = productInfoArray.filter((item) => item.vendor == val);
         // setproductInfoArray(newList)
     }
 
-    function searchNow(searchValue) {
-        callAPIBundle()
-        setSearchText(searchValue)
+    async function searchNow(searchValue) {
+        await callAPIBundle();
+        // console.log(searchValue)
     }
 
 
@@ -339,20 +361,23 @@ const ProductTable = (props) => {
     }, [ebayArray, amazonArray]);
 
     useEffect(() => {
+        console.log(362)
         createProductCards();
     }, [productInfoArray]);
 
 
     useEffect(() => {
+        setSpinner(true);
         const timeOut = setTimeout(() => {
-            setSearchText(query)
+            setSearchText(query);
         }, 2000);
-        return () => clearTimeout(timeOut)
+        return () => clearTimeout(timeOut);
     }, [query]);
 
     useEffect(async () => {
-        await callAPIBundle()
-    }, [searchText])
+        await callAPIBundle();
+    }, [searchText]);
+
 
     return (
         <Fragment>
@@ -365,8 +390,8 @@ const ProductTable = (props) => {
                 }
                 <SearchBar
                     className="searchBar"
-                    value={searchText}
-                    onChange={newValue => filterItemArray(newValue)}
+                    value={query}
+                    onChange={newValue => setQuery(newValue)}
                     onCancelSearch={() => setSearchText("")}
                 />
                 <div className="filterDiv">
@@ -414,36 +439,38 @@ const ProductTable = (props) => {
             {searchText !== "" ?
                 <div className="optionsDiv">
                     <div className="filterPage" >
-                        <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
-                            className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
-                        <List className="sort" component="nav" aria-label="Device settings">
-                            <ListItem
-                                button
-                                aria-haspopup="true"
-                                aria-controls="lock-menu"
-                                aria-label="Sort By:"
-                                onClick={handleClickListItem}
-                            >
-                                <ListItemText id="sortBy" primary={`Sort by: ${options[selectedIndex]}`} />
-                            </ListItem>
-                        </List>
-                        <Menu
-                            id="lock-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleCloseSort}
-                        >
-                            {options.map((option, index) => (
-                                <MenuItem
-                                    key={option}
-                                    selected={index === selectedIndex}
-                                    onClick={(event) => handleMenuItemClick(event, index)}
+                        <div>
+                            <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
+                                className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
+                            <List className="sort" component="nav" aria-label="Device settings">
+                                <ListItem
+                                    button
+                                    aria-haspopup="true"
+                                    aria-controls="lock-menu"
+                                    aria-label="Sort By:"
+                                    onClick={handleClickListItem}
                                 >
-                                    {option}
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                                    <ListItemText id="sortBy" primary={`Sort by: ${options[selectedIndex]}`} />
+                                </ListItem>
+                            </List>
+                            <Menu
+                                id="lock-menu"
+                                anchorEl={anchorEl}
+                                keepMounted
+                                open={Boolean(anchorEl)}
+                                onClose={handleCloseSort}
+                            >
+                                {options.map((option, index) => (
+                                    <MenuItem
+                                        key={option}
+                                        selected={index === selectedIndex}
+                                        onClick={(event) => handleMenuItemClick(event, index)}
+                                    >
+                                        {option}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </div>
                     </div>
                     <div className="vendors">
                         <ul className="vendorList">
@@ -487,12 +514,17 @@ const ProductTable = (props) => {
                                 />
                             </li>
                         </ul>
-                        <Table className="productTable">
-                            <Tbody>
-                                {productCardsJSX}
-                            </Tbody>
-                        </Table>
-                        </div>
+                        {shouldspinner === false ?
+                            <Table className="productTable">
+                                <tbody>
+                                    {productCardsJSX}
+                                </tbody>
+                            </Table> :
+                            (<div className="spinner">
+                                <CircularProgress />
+                            </div>)
+                        }
+                    </div>
                 </div>
                 : <div />}
         </Fragment>

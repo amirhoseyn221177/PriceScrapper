@@ -7,53 +7,61 @@ import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
-
+import qs from 'qs'
 
 const ProductDetail = (props) => {
-    console.log(props)
-    const [index, setIndex] = useState(props.location.state.index);
-    console.log(index)
+    console.log(13)
+    const [index, setIndex] = useState(parseInt(props.match.params.index,10));
+    const [itemFromPath,setItemFromPath]=useState({})
+    const [productInfoFromPath,setProductsFromPath]=useState([])
     var setProductIndex = (index) => {
         setIndex(index);
     }
 
+    console.log(productInfoFromPath)
+
+    useEffect(()=>{
+        let base64  = props.match.params.item64
+        let product64 =qs.parse(props.location.search)["?base64product"]
+        let jsonItem = atob(base64)
+        setItemFromPath(JSON.parse(jsonItem))
+        if(product64 !== undefined)setProductsFromPath(JSON.parse(atob(product64)))
+    },[ props.match.params.item64])
+
+    console.log(itemFromPath)
+
     function averagePrice() {
-        var itemsTemp = props.location.state.productInfoArray;
         var sum = 0;
-        for (let i = 0; i < itemsTemp.length; i++) {
-            console.log(itemsTemp[i].price);
-            sum = sum + parseInt(itemsTemp[i].price);
+        for(let i = 0; i < productInfoFromPath.length; i++) {
+            sum = sum + parseInt(productInfoFromPath[i].price,10);
         }
-        console.log(sum);
-        console.log(itemsTemp.length);
-        console.log(sum / (itemsTemp.length + 1));
-        return (sum / (itemsTemp.length + 1)).toFixed(2)
+        return (sum / (productInfoFromPath.length + 1)).toFixed(2)
 
     }
-    // var goToProductPage = () => {
-    //     let item = props.location.state[index];
-    //     // props.sendingItemArray(item);
-    //     props.history.push({
-    //         pathname: '/productdetail',
-    //         state: props.location.state
-    //     });
-    // };
 
-    console.log(props.item)
+
+
 
     function addToWishlist() {
-        const item = props.item
         let token = localStorage.getItem("token")
-        if (token !== null) {
-            token = token.split(" ")[1]
-        }
-        axios.post('/api/items/addToWishList', { token, item })
+        delete itemFromPath["_id"]
+        console.log(itemFromPath)
+        axios.post('/api/items/addToWishList',  {item:itemFromPath},{
+            headers:{
+                "Authorization":token
+            }
+        })
             .then(response => console.log(response.data));
     }
 
     useEffect(() => {
-        if (props.item.title === "") props.history.push("/")
-    })
+        if (props.item.title === "" && itemFromPath === null) props.history.push("/")
+        else{
+
+        }
+    },[])
+
+    console.log(index)
     return (
         <div className="cardInfo">
             <div className="cardContents">
@@ -106,7 +114,7 @@ const ProductDetail = (props) => {
                 </Card>
             </div>
             <SuggestedItems
-                allItems={props.location.state.productInfoArray} setProductIndex={setProductIndex}
+                allItems={productInfoFromPath} setProductIndex={setProductIndex}
             />
         </div>
     )
@@ -118,10 +126,8 @@ const mapToState = state => {
         item: state.item,
     }
 }
-// const mapToProps = dispatch => {
-//     return {
-//         sendingItemArray: (item) => dispatch(ChosenItem(item))
-//     };
-// };
 
 export default connect(mapToState, null)(withRouter(ProductDetail));
+
+
+

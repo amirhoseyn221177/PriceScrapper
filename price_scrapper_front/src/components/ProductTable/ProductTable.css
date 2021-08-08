@@ -137,3 +137,11 @@
     float: left;
     clear: left;
 }
+
+.spinner {
+    position: absolute;
+    top: 50%;
+    left: 48%;
+}
+
+

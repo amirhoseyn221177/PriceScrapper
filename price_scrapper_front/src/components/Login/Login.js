@@ -20,7 +20,8 @@ const Login = (props) => {
                 }
             });
             const data = await resp.headers;
-            if(data.autorization!==""){
+            console.log(data)
+            if(data.authorization!=="" && data.authorization !== undefined){
                 console.log(data)
                 props.sendingToActions(data.authorization)
                 props.history.push(`/home`)
@@ -30,6 +31,7 @@ const Login = (props) => {
             }
     
         }catch(e){
+            setError(true)
             console.log(e.response.data.error.message)
         }
 

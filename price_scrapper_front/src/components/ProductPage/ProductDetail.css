@@ -4,7 +4,6 @@ button.MuiButton-containedPrimary:hover {
 }
 
 #cardDetail {
-    margin: 30px;
     width: 70rem;
     margin: 0 auto;
     border: 1px solid black;
@@ -33,8 +32,11 @@ button.MuiButton-containedPrimary:hover {
     clear: both;
 }
 
-.cardInfo::before {
-  display:block;
-  content: '';
-  height: 60px;
+.cardContents {
+    margin-top: 4%;
+    margin-bottom: 2%;
+}
+
+#buyBtn {
+    box-shadow: 10px 10px 8px #888888;
 }

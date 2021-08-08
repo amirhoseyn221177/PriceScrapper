@@ -65,7 +65,7 @@ const ProductDetail = (props) => {
     return (
         <div className="cardInfo">
             <div className="cardContents">
-                <Card style={{height: '550px'}} id="cardDetail">
+                <Card style={{height: '500px'}} id="cardDetail">
                     <div class="row">
                         <div class="column">
                         <Card.Img style={{ paddingTop: '25%' }} variant="top" src={itemFromPath.image} width='300' height='200' />
@@ -95,7 +95,7 @@ const ProductDetail = (props) => {
                                 Average Price: {averagePrice()}
                             </p>
                             <a href={itemFromPath.itemURL}>
-                                <Button variant="contained" color="primary">
+                                <Button id="buyBtn" variant="contained" color="primary">
                                     Buy product!
                                 </Button>
                             </a>

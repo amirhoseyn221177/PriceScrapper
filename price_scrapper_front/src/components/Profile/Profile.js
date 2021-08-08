@@ -36,8 +36,19 @@ const Profile = (props) => {
                 const data = await resp.data;
                 const WishData = await WishResp.data.items;
                 console.log(WishData);
-                if (data.items.length > 0) setRecent(data.items);
-                if (WishData.length > 0) setWishList(WishData);
+                if (data.items.length > 0) {
+                    if (data.items.length > 0) {
+                        var recentList = data.items;
+                        let titles = data.items.map(item => item.title)
+                        let filtered = recentList.filter((item, index) => titles.indexOf(item.title) === index);
+                        setRecent(filtered);
+                    };
+                    if (WishData.length > 0) {
+                        let wishList = WishData;
+                        setWishList([...new Set(wishList)]);
+                    }
+                }
+
                 await getUserDetails()
             }
         } catch (e) {
@@ -47,89 +58,6 @@ const Profile = (props) => {
         }
 
     }, []);
-
-   
-
-
-
-
-    // const items = [
-    //     {
-    //         cardTitle: "1",
-    //         vendor: "1",
-    //         price: "1",
-    //         currency: "1",
-    //         image: "1",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "2",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "3",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "4",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "5",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "6",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     }
-    //     ,
-    //     {
-    //         cardTitle: "7",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     }
-    //     ,
-    //     {
-    //         cardTitle: "8",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     }
-    // ]
-
-    // useEffect(()=>{
-    //     if (drawer === "Progile") console.log(98)
-    //     else if (drawer === 'Update Profile'){
-    //         const 
-    //     }
-    //     else if (drawer === "Wishlist")
-
-    // },[drawer])
 
     var updateProfile = async () => {
         try {
@@ -173,9 +101,6 @@ const Profile = (props) => {
             console.log(e.response);
         }
     };
-// {username: "polo", password: "sex221177", Name: "Amir  sayyar", iat: 1628317499, exp: 1628324699}
-
-
 
     return (
         <div className="profileDiv">

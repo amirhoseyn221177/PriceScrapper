@@ -68,19 +68,19 @@ const ProductDetail = (props) => {
                 <Card style={{height: '550px'}} id="cardDetail">
                     <div class="row">
                         <div class="column">
-                        <Card.Img style={{ paddingTop: '25%' }} variant="top" src={props.location.state.productInfoArray[index].image} width='300' height='200' />
+                        <Card.Img style={{ paddingTop: '25%' }} variant="top" src={itemFromPath.image} width='300' height='200' />
                         <br/>
                         <br/>
-                        <Card.Title className="cardDetailsTitle">{props.location.state.productInfoArray[index].title}</Card.Title>
+                        <Card.Title className="cardDetailsTitle">{itemFromPath.title}</Card.Title>
                         </div>
                         <div class="column">
                         <Card.Body className="cardDetailsBody">
                         <Card.Text>
                             <p>
-                                Vendor: {props.location.state.productInfoArray[index].vendor}
+                                Vendor: {itemFromPath.vendor}
                             </p>
                             <p>
-                                Price: {props.location.state.productInfoArray[index].price} {props.location.state.productInfoArray[index].currency}
+                                Price: {itemFromPath.price} {itemFromPath.currency}
                             </p>
                             <p>
                                 <StarRating />
@@ -94,7 +94,7 @@ const ProductDetail = (props) => {
                             <p>
                                 Average Price: {averagePrice()}
                             </p>
-                            <a href={props.item.itemURL}>
+                            <a href={itemFromPath.itemURL}>
                                 <Button variant="contained" color="primary">
                                     Buy product!
                                 </Button>

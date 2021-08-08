@@ -516,9 +516,9 @@ const ProductTable = (props) => {
                         </ul>
                         {shouldspinner === false ?
                             <Table className="productTable">
-                                <tbody>
+                                <Tbody>
                                     {productCardsJSX}
-                                </tbody>
+                                </Tbody>
                             </Table> :
                             (<div className="spinner">
                                 <CircularProgress />

@@ -1,12 +1,12 @@
 .productTable {
     position: absolute;
-    top:  51%;
+    top:  30%;
     left: 60%;
     transform: translate(-50%,-50%);
-    z-index: 1;
+    z-index: -1;
     margin: 0;
     overflow-y: scroll;
-    height: 97%;
+    height: 65%;
     display: block;
 }
 
@@ -123,9 +123,9 @@
     display: block;
     column-count: 1;
     width: 100%;
-    height: 65%;
+    height: 100%;
     top: 30%;
-    left: 10%;
+    left: 12%;
 }
 
 .vendors ul {
@@ -143,5 +143,3 @@
     top: 50%;
     left: 48%;
 }
-
-

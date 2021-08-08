@@ -26,6 +26,10 @@
     color: white;
 }
 
+#sortBy {
+    border-radius: 30px;
+}
+
 .sort:hover {
     background-color: white;
     color: #3f51b5;
@@ -67,6 +71,7 @@
     width: 200px;
     float: right;
     padding-right: 10px;
+    border-radius: 5px;
 }
 
 .searchBar {

@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, Td } from 'react-super-responsive-table';
+import { Table, Tr, Td } from 'react-super-responsive-table';
 import 'react-super-responsive-table/dist/SuperResponsiveTableStyle.css';
-import { Spinner } from 'react-bootstrap';
 import { List, ListItemText, ListItem, Menu, MenuItem } from '@material-ui/core';
 import { Button, Dialog, FormControlLabel, IconButton, Checkbox, DialogTitle, DialogContent } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
@@ -504,11 +503,16 @@ const ProductTable = (props) => {
                                 />
                             </li>
                         </ul>
-                        <Table className="productTable">
-                                <Tbody>
+                        {shouldspinner === false ?
+                            <Table className="productTable">
+                                <tbody>
                                     {productCardsJSX}
-                                </Tbody>
-                            </Table> 
+                                </tbody>
+                            </Table> :
+                            (<div className="spinner">
+                                <CircularProgress />
+                            </div>)
+                        }
                     </div>
                 </div>
                 : <div />}

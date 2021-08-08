@@ -4,39 +4,52 @@ import { Drawer, List, Divider, ListItem, ListItemText, TextField, Button } from
 import axios from 'axios';
 import ProductCard from '../ProductCard/ProductCard';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { ChosenItem } from '../Actions/actions';
 
 const Profile = (props) => {
 
     const [recent, setRecent] = useState([]);
-    // const [wish, setWish] = useState([]);
+    const [wishList, setWishList] = useState([]);
     const [drawer, setDrawer] = useState("Recently Viewed");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [newEmail, setNewEmail] = useState("");
-    const [password, setpassword] = useState("");
+    const [fullName, setFullName]= useState("")
+    const [email , setEmail]= useState("")
     useEffect(async () => {
         try {
             let token = localStorage.getItem("token");
             if (token !== "" && token !== null) {
-                token = token.split(" ")[1];
                 const resp = await axios.get("/api/items/getRecentlyViewed", {
                     headers: {
                         "Authorization": token
                     }
                 });
+
+                const WishResp = await axios.get("/api/items/getWishList", {
+                    headers: {
+                        "Authorization": token
+                    }
+                });
+
                 const data = await resp.data;
-                console.log(data);
-                if (data.length > 0) setRecent(data);
+                const WishData = await WishResp.data.items;
+                console.log(WishData);
+                if (data.items.length > 0) setRecent(data.items);
+                if (WishData.length > 0) setWishList(WishData);
+                await getUserDetails()
             }
         } catch (e) {
             console.log(e.response.data.error.message);
-            if (e.response.data.error.message.includes("jwt")) {
-                localStorage.removeItem("token");
-                props.history.push("/home");
-            }
+            localStorage.removeItem("token");
+            props.history.push("/home");
         }
 
     }, []);
+
+   
+
 
 
 
@@ -120,26 +133,47 @@ const Profile = (props) => {
 
     var updateProfile = async () => {
         try {
-            await axios.post(`api/user/updateEmail/${newEmail}/${firstName}/${lastName}/${password}`, null, {
+            const resp = await axios.post(`api/user/updateEmail/${newEmail}/${firstName}/${lastName}`, null, {
                 headers: {
                     "Authorization": localStorage.getItem("token").split(" ")[1]
                 }
             });
-            const resp = await axios.post('/api/user/login', null, {
-                headers: {
-                    "email": newEmail,
-                    "password": password
-                }
-            });
+
             let newToken = await resp.headers.authorization;
             localStorage.removeItem("token");
             localStorage.setItem("token", newToken);
             props.history.push("/");
-
         } catch (e) {
             console.log(e.response.data.error.message);
         }
     };
+
+
+    var goToProductPage = (item, index) => {
+        console.log(item);
+        console.log(index);
+        let base64Item = JSON.stringify(item);
+        base64Item = Buffer.from(base64Item).toString("base64");
+        props.history.push({
+            pathname: `/productdetail/${base64Item}/${index}`
+        });
+    };
+
+
+    var getUserDetails = async () => {
+        try {
+            const resp = await axios.get('/api/user/userinfo', { headers: { authorization: localStorage.getItem("token") } });
+            const data = await resp.data
+            console.log(data)
+            if (data !== null || data  !== null || data !== ""){
+                setFullName(data.Name)
+                setEmail(data.username)
+            }
+        } catch (e) {
+            console.log(e.response);
+        }
+    };
+// {username: "polo", password: "sex221177", Name: "Amir  sayyar", iat: 1628317499, exp: 1628324699}
 
 
 
@@ -169,14 +203,12 @@ const Profile = (props) => {
                                 <ul className="profilePage">
                                     <li key="profileName">
                                         <div className="form-name">
-                                            <label>Name: </label>
-                                            <label>User name</label>
+                                            <pre style={{fontSize:'large'}}>Name: {fullName}</pre>
                                         </div>
                                     </li>
                                     <li key="profileEmail">
                                         <div className="form-email">
-                                            <label>Email: </label>
-                                            <label>User email</label>
+                                            <pre style={{fontSize:'large' , position:'relative', right : '14%'}}>Email: {email} </pre>
                                         </div>
                                     </li>
                                 </ul>
@@ -208,12 +240,6 @@ const Profile = (props) => {
                                                     <TextField value={newEmail} onChange={e => setNewEmail(e.target.value)} className="textField" type="email" />
                                                 </div>
                                             </li>
-                                            <li key="updatePassword">
-                                                <div className="form-password">
-                                                    <label>Password: </label>
-                                                    <TextField value={password} onChange={e => setpassword(e.target.value)} className="textField" type="password" />
-                                                </div>
-                                            </li>
                                         </ul>
                                     </form>
                                     <div id="formBtn">
@@ -232,7 +258,7 @@ const Profile = (props) => {
                                                 recent.map(
                                                     (item, index) => {
                                                         return <li key={index} >
-                                                            <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                            <ProductCard key={index} onClick={() => goToProductPage(item, index)} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                         </li>;
                                                     }
                                                 ) :
@@ -248,11 +274,11 @@ const Profile = (props) => {
                                     <div className="wishDiv">
                                         <ul className="wishList">
                                             {
-                                                recent.length > 0 ?
-                                                    recent.map(
+                                                wishList.length > 0 ?
+                                                    wishList.map(
                                                         (item, index) => {
                                                             return <li key={index} >
-                                                                <ProductCard key={index} className="items" cardTitle={item.cardTitle} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
+                                                                <ProductCard key={index} onClick={() => goToProductPage(item, index)} className="items" cardTitle={item.title} vendor={item.vendor} price={item.price} currency={item.currency} image={item.image} itemURL={item.itemURL} />
                                                             </li>;
                                                         }
                                                     ) :
@@ -267,4 +293,11 @@ const Profile = (props) => {
     );
 };
 
-export default withRouter(Profile);
+
+
+const mapToProps = dispatch => {
+    return {
+        sendingItemArray: (item) => dispatch(ChosenItem(item))
+    };
+};
+export default connect(null, mapToProps)(withRouter(Profile));

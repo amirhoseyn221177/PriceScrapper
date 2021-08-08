@@ -28,31 +28,36 @@ var SignUp = async (email, password, FirstName, LastName) => {
  * 
  * @param {String} email --- for Finding the user  
  * @param {String} password -- comapring the hashes to make sure user is authenticated 
- * @returns {String} ---- returns a token if successful
  */
 
 
 var Login = async (email, password) => {
     const user = await User.findOne({ email: email });
-    if (await user) {
-        let hashPass = await user.password;
-        let result = await bcrypt.compare(password, hashPass);
-        if (result) {
-            let token = jwt.sign({ username: email, password }, ACCESS_TOKEN, {
-                algorithm: 'HS256',
-                expiresIn: '2h'
-            });
-            return new Promise((res, rej) => {
-                res(`Bearer ${token}`);
-            });
-        } else {
-            throw new Error(" wrong password");
-        }
-    } else {
-        throw new Error(" no such a user");
-    }
+    console.log(user)
+    let hashPass = await user.password;
+    let result = await bcrypt.compare(password, hashPass);
 
+    return new Promise(async(res,rej)=>{
+        if (result) {
+                let token = jwt.sign({ username: email, password,Name:(user.FirstName + "" + user.LastName) }, ACCESS_TOKEN, {
+                    algorithm: 'HS256',
+                    expiresIn: '2h'
+                })
+                res(token)        
+        }
+    })
+ 
 };
+
+
+/**
+ * 
+ * @param {String} token
+ * @abstract --- makes sure that user is authenticated 
+ */
+var authenticate=(token)=>{
+    jwt.verify(token.split(" ")[1],ACCESS_TOKEN)
+}
 
 
 
@@ -97,14 +102,17 @@ var updatePassword = async (email, password) => {
 };
 
 
-var updateUserInfo = async (email = null, token, firstName = null, lastName = null, password) => {
-    const { username } = TokenDecoder(token);
-    console.log(username);
+var updateUserInfo = async (email = null, token, firstName = null, lastName = null) => {
+    const { username , password } = TokenDecoder(token);
     const user = await User.findOne({ email: username });
     email !== null ? user.email = email : null;
     firstName !== null ? user.FirstName = firstName : null;
     lastName !== null ? user.LastName = lastName : null;
     await user.save();
+    let newToken = await Login(email,password)
+    TokenDecoder(newToken)
+    return newToken
+     
 };
 
 
@@ -121,7 +129,9 @@ var getRecentViewdItems = async (token) => {
 
 var addTorecentViews = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
+    console.log(itemObject)
     const item = new Item(itemObject);
+    console.log(item)
     await Item.create(item);
     await User.updateOne({ email: username }, {
         $addToSet: { viewedItems: item }
@@ -133,6 +143,7 @@ var addTorecentViews = async (token, itemObject) => {
 var addToWishList = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
     const item = new Item(itemObject);
+    console.log(136)
     await Item.create(item);
     await User.updateOne({ email: username }, {
         $addToSet: { WishListItems: item }
@@ -144,17 +155,29 @@ var addToWishList = async (token, itemObject) => {
 var getWishListItems = async (token) => {
     const { username } = TokenDecoder(token);
     const wishListIds = await User.findOne({ email: username }).select('WishListItems');
+    console.log(wishListIds)
     const wishedItems = await Item.find({ '_id': { $in: wishListIds.WishListItems } });
     console.log(wishedItems);
     return wishedItems;
 
 };
 
+var getUserDetails= (token)=>{
+    const userDetails = TokenDecoder(token)
+    delete userDetails.password
+    return userDetails
+}
+
 
 var TokenDecoder = token => {
-    const object = jwt.verify(token, ACCESS_TOKEN);
+    const object = jwt.verify(token.split(" ")[1], ACCESS_TOKEN);
+    console.log(object)
     return object;
 };
+
+
+
+
 
 
 
@@ -178,10 +201,10 @@ var TokenDecoder = token => {
 
 
 var getAllTheUsers = async () => {
-    let allusers = await User.find({});
+    // let allusers = await User.find({});
     let allItems = await Item.find({});
-    // console.log(allItems)
-    console.log(allusers);
+    console.log(allItems)
+    // console.log(allusers);
 };
 
 
@@ -203,7 +226,10 @@ module.exports = {
     getRecentViewdItems,
     addToWishList,
     getWishListItems,
-    updateUserInfo
+    updateUserInfo,
+    authenticate,
+    TokenDecoder,
+    getUserDetails
 };
 
 

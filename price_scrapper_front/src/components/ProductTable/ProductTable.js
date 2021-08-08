@@ -13,7 +13,6 @@ import Pagination from '@material-ui/lab/Pagination';
 import { ChosenItem } from "../Actions/actions";
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles } from '@material-ui/core/styles';
 
 const options = [
     'Highest Rating',
@@ -25,18 +24,9 @@ const options = [
 const categories = ["Clothing", "Shoes", "Computers", "Cars"];
 
 let searchDivClass = "searchDivNone"
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        '& > * + *': {
-            marginLeft: theme.spacing(2),
-        },
-    },
-}));
 
 const ProductTable = (props) => {
 
-    const classes = useStyles();
     const [ebayArray, setEbayArray] = useState([]);
     // const [stockXArray, setStockXArray] = useState([]);
     const [amazonArray, setAmazonArray] = useState([]);
@@ -514,16 +504,11 @@ const ProductTable = (props) => {
                                 />
                             </li>
                         </ul>
-                        {shouldspinner === false ?
-                            <Table className="productTable">
+                        <Table className="productTable">
                                 <Tbody>
                                     {productCardsJSX}
                                 </Tbody>
-                            </Table> :
-                            (<div className="spinner">
-                                <CircularProgress />
-                            </div>)
-                        }
+                            </Table> 
                     </div>
                 </div>
                 : <div />}

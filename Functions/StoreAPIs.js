@@ -18,7 +18,7 @@ let ebay = new Ebay({
 var AmazonResult = async (searchParam, country = null, startPoint, sortVariable = null) => {
     const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "US" }); //default country is Canada
     console.log(startPoint);
-    return { result: sortAmazonItems(sortVariable, products.result).splice((startPoint - 1) * 3, 3), totalLength: products.result.length };
+    return { result: sortAmazonItems(sortVariable, products.result).splice((startPoint - 1) * 3, 6), totalLength: products.result.length };
 };
 
 
@@ -26,7 +26,7 @@ var EbayResult = async (searchText, startPoint, sortVariable = null) => {
     console.log(startPoint);
     let product = await ebay.findItemsByKeywords({ keywords: searchText });
     return {
-        result: sortEbayItems(sortVariable, product[0].searchResult[0].item).splice((startPoint - 1) * 3, 3),
+        result: sortEbayItems(sortVariable, product[0].searchResult[0].item).splice((startPoint - 1) * 3, 6),
         totalLength: product[0].searchResult[0].item.length
     };
 };

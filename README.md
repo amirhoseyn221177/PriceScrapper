@@ -1,67 +1,74 @@
-# FullStack455
+# Price Scrapper
+CPSC 455 Project: Team merge-conflict
+
+**Price Scrapper provides a centralized experience by allowing everyday consumers to browse amongst the most popular e-commerce vendors in finding the best/lowest price for items they wish to purchase without navigating through various vendors.**
 
 
-# Team Name: merge-conflict
-
-### Team: 
-- Alireza Ghiam - j6i2b
-- Satyak Handa - y6i2b
-- Amy Yung - g8y9a 
-- Amir Sayyar - e7h2b1
-
-## Project Description:
-This project aims to assist people in finding the best/lowest price for products they wish to purchase. Our website compares prices among various vendors such as Amazon and Ebay in order to find the best price. This provides a centralized experience for consumers where they can look at the most popular e-commerce websites all on our website.
-
-### Who is it for?
-- Everyday Consumers for online shopping.
-
-### What will it do?
-- Simplify finding the best and lowest price for a specific product which is available on the internet.
-
-### What type of data will it store?
-- Account information (email and password)
-- Recently viewed items
-- Reviews on items
-- Purchases
-
-### What will users be able to do with this data?
-- Guidance for finding the cheapest and best reviewed product in which they are looking for.
-
-### What is some additional functionality you can add/remove based on time constraints?
-- Using an encrypted login system with email and password to be able to access recently viewed items, purchases and reviews. 
-- Adding some statistics on purchases.
-- Enabling reviews for purchases through accounts.
-
-## Project Task Requirements:
-
-### 3-5 minimal requirements (will definitely complete)
-- Product Querying (Search for T-Shirt, Car, Electronics, etc)
-- Display item and associated information
-- Web Scraping/using API's for specific sellers to gather information on queried items
-
-### 3-7 "standard" requirements (will most likely complete)
-- Product Ordering (High to Low, Low to High, Most Reviews, etc)
-- Product Statistics (Mean price, Standard Deviation, Mean, etc)
-- Login and registration of a personal account
-- Recently purchased
-- Recently viewed
-
-### 2-3 stretch requirements (plan to complete at least 1!)
-- Having a review system for products through account. (Star and comments)
-- Having a communication centre between buyer and seller (Chat system).
-
-### Pick 2 of your minimal requirements and break each of them down into ~2-5 smaller tasks!
-- Product Statistics (display item and associated information)
-  - Display (Searched) Product Image
-  - Display (Searched)  Product Link to associated sites
-  - Display  (Searched) Product Price
-- Product Ordering
-  - Building check boxes for items
-  - Building specific categories for items and specific identifiers
+## Project description
+Price Scrapper aims to assist everyday consumers in finding the best/lowest price for items they wish to purchase. Consumers have an option of accessing the website as a guest or a user. The difference between the two is that user's get the option of viewing their recently visited items and keep track of items they want to purchase later in a wish list. Consumers have an option to choose between vendors such as only viewing items on Amazon or only on Ebay or even both. They also have the option to sort through their search results to either view high/low price or high/low rating first.
 
 
+## Project task requirements
 
-## Brief sketch of our website
+|          | Tasks                                                                                                                   | Completed?             |
+|----------|------------------------------------------------------------------------------------------------------------------------|-------------------------|
+| **Minimum**  | Product Querying (searching for clothing, cars, electronics, etc)                                                  | :heavy_check_mark:      |
+|          | Display item and associated information                                                                                | :heavy_check_mark:      |
+|          | Web Scraping/using API's for specific sellers to gather information on queried items                                   | :heavy_check_mark:      |
+| **Standard** | Product Ordering (High to Low, Low to High, Most Reviews, etc)                                                     | :heavy_check_mark:      |
+|          | Product Statistics (Mean price, Standard Deviation, Mean, etc)                                                         | :heavy_check_mark:      |
+|          | Login and registration of a personal account                                                                           | :heavy_check_mark:      |
+|          | Recently viewed                                                                                                        | :heavy_check_mark:      |
+| **Stretch**  | Having a review system for products through account. (Star and comments)                                           | :heavy_check_mark:      |
+|          | Having a communication centre between buyer and seller (Chat system)                                                   | :x:                     |
+
+## Unit 1-5 Learning Goals:
+### Unit 1: HTML, CSS, JS
+Our frontend components are either from React Bootstrap or Material-UI. However, they are heavily customized to fit our needs with HTML and CSS. These components are integrated into our app with JSX which is the syntax extenstion of JavaScript in React.
+
+### Unit 2: React & Redux
+Most of our frontend components are resuable React components such as Product Card, Product Table and Suggested Item carousel. We used redux
+
+
+### Unit 3: Mongo DB
+Our database is hosted on MongoDB which contains all our user information such as their first and last name, email, recently viewed list and wish list.
+Since MongoDB is a NoSQL database, it allows us to easily customize a schema using Mongoose to store various information for each user.
+
+### Unit 4: Node & Express
+Node and Express was used to implement our endpoints.
+
+### Unit 5: Release Engineering
+Price Scrapped is deployed and hosted on Azure.
+
+## Above and Beyond Functionalities
+### Custom links for items
+
+### Wishlist
+Adding a wishlist was not part of our plan, but we decided to add this as this would prove to be a useful feature for users who may want to purchase an item, but want to wait for a lower price drop.
+
+### Deployment with Azure
+We chose to deploy Price Scrapper on Azure instead of Heroku which most teams decided to deploy onto because Azure allows more freedom and customization to how we want to deploy.
+
+
+## Next steps
+We have completed all our standard requirements and one of our stretch goals. Next steps would be completing the remaining stretch goal which would be add a way of communication between buyer and seller. Moreover, we also plan on adding notifications to users who have signed up about a price drop to items on their wishlist. Lastly, the UI could be improved with more responsiveness.
+
+## List of Contributions
+
+### Amy Yung (g8y9a): 
+Mostly worked on implementing frontend components such as search bar, suggested item carousel, side menu and navigation bar, designed layout and added responsiveness where possible, connected backend API calls to frontend components for a user's profile page, did initial setup with basic components and layout and assisted other team members.
+
+### Alireza Ghiam (j6i2b): 
+Designed inital layout of all pages and helped setup redux, mostly worked on the product details page with adding reviews, ratings, average price and other information fromt the vendor APIs and assisted other team members.
+
+
+### Amir Sayyar (e7h2b): 
+Did inital setup with React App and MongoDB, deployed project onto Azure, mostly worked on backend with authentication, setting up API calls to vendors and MongoDB, added pagination and loading spinner for search results and assisted other team members.
+
+### Satyak Handa (y6i2b): 
+Researched and added suitable vendors to scrape information from, connected vendor APIs to search results table, added a vendor filter and assisted other team members.
+
+## Brief sketch of our initial layout
 
 ### Page One
 ![alt text](./firstPage.png)

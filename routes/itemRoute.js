@@ -1,5 +1,5 @@
 const route = require("express").Router();
-const { User, mostPopularItems } = require("../Mongoose/models");
+const { User, Review, mostPopularItems } = require("../Mongoose/models");
 const { TokenDecoder, getRecentViewdItems, getWishListItems, addTorecentViews, addToWishList, authenticate } = require("../Functions/userInfo");
 const chalk = require("chalk");
 
@@ -40,6 +40,37 @@ route.get('/getRecentlyViewed', async (req, res) => {
 
 });
 
+
+route.post('/getReviews', async (req, res) => {
+    var itemURL = req.body.itemURL;
+    var title = req.body.title;
+    var FirstName = req.body.FirstName;
+    var LastName = req.body.LastName;
+    var review = req.body.review;
+    var newReview = new Review({
+        itemURL,
+        title,
+        FirstName,
+        LastName,
+        review
+    });
+
+    newReview.save()
+    .then(() => res.json('Review Added!'))
+    .catch(err => res.status(400).json('Error: ' + err))
+});
+
+route.get('/getReviews', async (req, res) => {
+    Review.find()
+    .then(review => res.json(review))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
+route.delete('/getReviews/:id', async (req, res) => {
+    Review.find()
+    .then(review => res.json(review))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
 route.get("/getWishList", async (req, res) => {
     try {

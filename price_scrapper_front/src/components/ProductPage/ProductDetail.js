@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
 import qs from 'qs'
+import { get } from "mongoose";
+import { red } from "@material-ui/core/colors";
 
 const ProductDetail = (props) => {
     console.log(13)
@@ -17,6 +19,9 @@ const ProductDetail = (props) => {
     var setProductIndex = (index) => {
         setIndex(index);
     }
+    const [listReview, setListReview] = useState([]);
+    var [rev, setReview] = useState("");
+    const [loadedReview, setLoadedReview] = useState([]);
 
     console.log(productInfoFromPath)
 
@@ -40,7 +45,73 @@ const ProductDetail = (props) => {
 
     }
 
+    async function addReview() {
+        console.log("hi")
+        try{
+            let token = localStorage.getItem("token");
+            const  resp = await axios.get('/api/user/userinfo', {headers: {
+                "Authorization": token
+            }})
+            const data = await resp.data
+            console.log(data)
+            var FirstName = data.Name;
+            console.log(FirstName)
+            }catch(e){
+            console.log(e.message)
+        }
+        let token = localStorage.getItem("token");
+        var itemURL = itemFromPath.itemURL;
+        var title = itemFromPath.title;
+        // var FirstName = itemFromPath.FirstName;
+        var LastName = itemFromPath.LastName;
+        var review = rev;
+        console.log(review);
+        var newReview = {
+            itemURL,
+            title,
+            FirstName,
+            LastName,
+            review
+        };    
+        console.log(newReview);
+        const data = await (await axios.post('/api/items/getReviews', newReview, {
+            headers: {
+                "Authorization": token
+            }
+        })).data;
+      }
 
+      async function getReview() {
+        const result = {};
+        try{
+            let token = localStorage.getItem("token");
+            const  resp = await axios.get('/api/items/getReviews', {headers: {
+                "Authorization": token
+            }})
+            const data = await resp.data
+            console.log(data)
+            if(data.length>0){
+                data.map(item => {
+                    console.log(itemFromPath.itemURL)
+                    console.log(item.itemURL)
+                    if(item.itemURL ===  itemFromPath.itemURL){
+                        setListReview(prev=>[...prev,item])
+                    }
+                })
+                setLoadedReview(data)
+            }
+        }catch(e){
+            console.log(e.message)
+        }
+      }
+
+      console.log(itemFromPath.itemURL)
+
+      useEffect(()=>{
+          getReview()
+      },[itemFromPath])
+
+      console.log(loadedReview)
 
 
     function addToWishlist() {

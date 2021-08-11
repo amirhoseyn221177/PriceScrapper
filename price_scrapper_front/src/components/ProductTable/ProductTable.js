@@ -92,6 +92,7 @@ const ProductTable = (props) => {
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
             console.log("this is amazon" + amazonItemArr);
+            // console.log(amazonItemArr[0].reviews.rating)
             setAmazonNumber(amazonJSON.totalLength);
             setAmazonArray(amazonItemArr);
         } catch (e) {
@@ -191,8 +192,9 @@ const ProductTable = (props) => {
             let currency = await item.price.currency;
             let image = await item.thumbnail;
             let itemURL = await item.url;
-
-            let amazonObject = { title, vendor, price, currency, image, itemURL };
+            let rating = "";
+            if (item.reviews.rating) rating = await item.reviews.rating.toString();
+            let amazonObject = { title, vendor, price, currency, image, itemURL, rating };
             currProductsArray.push(amazonObject);
 
         });
@@ -249,7 +251,7 @@ const ProductTable = (props) => {
 
     function addToRecentlyViewed(item) {
         let token = localStorage.getItem("token");
-
+        console.log(item);
         axios.post('/api/items/addToRecent', { item }, {
             headers: {
                 "Authorization": token
@@ -265,10 +267,10 @@ const ProductTable = (props) => {
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
         let arr = JSON.stringify(productInfoArray);
-        let base64Products = Buffer.from(arr).toString("base64");
+        let encodedItems = encodeURIComponent(arr);
         props.history.push({
             pathname: `/productdetail/${base64Item}/${index}`,
-            search: `base64product=${base64Products}`
+            search: `base64product=${encodedItems}`
         });
     };
 
@@ -331,12 +333,12 @@ const ProductTable = (props) => {
 
     let dontRunFirstTime = useRef(true);
     useEffect(async () => {
-        setSpinner(true)
+        setSpinner(true);
         if (dontRunFirstTime.current) {
             dontRunFirstTime.current = false;
             return;
         }
-        await callAPIBundle()
+        await callAPIBundle();
     }, [startPoint]);
 
     async function filterItemArray(val) {
@@ -348,7 +350,7 @@ const ProductTable = (props) => {
         // setproductInfoArray(newList)
     }
 
-     async function searchNow (searchValue) {
+    async function searchNow(searchValue) {
         await callAPIBundle();
         // console.log(searchValue)
     }
@@ -359,7 +361,7 @@ const ProductTable = (props) => {
     }, [ebayArray, amazonArray]);
 
     useEffect(() => {
-        console.log(362)
+        console.log(362);
         createProductCards();
     }, [productInfoArray]);
 
@@ -432,40 +434,40 @@ const ProductTable = (props) => {
                 <div className="optionsDiv">
                     <div className="filterPage" >
                         <div>
-                        <FormControlLabel
-                            control={<Checkbox name="SomeName" value="Amazon" />}
-                            label="Amazon"
-                            onChange={(e) => {
-                                // console.log("CURRENT EBAY STATE", ebayState)
-                                // let newEbayState = !ebayState
-                                // setEbayState(newEbayState)
-                                // console.log("NEW EBAY STATE", ebayState)
-                                console.log("CURRENT EBAY STATE", checkboxStates[1]);
-                                let newCheckboxState = checkboxStates;
-                                newCheckboxState[1] = !newCheckboxState[1];
-                                setCheckboxStates(newCheckboxState);
-                                console.log("NEW EBAY STATE", checkboxStates[1]);
-                                filterItemArray(searchText);
-                            }}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox name="SomeName" value="Ebay" />}
-                            label="Ebay"
-                            onChange={(e) => {
-                                // console.log("CURRENT AMAZON STATE", amazonState)
-                                // let newAmazonState = !amazonState
-                                // setAmazonState(newAmazonState)
-                                // console.log("NEW AMAZON STATE", amazonState)
-                                console.log("CURRENT AMAZON STATE", checkboxStates[0]);
-                                let newCheckboxState = checkboxStates;
-                                newCheckboxState[0] = !newCheckboxState[0];
-                                setCheckboxStates(newCheckboxState);
-                                console.log("NEW AMAZON STATE", checkboxStates[1]);
-                                filterItemArray(searchText);
-                            }}
-                        />
+                            <FormControlLabel
+                                control={<Checkbox name="SomeName" value="Amazon" />}
+                                label="Amazon"
+                                onChange={(e) => {
+                                    // console.log("CURRENT EBAY STATE", ebayState)
+                                    // let newEbayState = !ebayState
+                                    // setEbayState(newEbayState)
+                                    // console.log("NEW EBAY STATE", ebayState)
+                                    console.log("CURRENT EBAY STATE", checkboxStates[1]);
+                                    let newCheckboxState = checkboxStates;
+                                    newCheckboxState[1] = !newCheckboxState[1];
+                                    setCheckboxStates(newCheckboxState);
+                                    console.log("NEW EBAY STATE", checkboxStates[1]);
+                                    filterItemArray(searchText);
+                                }}
+                            />
+                            <FormControlLabel
+                                control={<Checkbox name="SomeName" value="Ebay" />}
+                                label="Ebay"
+                                onChange={(e) => {
+                                    // console.log("CURRENT AMAZON STATE", amazonState)
+                                    // let newAmazonState = !amazonState
+                                    // setAmazonState(newAmazonState)
+                                    // console.log("NEW AMAZON STATE", amazonState)
+                                    console.log("CURRENT AMAZON STATE", checkboxStates[0]);
+                                    let newCheckboxState = checkboxStates;
+                                    newCheckboxState[0] = !newCheckboxState[0];
+                                    setCheckboxStates(newCheckboxState);
+                                    console.log("NEW AMAZON STATE", checkboxStates[1]);
+                                    filterItemArray(searchText);
+                                }}
+                            />
                         </div>
-                   
+
 
                         <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
                             className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
@@ -504,9 +506,9 @@ const ProductTable = (props) => {
                                 {productCardsJSX}
                             </tbody>
                         </Table> :
-                            (<div className="spinner">
-                                <CircularProgress />
-                            </div>)
+                        (<div className="spinner">
+                            <CircularProgress />
+                        </div>)
                     }
 
                 </div>

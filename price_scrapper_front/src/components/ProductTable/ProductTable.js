@@ -338,7 +338,7 @@ const ProductTable = (props) => {
             dontRunFirstTime.current = false;
             return;
         }
-        await callAPIBundle();
+        await callAPIBundle()
     }, [startPoint]);
 
     async function filterItemArray(val) {

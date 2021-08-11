@@ -27,7 +27,7 @@ Price Scrapper aims to assist everyday consumers in finding the best/lowest pric
 Our frontend components are either from React Bootstrap or Material-UI. However, they are heavily customized to fit our needs with HTML and CSS. These components are integrated into our app with JSX which is the syntax extenstion of JavaScript in React.
 
 ### Unit 2: React & Redux
-Most of our frontend components are resuable React components such as Product Card, Product Table and Suggested Item carousel. We used redux
+Most of our frontend components are resuable React components such as Product Card, Product Table and Suggested Item carousel. We used redux to pass around the authentication token associated with the user in order to authenticate them and to pass around items that need to be showcased.
 
 ### Unit 3: Mongo DB
 Our database is hosted on MongoDB which contains all our user information such as their first and last name, email, recently viewed list and wish list.
@@ -42,9 +42,10 @@ Price Scrapper is deployed and hosted on Azure. Our team also used Github Action
 
 ## Above and Beyond Functionalities
 ### Custom links for items
+Initially, we did not have custom links for each item due to technical difficulties. However, we decided to work through those issue to create custom links so users can easily share them to their friends or family.
 
-### Wish list
-Adding a wish list was not part of our plan, but we decided to add this as this would prove to be a useful feature for users who may want to purchase an item, but want to wait for a lower price drop.
+### Wish list and popular searches
+Adding a wish list and popular searches was not part of our plan, but we decided to add these features since they enhance the overall experience for users. The wish list allow users to keep track of items they want to purchase in the future and popular searches allow users to stay with the current trend and purchase the hottest items on the market.
 
 ### Deployment with Azure
 We chose to deploy Price Scrapper on Azure instead of Heroku which most teams decided to deploy onto because Azure has a better CI/CD pipeline and gives users more flexibility when creating that pipeline. Moreover, it is more secure and credible than Heroku.

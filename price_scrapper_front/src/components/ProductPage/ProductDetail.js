@@ -179,7 +179,7 @@ const ProductDetail = (props) => {
                                         </div>
                                         <br />
                                         <br />
-                                        <TextareaAutosize id="textArea" rows={4} minRows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
+                                        <TextareaAutosize data-role="none" style={{resize: "none", overflow: "scroll"}} id="textArea" rows={4} maxRows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
                                         <br />
                                         <br />
                                         <br />

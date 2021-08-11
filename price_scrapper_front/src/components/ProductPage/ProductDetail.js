@@ -148,16 +148,23 @@ const ProductDetail = (props) => {
             <p>
                 Average Price: {averagePrice()}
             </p>
-            <p style = {{color: "red"}}>
+            {
+                localStorage.getItem("token") ?
+                    <div>
+                        <p style = {{color: "red"}}>
                 Reviews: {listReview.map(item=>(
                     <p color> {item.review}</p>
                 ))}
             </p>
             <input id="review" type="text" placeholder="Write A Review" size = "50" onChange={e => setReview(e.target.value)} />
+            {/* <input type="button" value="Submit Review" onClick={() => addReview()} /> */}
             <br />
             <br />
-            <input type="button" value="Submit" onClick={() => addReview()} />
-            <br />
+                    <Button variant="contained" color="primary" onClick={() => addReview()}>
+                    Submit Review
+                    </Button>
+                    </div>: null
+            }
             <br />
             <a href={itemFromPath.itemURL}>
                 <Button variant="contained" color="primary">

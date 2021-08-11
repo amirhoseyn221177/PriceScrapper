@@ -18,7 +18,7 @@ const Header = (props) => {
                             <ul>
                                 <li><Link to="/home"> Home </Link></li>
                                 <li><Link to="/profile"> Profile </Link></li>
-                                <li><Button onClick={logOut}>Logout</Button></li>
+                                <li><Button id="logoutBtn" onClick={logOut}>Logout</Button></li>
                             </ul>
 
                         )

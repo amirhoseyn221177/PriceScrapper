@@ -8,6 +8,11 @@ button.MuiButton-containedPrimary:hover {
     margin: 30px;
     width: 18rem;
     height: 24rem;
+    border-radius: 30px;
+}
+
+.productCard:hover {
+    box-shadow: 10px 10px 8px #888888;
 }
 
 .cardBody {

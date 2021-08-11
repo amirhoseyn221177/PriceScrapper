@@ -428,66 +428,15 @@ const ProductTable = (props) => {
                 <div className="optionsDiv">
                     <div className="filterPage" >
                         <div>
-                            <FormControlLabel
-                                control={<Checkbox name="SomeName" value="Amazon" />}
-                                label="Amazon"
-                                onChange={(e) => {
-                                    // console.log("CURRENT EBAY STATE", ebayState)
-                                    // let newEbayState = !ebayState
-                                    // setEbayState(newEbayState)
-                                    // console.log("NEW EBAY STATE", ebayState)
-                                    console.log("CURRENT EBAY STATE", checkboxStates[1]);
-                                    let newCheckboxState = checkboxStates;
-                                    newCheckboxState[1] = !newCheckboxState[1];
-                                    setCheckboxStates(newCheckboxState);
-                                    console.log("NEW EBAY STATE", checkboxStates[1]);
-                                    filterItemArray(searchText);
-                                }}
-                            />
-                            <FormControlLabel
-                                control={<Checkbox name="SomeName" value="Ebay" />}
-                                label="Ebay"
-                                onChange={(e) => {
-                                    // console.log("CURRENT AMAZON STATE", amazonState)
-                                    // let newAmazonState = !amazonState
-                                    // setAmazonState(newAmazonState)
-                                    // console.log("NEW AMAZON STATE", amazonState)
-                                    console.log("CURRENT AMAZON STATE", checkboxStates[0]);
-                                    let newCheckboxState = checkboxStates;
-                                    newCheckboxState[0] = !newCheckboxState[0];
-                                    setCheckboxStates(newCheckboxState);
-                                    console.log("NEW AMAZON STATE", checkboxStates[1]);
-                                    filterItemArray(searchText);
-                                }}
-                            />
-                        </div>
-
-
-                        <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
-                            className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
-                        <List className="sort" component="nav" aria-label="Device settings">
-                            <ListItem
-                                button
-                                aria-haspopup="true"
-                                aria-controls="lock-menu"
-                                aria-label="Sort By:"
-                                onClick={handleClickListItem}
-                            >
-                                <ListItemText primary={`Sort by: ${options[selectedIndex]}`} />
-                            </ListItem>
-                        </List>
-                        <Menu
-                            id="lock-menu"
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={Boolean(anchorEl)}
-                            onClose={handleCloseSort}
-                        >
-                            {options.map((option, index) => (
-                                <MenuItem
-                                    key={option}
-                                    selected={index === selectedIndex}
-                                    onClick={(event) => handleMenuItemClick(event, index)}
+                            <Pagination style={{ position: 'relative', zIndex: "-10" }} page={startPoint} onChange={(e, value) => setStartPoint(value)}
+                                className="pagination" count={totalItem} shape="rounded" variant="outlined" color="standard" />
+                            <List className="sort" component="nav" aria-label="Device settings">
+                                <ListItem
+                                    button
+                                    aria-haspopup="true"
+                                    aria-controls="lock-menu"
+                                    aria-label="Sort By:"
+                                    onClick={handleClickListItem}
                                 >
                                     <ListItemText id="sortBy" primary={`Sort by: ${options[selectedIndex]}`} />
                                 </ListItem>
@@ -511,17 +460,59 @@ const ProductTable = (props) => {
                             </Menu>
                         </div>
                     </div>
-                    {shouldspinner === false ?
-                        <Table className="productTable">
-                            <tbody>
-                                {productCardsJSX}
-                            </tbody>
-                        </Table> :
-                        (<div className="spinner">
-                            <CircularProgress />
-                        </div>)
-                    }
-
+                    <div className="vendors">
+                        <ul className="vendorList">
+                            <li id="vendor">
+                                <h3>Vendors</h3>
+                            </li>
+                            <li id="vendor">
+                                <FormControlLabel
+                                    control={<Checkbox name="Amazon" value="Amazon" />}
+                                    label="Amazon"
+                                    onChange={(e) => {
+                                        // console.log("CURRENT EBAY STATE", ebayState)
+                                        // let newEbayState = !ebayState
+                                        // setEbayState(newEbayState)
+                                        // console.log("NEW EBAY STATE", ebayState)
+                                        console.log("CURRENT EBAY STATE", checkboxStates[1])
+                                        let newCheckboxState = checkboxStates
+                                        newCheckboxState[1] = !newCheckboxState[1]
+                                        setCheckboxStates(newCheckboxState)
+                                        console.log("NEW EBAY STATE", checkboxStates[1])
+                                        filterItemArray(searchText)
+                                    }}
+                                />
+                            </li>
+                            <li id="vendor">
+                                <FormControlLabel
+                                    control={<Checkbox name="Ebay" value="Ebay" />}
+                                    label="Ebay"
+                                    onChange={(e) => {
+                                        // console.log("CURRENT AMAZON STATE", amazonState)
+                                        // let newAmazonState = !amazonState
+                                        // setAmazonState(newAmazonState)
+                                        // console.log("NEW AMAZON STATE", amazonState)
+                                        console.log("CURRENT AMAZON STATE", checkboxStates[0])
+                                        let newCheckboxState = checkboxStates
+                                        newCheckboxState[0] = !newCheckboxState[0]
+                                        setCheckboxStates(newCheckboxState)
+                                        console.log("NEW AMAZON STATE", checkboxStates[1])
+                                        filterItemArray(searchText)
+                                    }}
+                                />
+                            </li>
+                        </ul>
+                        {shouldspinner === false ?
+                            <Table className="productTable">
+                                <tbody>
+                                    {productCardsJSX}
+                                </tbody>
+                            </Table> :
+                            (<div className="spinner">
+                                <CircularProgress />
+                            </div>)
+                        }
+                    </div>
                 </div>
                 : <div />}
         </Fragment>

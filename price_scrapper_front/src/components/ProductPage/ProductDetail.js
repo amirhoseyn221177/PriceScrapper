@@ -65,49 +65,59 @@ const ProductDetail = (props) => {
     console.log(index)
     return (
         <div className="cardInfo">
-            <Card id="cardDetail">
-                <Card.Img variant="top" src={itemFromPath.image} width='640' height='480' />
-                <Card.Body className="cardBody">
+        <div className="cardContents">
+            <Card style={{height: '500px'}} id="cardDetail">
+                <div class="row">
+                    <div class="column">
+                    <Card.Img style={{ paddingTop: '25%' }} variant="top" src={itemFromPath.image} width='300' height='200' />
+                    <br/>
+                    <br/>
+                    <Card.Title className="cardDetailsTitle">{itemFromPath.title}</Card.Title>
+                    </div>
+                    <div class="column">
+                    <Card.Body className="cardDetailsBody">
+                    <Card.Text>
+                        <p>
+                            Vendor: {itemFromPath.vendor}
+                        </p>
+                        <p>
+                            Price: {itemFromPath.price} {itemFromPath.currency}
+                        </p>
+                        <p>
+                            <StarRating />
+                        </p>
+                        <p>
+                            Description:
+                        </p>
+                        <p>
+                            Reviews:
+                        </p>
+                        <p>
+                            Average Price: {averagePrice()}
+                        </p>
+                        <a href={itemFromPath.itemURL}>
+                            <Button id="buyBtn" variant="contained" color="primary">
+                                Buy product!
+                            </Button>
+                        </a>
+                        <br />
+                         <br />
+                        {
+                            localStorage.getItem("token") ?
+                                <Button variant="contained" color="primary" onClick={() => { addToWishlist() }}>
+                                    Add to wishlist
+                                </Button> : null
+                        }
+                    </Card.Text>
                 </Card.Body>
+                    </div>
+                </div>
             </Card>
-            <p >
-                Name: {itemFromPath.title}
-            </p>
-            <p>
-                Vendor: {itemFromPath.vendor}
-            </p>
-            <p>
-                Price: {itemFromPath.price} {itemFromPath.currency}
-            </p>
-            <p>
-                <StarRating ratingValue={itemFromPath.rating} />
-            </p>
-            <p>
-                Description:
-            </p>
-            <p>
-                Reviews:
-            </p>
-            <p>
-                Average Price: {averagePrice()}
-            </p>
-            <a href={itemFromPath.itemURL}>
-                <Button variant="contained" color="primary">
-                    Buy product!
-                </Button>
-            </a>
-            <br />
-            <br />
-            {
-                localStorage.getItem("token") ?
-                    <Button variant="contained" color="primary" onClick={() => {addToWishlist()}}>
-                        Add to wishlist
-                    </Button> : null
-            }
-            <SuggestedItems
-                allItems={productInfoFromPath} setProductIndex={setProductIndex}
-            />
         </div>
+        <SuggestedItems
+            allItems={productInfoFromPath} setProductIndex={setProductIndex}
+        />
+    </div>
     )
 }
 

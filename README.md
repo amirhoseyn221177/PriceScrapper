@@ -65,7 +65,7 @@ Designed inital layout of all pages and helped setup redux, mostly worked on the
 Did inital setup with React App and MongoDB, deployed project onto Azure, mostly worked on backend with authentication, setting up API calls to vendors and MongoDB, added pagination and loading spinner for search results and assisted other team members.
 
 ### Satyak Handa (y6i2b): 
-Researched and added suitable vendors to scrape information from, connected vendor APIs to search results table, added a vendor filter and assisted other team members.
+Researched and added suitable vendors to scrape information from, connected vendor APIs to search results table, added a vendor filter, made suggested items carousel to dynamically load items and assisted other team members.
 
 ## Brief sketch of our initial layout
 

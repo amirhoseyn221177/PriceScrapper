@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
 import qs from 'qs'
+import { get } from "mongoose";
 
 const ProductDetail = (props) => {
     console.log(13)
@@ -17,7 +18,7 @@ const ProductDetail = (props) => {
     var setProductIndex = (index) => {
         setIndex(index);
     }
-    var [review, setReview] = useState("");
+    var [rev, setReview] = useState("");
     const [loadedReview, changeLoadedReview] = useState([]);
 
     console.log(productInfoFromPath)
@@ -43,11 +44,13 @@ const ProductDetail = (props) => {
     }
 
     async function addReview() {
+        let token = localStorage.getItem("token");
         var itemURL = itemFromPath.itemURL;
         var title = itemFromPath.title;
         var FirstName = itemFromPath.FirstName;
         var LastName = itemFromPath.LastName;
-        var review = review;
+        var review = rev;
+        console.log(review);
         var newReview = {
             itemURL,
             title,
@@ -56,17 +59,29 @@ const ProductDetail = (props) => {
             review
         };    
         console.log(newReview);
-        const data = await (await axios.post('/api/items/getReviews', newReview)).data;
+        const data = await (await axios.post('/api/items/getReviews', newReview, {
+            headers: {
+                "Authorization": token
+            }
+        })).data;
       }
 
       async function getReview() {
-        axios.get("http://localhost:8080/getReviews")
-        .then(response => {
+        const result = {};
+        let token = localStorage.getItem("token");
+        console.log("yo")
+        axios.get('/api/items/getReviews', {headers: {
+            "Authorization": token
+        }}).then(response => {
             console.log(response.data)
             changeLoadedReview(response.data)
         }).catch(e=>{
             console.log(e)
         })
+        // for(let i = 0; i < productInfoFromPath.length; i++) {
+        //     sum = sum + parseInt(productInfoFromPath[i].price,10);
+        // }
+        return loadedReview;
       }
 
     function addToWishlist() {
@@ -112,18 +127,17 @@ const ProductDetail = (props) => {
                 Description:
             </p>
             <p>
-                Reviews:
+                Average Price: {averagePrice()}
+            </p>
+            <p>
+                Reviews: {getReview()}
             </p>
             <input id="review" type="text" placeholder="review" onChange={e => setReview(e.target.value)} />
             <br />
             <br />
             <input type="button" value="Submit" onClick={() => addReview()} />
-            <p>
-                Average Price: {averagePrice()}
-            </p>
-            <p>
-                {/* {getReview()} */}
-            </p>
+            <br />
+            <br />
             <a href={itemFromPath.itemURL}>
                 <Button variant="contained" color="primary">
                     Buy product!

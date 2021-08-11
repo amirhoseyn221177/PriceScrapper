@@ -46,10 +46,23 @@ const ProductDetail = (props) => {
     }
 
     async function addReview() {
+        console.log("hi")
+        try{
+            let token = localStorage.getItem("token");
+            const  resp = await axios.get('/api/user/userinfo', {headers: {
+                "Authorization": token
+            }})
+            const data = await resp.data
+            console.log(data)
+            var FirstName = data.Name;
+            console.log(FirstName)
+            }catch(e){
+            console.log(e.message)
+        }
         let token = localStorage.getItem("token");
         var itemURL = itemFromPath.itemURL;
         var title = itemFromPath.title;
-        var FirstName = itemFromPath.FirstName;
+        // var FirstName = itemFromPath.FirstName;
         var LastName = itemFromPath.LastName;
         var review = rev;
         console.log(review);
@@ -80,13 +93,11 @@ const ProductDetail = (props) => {
             if(data.length>0){
                 data.map(item => {
                     console.log(itemFromPath.itemURL)
-
                     console.log(item.itemURL)
                     if(item.itemURL ===  itemFromPath.itemURL){
                         setListReview(prev=>[...prev,item])
                     }
                 })
-                
                 setLoadedReview(data)
             }
         }catch(e){
@@ -153,7 +164,7 @@ const ProductDetail = (props) => {
                     <div>
                         <p style = {{color: "red"}}>
                 Reviews: {listReview.map(item=>(
-                    <p color> {item.review}</p>
+                    <p color> {item.FirstName} : {item.review}</p>
                 ))}
             </p>
             <input id="review" type="text" placeholder="Write A Review" size = "50" onChange={e => setReview(e.target.value)} />

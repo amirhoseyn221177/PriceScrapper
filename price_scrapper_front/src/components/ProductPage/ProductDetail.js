@@ -17,6 +17,8 @@ const ProductDetail = (props) => {
     var setProductIndex = (index) => {
         setIndex(index);
     }
+    var [review, setReview] = useState("");
+    const [loadedReview, changeLoadedReview] = useState([]);
 
     console.log(productInfoFromPath)
 
@@ -25,7 +27,8 @@ const ProductDetail = (props) => {
         let product64 =qs.parse(props.location.search)["?base64product"]
         let jsonItem = atob(base64)
         setItemFromPath(JSON.parse(jsonItem))
-        if(product64 !== undefined)setProductsFromPath(JSON.parse(atob(product64)))
+        changeLoadedReview()
+        // if(product64 !== undefined)setProductsFromPath(JSON.parse(atob(product64)))
     },[ props.match.params.item64])
 
     console.log(itemFromPath)
@@ -39,8 +42,32 @@ const ProductDetail = (props) => {
 
     }
 
+    async function addReview() {
+        var itemURL = itemFromPath.itemURL;
+        var title = itemFromPath.title;
+        var FirstName = itemFromPath.FirstName;
+        var LastName = itemFromPath.LastName;
+        var review = review;
+        var newReview = {
+            itemURL,
+            title,
+            FirstName,
+            LastName,
+            review
+        };    
+        console.log(newReview);
+        const data = await (await axios.post('/api/items/getReviews', newReview)).data;
+      }
 
-
+      async function getReview() {
+        axios.get("http://localhost:8080/getReviews")
+        .then(response => {
+            console.log(response.data)
+            changeLoadedReview(response.data)
+        }).catch(e=>{
+            console.log(e)
+        })
+      }
 
     function addToWishlist() {
         let token = localStorage.getItem("token")
@@ -87,8 +114,15 @@ const ProductDetail = (props) => {
             <p>
                 Reviews:
             </p>
+            <input id="review" type="text" placeholder="review" onChange={e => setReview(e.target.value)} />
+            <br />
+            <br />
+            <input type="button" value="Submit" onClick={() => addReview()} />
             <p>
                 Average Price: {averagePrice()}
+            </p>
+            <p>
+                {/* {getReview()} */}
             </p>
             <a href={itemFromPath.itemURL}>
                 <Button variant="contained" color="primary">

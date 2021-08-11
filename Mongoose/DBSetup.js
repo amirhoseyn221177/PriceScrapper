@@ -35,8 +35,17 @@ const allSchemas = ()=>{
 
     })
 
+    const Review = mongoose.Schema({
+        itemURL:{type : String, require : true},
+        title:{type: String , require : true},
+        FirstName:{type:String,require:true},
+        LastName:{type:String,require:true},
+        review:{type : String, require : true}
+    })
+
     mongoose.model("Item" , Item)
     mongoose.model("User",User)
+    mongoose.model("Review",Review)
 
 }
 

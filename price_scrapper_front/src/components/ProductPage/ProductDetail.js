@@ -25,10 +25,10 @@ const ProductDetail = (props) => {
     useEffect(()=>{
         let base64  = props.match.params.item64
         let product64 =qs.parse(props.location.search)["?base64product"]
+        console.log(product64)
         let jsonItem = atob(base64)
         setItemFromPath(JSON.parse(jsonItem))
-        changeLoadedReview()
-        // if(product64 !== undefined)setProductsFromPath(JSON.parse(atob(product64)))
+        if(product64 !== undefined)setProductsFromPath(JSON.parse(decodeURIComponent(product64)))
     },[ props.match.params.item64])
 
     console.log(itemFromPath)
@@ -106,7 +106,7 @@ const ProductDetail = (props) => {
                 Price: {itemFromPath.price} {itemFromPath.currency}
             </p>
             <p>
-                <StarRating />
+                <StarRating ratingValue={itemFromPath.rating} />
             </p>
             <p>
                 Description:

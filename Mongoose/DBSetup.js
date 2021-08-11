@@ -31,7 +31,8 @@ const allSchemas = ()=>{
         image: {type : String, require :true},
         imageURL : {type : String, require :true},
         itemStoreCode :{type : String, require : true},
-        itemURL:{type : String, require : true}
+        itemURL:{type : String, require : true},
+        rating: {type : String}
 
     })
 

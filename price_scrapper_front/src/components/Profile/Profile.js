@@ -11,7 +11,7 @@ const Profile = (props) => {
 
     const [recent, setRecent] = useState([]);
     const [wishList, setWishList] = useState([]);
-    const [drawer, setDrawer] = useState("Recently Viewed");
+    const [drawer, setDrawer] = useState("Profile");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [newEmail, setNewEmail] = useState("");
@@ -105,6 +105,7 @@ const Profile = (props) => {
     return (
         <div className="profileDiv">
             <Drawer
+                id="drawer"
                 variant="permanent"
                 anchor="left"
                 className="drawer"
@@ -122,8 +123,8 @@ const Profile = (props) => {
             {
                 drawer === "Profile" ?
                     (<div className="centerDiv">
-                        <h1>Profile</h1>
                         <div>
+                        <h1>Profile</h1>
                             <form noValidate>
                                 <ul className="profilePage">
                                     <li key="profileName">
@@ -142,9 +143,9 @@ const Profile = (props) => {
                     </div>)
                     : drawer === "Update Profile" ?
                         (
-                            <div className="centerDiv">
-                                <h1>Update Profile</h1>
+                            <div className="centerDivUpdate">
                                 <div>
+                                <h1>Update Profile</h1>
                                     <form noValidate>
                                         <ul className="profilePage">
                                             <li key="updateFirstName">
@@ -174,7 +175,7 @@ const Profile = (props) => {
                             </div>
                         )
                         : drawer === "Recently Viewed" ?
-                            (<div className="centerDiv">
+                            (<div className="centerDivLists">
                                 <h1>Recently Viewed</h1>
                                 <div className="viewedDiv">
                                     <ul className="viewedList" id="list">
@@ -187,14 +188,14 @@ const Profile = (props) => {
                                                         </li>;
                                                     }
                                                 ) :
-                                                <div id="empty"><p> No recently viewed items</p></div>
+                                                <h3> No recently viewed items</h3>
                                         }
                                     </ul>
                                 </div>
                             </div>)
                             :
                             (
-                                <div className="centerDiv">
+                                <div className="centerDivLists">
                                     <h1>Wishlist</h1>
                                     <div className="wishDiv">
                                         <ul className="wishList">

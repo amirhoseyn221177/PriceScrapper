@@ -11,14 +11,14 @@
     list-style-type: none;
     text-align:  center;
     height: 10%;
-    width: 70%;
+    width: 80%;
     overflow:scroll;
 }
 
 .viewedDiv, .wishDiv {
     position: fixed;
-    left: 15%;
     width: 100%;
+    left: 15%;
     text-align: center;
 }
 
@@ -48,10 +48,6 @@ form {
     margin: auto;
 }
 
-#formBtn {
-    margin: 50px 100px 10px 160px;
-}
-
 #updateBtn {
     margin: 10px;
     background-color:#2c56e0;
@@ -75,5 +71,30 @@ form ul li {
 #empty {
     z-index: -1;
     text-align: center;
-    margin: 0 auto;
+    left: 28%;
+    position: absolute;
+}
+
+#drawer {
+    z-index: 1;
+}
+
+.centerDiv {
+    margin: auto;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 30px;
+    background-color: ghostwhite;
+    width: 400px;
+    height: 260px;
+}
+
+.centerDivUpdate {
+    margin: auto;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 30px;
+    background-color: ghostwhite;
+    width: 600px;
+    height: 450px;
 }

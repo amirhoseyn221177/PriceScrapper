@@ -143,11 +143,10 @@ const ProductDetail = (props) => {
                                         <StarRating />
                                     </p>
                                     <p>
-                                        Description:
-                                    </p>
-                                    <p>
                                         Average Price: {averagePrice()}
                                     </p>
+                                    <br />
+                                    <br />
                                     <a href={itemFromPath.itemURL}>
                                         <Button id="buyBtn" variant="contained" color="primary">
                                             Buy product!

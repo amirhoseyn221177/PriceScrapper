@@ -9,6 +9,7 @@ import axios from 'axios'
 import StarRating from "./StarRating";
 import qs from 'qs'
 import { get } from "mongoose";
+import { red } from "@material-ui/core/colors";
 
 const ProductDetail = (props) => {
     console.log(13)
@@ -147,12 +148,12 @@ const ProductDetail = (props) => {
             <p>
                 Average Price: {averagePrice()}
             </p>
-            <p>
+            <p style = {{color: "red"}}>
                 Reviews: {listReview.map(item=>(
-                    <p> {item.review}</p>
+                    <p color> {item.review}</p>
                 ))}
             </p>
-            <input id="review" type="text" placeholder="review" onChange={e => setReview(e.target.value)} />
+            <input id="review" type="text" placeholder="Write A Review" size = "50" onChange={e => setReview(e.target.value)} />
             <br />
             <br />
             <input type="button" value="Submit" onClick={() => addReview()} />

@@ -384,11 +384,11 @@ const ProductTable = (props) => {
                     onCancelSearch={() => setSearchText("")}
                 />
                 <div className="filterDiv">
-                    <h3>Popular Searches: </h3>
-                    <Button onClick={() => setQuery("Nintendo Switch")}>Nintendo Switch</Button>
-                    <Button onClick={() => setQuery("Ultraboost")}>Ultraboost</Button>
-                    <Button onClick={() => setQuery("Funko POP!")}>Funko POP!</Button>
-                    <Button onClick={() => setQuery("Nike SB Dunk Low")}>Nike SB Dunk Low</Button>
+                    <h3 id="popSearchTitle">Popular Searches: </h3>
+                    <Button id="popSearch" onClick={() => setQuery("Nintendo Switch")}>Nintendo Switch</Button>
+                    <Button id="popSearch" onClick={() => setQuery("Ultraboost")}>Ultraboost</Button>
+                    <Button id="popSearch" onClick={() => setQuery("Funko POP!")}>Funko POP!</Button>
+                    <Button id="popSearch" onClick={() => setQuery("Nike SB Dunk Low")}>Nike SB Dunk Low</Button>
                 </div>
             </div>
 

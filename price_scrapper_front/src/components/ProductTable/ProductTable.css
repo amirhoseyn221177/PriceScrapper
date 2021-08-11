@@ -118,7 +118,7 @@
 
 .filterPage {
     position: absolute;
-    top: 23%;
+    top: 26%;
     width: 60%;
     height: 5%;
     z-index: 100;
@@ -130,8 +130,8 @@
     display: block;
     column-count: 1;
     width: 100%;
-    height: 65%;
-    top: 30%;
+    height: 61%;
+    top: 34%;
     left: 10%;
 }
 

@@ -47,7 +47,7 @@ Price Scrapper is deployed and hosted on Azure. Our team also used Github Action
 Adding a wish list was not part of our plan, but we decided to add this as this would prove to be a useful feature for users who may want to purchase an item, but want to wait for a lower price drop.
 
 ### Deployment with Azure
-We chose to deploy Price Scrapper on Azure instead of Heroku which most teams decided to deploy onto because Azure allows more freedom and customization to how we want to deploy.
+We chose to deploy Price Scrapper on Azure instead of Heroku which most teams decided to deploy onto because Azure has a better CI/CD pipeline and gives users more flexibility when creating that pipeline. Moreover, it is more secure and credible than Heroku.
 
 
 ## Next steps

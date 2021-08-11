@@ -39,7 +39,7 @@ var Login = async (email, password) => {
 
     return new Promise(async(res,rej)=>{
         if (result) {
-                let token = jwt.sign({ username: email, password,Name:(user.FirstName + "" + user.LastName) }, ACCESS_TOKEN, {
+                let token = jwt.sign({ username: email, password,Name:(user.FirstName + " " + user.LastName) }, ACCESS_TOKEN, {
                     algorithm: 'HS256',
                     expiresIn: '2h'
                 })

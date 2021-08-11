@@ -8,8 +8,6 @@ import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
 import qs from 'qs'
-import { get } from "mongoose";
-import { red } from "@material-ui/core/colors";
 
 const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
@@ -118,21 +116,20 @@ const ProductDetail = (props) => {
         }
     }, [])
 
-    console.log(listReview)
     return (
         <div className="cardInfo">
             <div className="cardContents">
                 <Card style={{ height: '500px' }} id="cardDetail">
-                    <div class="row">
-                        <div class="column">
+                    <div className="row">
+                        <div className="column">
                             <Card.Img style={{ paddingTop: '33%' }} variant="top" src={itemFromPath.image} width='300' height='200' />
                             <br />
                             <br />
                             <Card.Title className="cardDetailsTitle">{itemFromPath.title}</Card.Title>
                         </div>
-                        <div class="column">
+                        <div className="column">
                             <Card.Body className="cardDetailsBody">
-                                <Card.Text>
+                                <div>
                                     <p>
                                         Vendor: {itemFromPath.vendor}
                                     </p>
@@ -160,7 +157,7 @@ const ProductDetail = (props) => {
                                                 Add to wishlist
                                             </Button> : null
                                     }
-                                </Card.Text>
+                                </div>
                             </Card.Body>
                         </div>
                         {
@@ -171,14 +168,14 @@ const ProductDetail = (props) => {
                                         <div id="reviewList">
                                             {
                                                 listReview.length !== 0 ?
-                                                    <p>{listReview.map(item => (
-                                                        <p> {item.FirstName} : {item.review}</p>))}
+                                                    <p>{listReview.map((item, idx) => (
+                                                        <p key={idx}> {item.FirstName} : {item.review}</p>))}
                                                     </p> : <p id="emptyText"> No reviews available yet, write one!</p>
                                             }
                                         </div>
                                         <br />
                                         <br />
-                                        <TextareaAutosize data-role="none" style={{resize: "none", overflow: "scroll"}} id="textArea" rows={4} maxRows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
+                                        <TextareaAutosize data-role="none" style={{resize: "none", overflow: "scroll"}} id="textArea" rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
                                         <br />
                                         <br />
                                         <br />

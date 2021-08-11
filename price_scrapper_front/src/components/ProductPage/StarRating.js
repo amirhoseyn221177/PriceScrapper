@@ -16,7 +16,7 @@ const StarRating = (props) => {
             {[...Array(5)].map((star, i) => {
                 const ratingValue = i + 1;
                 return (
-                    <label>
+                    <label key={i}>
                         <input
                             type="radio"
                             name="rating"
@@ -27,8 +27,6 @@ const StarRating = (props) => {
                             className="star"
                             color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
                             size={15}
-                            // onMouseEnter={() => setHover(ratingValue)}
-                            // onMouseLeave={() => setHover(null)}
                         />
                     </label>
                 );

@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { FaStar } from "react-icons/fa"
 
@@ -8,7 +9,9 @@ const StarRating = (props) => {
 
     useEffect(()=>{
         setRating(props.ratingValue)
+        props.addRating()
     },[props.ratingValue])
+
     
     return (
         <div>
@@ -27,8 +30,6 @@ const StarRating = (props) => {
                             className="star"
                             color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
                             size={15}
-                            // onMouseEnter={() => setHover(ratingValue)}
-                            // onMouseLeave={() => setHover(null)}
                         />
                     </label>
                 );

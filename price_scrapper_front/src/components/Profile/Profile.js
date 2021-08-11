@@ -125,7 +125,7 @@ const Profile = (props) => {
                     (<div className="centerDiv">
                         <div>
                         <h1>Profile</h1>
-                            <form noValidate>
+                            <form id="profileForm" noValidate>
                                 <ul className="profilePage">
                                     <li key="profileName">
                                         <div className="form-name">
@@ -150,13 +150,13 @@ const Profile = (props) => {
                                         <ul className="profilePage">
                                             <li key="updateFirstName">
                                                 <div className="form-name">
-                                                    <label>First Name: </label>
+                                                    <label>First name: </label>
                                                     <TextField value={firstName} onChange={e => setFirstName(e.target.value)} className="textField" />
                                                 </div>
                                             </li>
                                             <li key="updateLastName">
                                                 <div className="form-name">
-                                                    <label>Last Name: </label>
+                                                    <label>Last name: </label>
                                                     <TextField value={lastName} onChange={e => setLastName(e.target.value)} className="textField" />
                                                 </div>
                                             </li>

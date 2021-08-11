@@ -97,6 +97,7 @@ const SuggestedItems = (props) => {
                     items.map((item, idx) => {
                         return (
                             <Card
+                                id="suggestedCard"
                                 key={idx}
                                 style={{
                                     width: 200

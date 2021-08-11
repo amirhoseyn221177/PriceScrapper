@@ -11,3 +11,7 @@
 .h2Title {
     padding-bottom: 15px;
 }
+
+#suggestedCard:hover {
+    box-shadow: 10px 10px 8px #888888;
+}

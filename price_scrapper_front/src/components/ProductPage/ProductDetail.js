@@ -12,7 +12,6 @@ import { get } from "mongoose";
 import { red } from "@material-ui/core/colors";
 
 const ProductDetail = (props) => {
-    console.log(13)
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
     const [itemFromPath, setItemFromPath] = useState({})
     const [productInfoFromPath, setProductsFromPath] = useState([])
@@ -23,8 +22,6 @@ const ProductDetail = (props) => {
     var [rev, setReview] = useState("");
     const [loadedReview, setLoadedReview] = useState([]);
 
-    console.log(productInfoFromPath)
-
     useEffect(() => {
         let base64 = props.match.params.item64
         let product64 = qs.parse(props.location.search)["?base64product"]
@@ -33,8 +30,6 @@ const ProductDetail = (props) => {
         setItemFromPath(JSON.parse(jsonItem))
         if (product64 !== undefined) setProductsFromPath(JSON.parse(decodeURIComponent(product64)))
     }, [props.match.params.item64])
-
-    console.log(itemFromPath)
 
     function averagePrice() {
         var sum = 0;
@@ -46,7 +41,6 @@ const ProductDetail = (props) => {
     }
 
     async function addReview() {
-        console.log("hi")
         try {
             let token = localStorage.getItem("token");
             const resp = await axios.get('/api/user/userinfo', {
@@ -55,9 +49,7 @@ const ProductDetail = (props) => {
                 }
             })
             const data = await resp.data
-            console.log(data)
             var FirstName = data.Name;
-            console.log(FirstName)
         } catch (e) {
             console.log(e.message)
         }
@@ -67,7 +59,6 @@ const ProductDetail = (props) => {
         // var FirstName = itemFromPath.FirstName;
         var LastName = itemFromPath.LastName;
         var review = rev;
-        console.log(review);
         var newReview = {
             itemURL,
             title,
@@ -75,7 +66,6 @@ const ProductDetail = (props) => {
             LastName,
             review
         };
-        console.log(newReview);
         const data = await (await axios.post('/api/items/getReviews', newReview, {
             headers: {
                 "Authorization": token
@@ -93,11 +83,8 @@ const ProductDetail = (props) => {
                 }
             })
             const data = await resp.data
-            console.log(data)
             if (data.length > 0) {
                 data.map(item => {
-                    console.log(itemFromPath.itemURL)
-                    console.log(item.itemURL)
                     if (item.itemURL === itemFromPath.itemURL) {
                         setListReview(prev => [...prev, item])
                     }
@@ -109,19 +96,13 @@ const ProductDetail = (props) => {
         }
     }
 
-    console.log(itemFromPath.itemURL)
-
     useEffect(() => {
         getReview()
     }, [itemFromPath])
 
-    console.log(loadedReview)
-
-
     function addToWishlist() {
         let token = localStorage.getItem("token")
         delete itemFromPath["_id"]
-        console.log(itemFromPath)
         axios.post('/api/items/addToWishList', { item: itemFromPath }, {
             headers: {
                 "Authorization": token
@@ -137,8 +118,7 @@ const ProductDetail = (props) => {
         }
     }, [])
 
-    console.log(index)
-    console.log(listReview[0])
+    console.log(listReview)
     return (
         <div className="cardInfo">
             <div className="cardContents">
@@ -191,10 +171,10 @@ const ProductDetail = (props) => {
                                         <h3>Reviews</h3>
                                         <div id="reviewList">
                                             {
-                                                listReview.count !== 0 ?
+                                                listReview.length !== 0 ?
                                                     <p>{listReview.map(item => (
                                                         <p> {item.FirstName} : {item.review}</p>))}
-                                                    </p> : <p> No reviews available yet, write one!</p>
+                                                    </p> : <p id="emptyText"> No reviews available yet, write one!</p>
                                             }
                                         </div>
                                         <br />

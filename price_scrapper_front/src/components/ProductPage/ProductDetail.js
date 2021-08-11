@@ -18,8 +18,9 @@ const ProductDetail = (props) => {
     var setProductIndex = (index) => {
         setIndex(index);
     }
+    const [listReview, setListReview] = useState([]);
     var [rev, setReview] = useState("");
-    const [loadedReview, changeLoadedReview] = useState([]);
+    const [loadedReview, setLoadedReview] = useState([]);
 
     console.log(productInfoFromPath)
 
@@ -68,21 +69,38 @@ const ProductDetail = (props) => {
 
       async function getReview() {
         const result = {};
-        let token = localStorage.getItem("token");
-        console.log("yo")
-        axios.get('/api/items/getReviews', {headers: {
-            "Authorization": token
-        }}).then(response => {
-            console.log(response.data)
-            changeLoadedReview(response.data)
-        }).catch(e=>{
-            console.log(e)
-        })
-        // for(let i = 0; i < productInfoFromPath.length; i++) {
-        //     sum = sum + parseInt(productInfoFromPath[i].price,10);
-        // }
-        return loadedReview;
+        try{
+            let token = localStorage.getItem("token");
+            const  resp = await axios.get('/api/items/getReviews', {headers: {
+                "Authorization": token
+            }})
+            const data = await resp.data
+            console.log(data)
+            if(data.length>0){
+                data.map(item => {
+                    console.log(itemFromPath.itemURL)
+
+                    console.log(item.itemURL)
+                    if(item.itemURL ===  itemFromPath.itemURL){
+                        setListReview(prev=>[...prev,item])
+                    }
+                })
+                
+                setLoadedReview(data)
+            }
+        }catch(e){
+            console.log(e.message)
+        }
       }
+
+      console.log(itemFromPath.itemURL)
+
+      useEffect(()=>{
+          getReview()
+      },[itemFromPath])
+
+      console.log(loadedReview)
+
 
     function addToWishlist() {
         let token = localStorage.getItem("token")
@@ -130,7 +148,9 @@ const ProductDetail = (props) => {
                 Average Price: {averagePrice()}
             </p>
             <p>
-                Reviews: {getReview()}
+                Reviews: {listReview.map(item=>(
+                    <p> {item.review}</p>
+                ))}
             </p>
             <input id="review" type="text" placeholder="review" onChange={e => setReview(e.target.value)} />
             <br />

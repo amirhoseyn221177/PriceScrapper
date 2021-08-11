@@ -43,7 +43,7 @@ Price Scrapper is deployed and hosted on Azure. Our team also used Github Action
 
 ## Above and Beyond Functionalities
 ### Custom links for items
-Initially, we did not have custom links for each item due to technical difficulties. However, we decided to work through those issue to create custom links so users can easily share them to their friends or family.
+Initially, we did not have custom links for each item due to technical difficulties. However, we decided to work through those issues to create custom links so users can easily share them to their friends or family.
 
 ### Wish list and popular searches
 Adding a wish list and popular searches was not part of our plan, but we decided to add these features since they enhance the overall experience for users. The wish list allow users to keep track of items they want to purchase in the future and popular searches allow users to stay with the current trend and purchase the hottest items on the market.

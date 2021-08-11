@@ -54,7 +54,6 @@ const ProductDetail = (props) => {
         let token = localStorage.getItem("token");
         var itemURL = itemFromPath.itemURL;
         var title = itemFromPath.title;
-        // var FirstName = itemFromPath.FirstName;
         var LastName = itemFromPath.LastName;
         var review = rev;
         var newReview = {
@@ -72,7 +71,6 @@ const ProductDetail = (props) => {
     }
 
     async function getReview() {
-        const result = {};
         try {
             let token = localStorage.getItem("token");
             const resp = await axios.get('/api/items/getReviews', {
@@ -136,9 +134,7 @@ const ProductDetail = (props) => {
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    <p>
-                                        <StarRating />
-                                    </p>
+                                    <StarRating />
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
@@ -165,17 +161,17 @@ const ProductDetail = (props) => {
                                 <div className="column">
                                     <div id="reviews">
                                         <h3>Reviews</h3>
-                                        <div id="reviewList">
-                                            {
-                                                listReview.length !== 0 ?
-                                                    <p>{listReview.map((item, idx) => (
-                                                        <p key={idx}> {item.FirstName} : {item.review}</p>))}
-                                                    </p> : <p id="emptyText"> No reviews available yet, write one!</p>
-                                            }
-                                        </div>
+                                        {
+                                            listReview.length !== 0 ?
+                                                <div id="reviewList">
+                                                    {listReview.map((item, idx) => (
+                                                        <p key={idx}> {item.FirstName}: {item.review}</p>))}
+                                                </div>
+                                                : <p id="emptyText"> No reviews available yet, write one!</p>
+                                        }
                                         <br />
                                         <br />
-                                        <TextareaAutosize data-role="none" style={{resize: "none", overflow: "scroll"}} id="textArea" rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
+                                        <TextareaAutosize data-role="none" style={{ resize: "none", overflow: "scroll" }} id="textArea" rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
                                         <br />
                                         <br />
                                         <br />

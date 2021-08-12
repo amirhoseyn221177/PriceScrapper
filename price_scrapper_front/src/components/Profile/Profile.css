@@ -66,6 +66,10 @@ form ul li label {
     float: left;
 }
 
+#update {
+    margin-right: 32px;
+}
+
 .textField {
     float: right;
 }

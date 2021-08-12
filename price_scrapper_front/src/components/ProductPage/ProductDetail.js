@@ -121,10 +121,11 @@ const ProductDetail = (props) => {
     }
 
     async function getRating() {
-        console.log("here")
+        console.log(itemFromPath.itemURL)
         try {
+            console.log(itemFromPath.itemURL)
             let token = localStorage.getItem("token");
-            const resp = await axios.get(`/api/items/getRating/${itemFromPath.itemURL}`, {
+            const resp = await axios.get(`/api/items/getRating/${itemFromPath.title}`, {
                 headers: {
                     "Authorization": token
                 }

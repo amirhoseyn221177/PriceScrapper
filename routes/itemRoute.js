@@ -57,21 +57,18 @@ route.post('/getRating', async (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err))
 });
 
-route.get('/getRating/:itemURL', async (req, res) => {
+route.get('/getRating/:title', async (req, res) => {
     try {
         const ratings = await Rating.find();
-        console.log(ratings)
-        const filtered = (await ratings).filter(r => r.itemURL === req.params.itemURL)
-        console.log(filtered);
-        if (filtered.length > 0) {
-            var sum = 0;
-            for (let i = 0; i < filtered.length; i++) {
-                sum = sum + parseInt(filtered[i].rating, 10);
-                console.log("IM HERE!!!!")
-                console.log(sum);
+        var sum = 0;
+        var j = 0; 
+        for(let i = 0; i < ratings.length; i++){
+            if(ratings[i].title === req.params.title){
+                sum = sum + parseInt(ratings[i].rating, 10);
+                j = j + 1;
             }
         }
-            res.json((sum / (filtered.length + 1)).toFixed(2))
+            res.json((sum / (j + 1)).toFixed(2))
         } catch (e) {
             console.log(chalk.red(e.message));
             res.status(500).send({

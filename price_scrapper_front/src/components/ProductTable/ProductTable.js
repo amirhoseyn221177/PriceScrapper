@@ -22,18 +22,14 @@ const options = [
 
 const categories = ["Clothing", "Shoes", "Computers", "Cars"];
 
-let searchDivClass = "searchDivNone"
+let searchDivClass = "searchDivNone";
 
 const ProductTable = (props) => {
 
     const [ebayArray, setEbayArray] = useState([]);
-    // const [stockXArray, setStockXArray] = useState([]);
     const [amazonArray, setAmazonArray] = useState([]);
     const [productInfoArray, setproductInfoArray] = useState([]);
     const [productCardsJSX, setproductCardsJSX] = useState([]);
-    // const [paginationEbay, setPaginationEbay] = useState({ start: 0, limit: 5 });
-    // const [paginationAmazon, setPaginationAmazon] = useState({ start: 0, limit: 5 });
-    // const [paginationStockx, setPaginationStockx] = useState({ start: 0, limit: 5 });
     const [searchText, setSearchText] = useState("");
     const [chosenCategories, setChosenCategories] = useState([]);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -48,16 +44,11 @@ const ProductTable = (props) => {
     const [query, setQuery] = useState("");
     const [shouldspinner, setSpinner] = useState(false);
     const handleClickListItem = (event) => {
-        console.log(event.currentTarget);
         setAnchorEl(event.currentTarget);
     };
-    // const handleClickVendorList = (event) => {
-    //     console.log(37);
-    //     setAnchorEl(event.currentTarget);
-    // };
+
 
     const handleMenuItemClick = (event, index) => {
-        console.log(42);
         setSelectedIndex(index);
         setAnchorEl(null);
     };
@@ -66,7 +57,7 @@ const ProductTable = (props) => {
         setAnchorEl(null);
     };
 
-  
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -77,12 +68,9 @@ const ProductTable = (props) => {
 
     var callAmazonAPI = async () => {
         try {
-            console.log(searchText);
             var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint, sortVariable: options[selectedIndex] });
             const amazonJSON = await amazonResponse.data;
             const amazonItemArr = await amazonJSON.result;
-            console.log("this is amazon" + amazonItemArr);
-            // console.log(amazonItemArr[0].reviews.rating)
             setAmazonNumber(amazonJSON.totalLength);
             setAmazonArray(amazonItemArr);
         } catch (e) {
@@ -101,7 +89,6 @@ const ProductTable = (props) => {
             const ebayItemArr = await ebayJSON.result;
             setEbayNumber(ebayJSON.totalLength);
             setEbayArray(ebayItemArr);
-            // return ebayJSON.totalLength
         } catch (e) {
             console.log(e);
 
@@ -110,18 +97,6 @@ const ProductTable = (props) => {
     };
 
 
-
-    // var callStockxAPI = async () => {
-    //     try {
-    //         var stockxResponse = await axios.post("/api/stockx/search", { searchText, startPoint });
-    //         const stockxJSON = await stockxResponse.data;
-    //         const stockxItemArr = await stockxJSON.result;
-    //         setStockXArray(stockxItemArr);
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-
-    // };
 
 
     useEffect(async () => {
@@ -161,19 +136,6 @@ const ProductTable = (props) => {
             currProductsArray.push(ebayObject);
         });
 
-        // stockXArray.map(async (item) => {
-        //     let title = await item.name;
-        //     let vendor = "StockX";
-        //     let price = await item.price;
-        //     let currency = "USD";
-        //     let image = await item.thumbnail_url;
-        //     let itemURL = await item.url;
-
-
-        //     let stockXObject = { title, vendor, price, currency, image, itemURL };
-        //     currProductsArray.push(stockXObject);
-
-        // });
 
         amazonArray.map(async (item) => {
             let title = await item.title;
@@ -193,24 +155,17 @@ const ProductTable = (props) => {
 
 
     var callAPIBundle = async (val) => {
-        console.log("Amazon state", checkboxStates[0]);
-        console.log("Ebay state", checkboxStates[1]);
         if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
-            console.log("here1");
             await callAmazonAPI();
             await callEbayAPI();
         } else if (checkboxStates[0]) {
-            console.log("here2");
             setEbayArray([]);
             await callAmazonAPI();
         } else if (checkboxStates[1]) {
-            console.log("here3");
             setAmazonArray([]);
             await callEbayAPI();
         }
-        //  await callStockxAPI();
-        // console.log(stockNumber)
-        // setTotalItem(amazonNumber+ebayNumber)
+
     };
 
 
@@ -241,7 +196,6 @@ const ProductTable = (props) => {
 
     function addToRecentlyViewed(item) {
         let token = localStorage.getItem("token");
-        console.log(item);
         axios.post('/api/items/addToRecent', { item }, {
             headers: {
                 "Authorization": token
@@ -255,15 +209,15 @@ const ProductTable = (props) => {
         addToRecentlyViewed(item);
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
-        props.sendingItemsArray(productInfoArray)
+        props.sendingItemsArray(productInfoArray);
         props.history.push({
-            pathname : `/productdetail/${base64Item}/${index}`,
-            search :`searchedWord=${searchText}`
-        })
+            pathname: `/productdetail/${base64Item}/${index}`,
+            search: `searchedWord=${searchText}`
+        });
     };
 
 
-    
+
 
 
     var createProductCards = () => {
@@ -328,21 +282,16 @@ const ProductTable = (props) => {
             dontRunFirstTime.current = false;
             return;
         }
-        await callAPIBundle()
+        await callAPIBundle();
     }, [startPoint]);
 
     async function filterItemArray(val) {
-        console.log("LOOK AT ME", val);
         setQuery(val);
         await searchNow(val);
-        // console.log(val);
-        // const newList = productInfoArray.filter((item) => item.vendor == val);
-        // setproductInfoArray(newList)
     }
 
     async function searchNow(searchValue) {
         await callAPIBundle();
-        // console.log(searchValue)
     }
 
 
@@ -351,7 +300,6 @@ const ProductTable = (props) => {
     }, [ebayArray, amazonArray]);
 
     useEffect(() => {
-        console.log(362);
         createProductCards();
     }, [productInfoArray]);
 
@@ -469,16 +417,10 @@ const ProductTable = (props) => {
                                     control={<Checkbox name="Amazon" value="Amazon" />}
                                     label="Amazon"
                                     onChange={(e) => {
-                                        // console.log("CURRENT EBAY STATE", ebayState)
-                                        // let newEbayState = !ebayState
-                                        // setEbayState(newEbayState)
-                                        // console.log("NEW EBAY STATE", ebayState)
-                                        console.log("CURRENT EBAY STATE", checkboxStates[1])
-                                        let newCheckboxState = checkboxStates
-                                        newCheckboxState[1] = !newCheckboxState[1]
-                                        setCheckboxStates(newCheckboxState)
-                                        console.log("NEW EBAY STATE", checkboxStates[1])
-                                        filterItemArray(searchText)
+                                        let newCheckboxState = checkboxStates;
+                                        newCheckboxState[1] = !newCheckboxState[1];
+                                        setCheckboxStates(newCheckboxState);
+                                        filterItemArray(searchText);
                                     }}
                                 />
                             </li>
@@ -487,16 +429,10 @@ const ProductTable = (props) => {
                                     control={<Checkbox name="Ebay" value="Ebay" />}
                                     label="Ebay"
                                     onChange={(e) => {
-                                        // console.log("CURRENT AMAZON STATE", amazonState)
-                                        // let newAmazonState = !amazonState
-                                        // setAmazonState(newAmazonState)
-                                        // console.log("NEW AMAZON STATE", amazonState)
-                                        console.log("CURRENT AMAZON STATE", checkboxStates[0])
-                                        let newCheckboxState = checkboxStates
-                                        newCheckboxState[0] = !newCheckboxState[0]
-                                        setCheckboxStates(newCheckboxState)
-                                        console.log("NEW AMAZON STATE", checkboxStates[1])
-                                        filterItemArray(searchText)
+                                        let newCheckboxState = checkboxStates;
+                                        newCheckboxState[0] = !newCheckboxState[0];
+                                        setCheckboxStates(newCheckboxState);
+                                        filterItemArray(searchText);
                                     }}
                                 />
                             </li>
@@ -522,8 +458,8 @@ const ProductTable = (props) => {
 const mapToProps = dispatch => {
     return {
         sendingItemArray: (item) => dispatch(ChosenItem(item)),
-        sendingItemsArray : (items)=> dispatch(similarItems(items))
-        
+        sendingItemsArray: (items) => dispatch(similarItems(items))
+
     };
 };
 export default connect(null, mapToProps)(ProductTable);

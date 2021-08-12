@@ -9,10 +9,10 @@ import { connect } from 'react-redux';
 const Login = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error,setError]=useState(false)
+    const [error, setError] = useState(false);
 
     var sendingInfoToBackEnd = async () => {
-        try{
+        try {
             var resp = await axios.post("/api/user/login", {}, {
                 headers: {
                     'password': password,
@@ -20,51 +20,39 @@ const Login = (props) => {
                 }
             });
             const data = await resp.headers;
-            console.log(data)
-            if(data.authorization!=="" && data.authorization !== undefined){
-                console.log(data)
-                props.sendingToActions(data.authorization)
-                props.history.push(`/home`)
+            console.log(data);
+            if (data.authorization !== "" && data.authorization !== undefined) {
+                console.log(data);
+                props.sendingToActions(data.authorization);
+                props.history.push(`/home`);
             }
-            else{
-                setError(true)
+            else {
+                setError(true);
             }
-    
-        }catch(e){
-            setError(true)
-            console.log(e.response.data.error.message)
+
+        } catch (e) {
+            setError(true);
+            console.log(e.response.data.error.message);
         }
 
-     
+
     };
 
 
-    var forgotPassword = async()=>{
-        // if (email!==""){
-        //     const resp = await axios.post(`/api/user/forgotpass/${email}`)
-        //     console.log(resp.data)
-        //     setError(false)
-
-        // }
-        // else{
-        //     setError(true)
-        // }
-        props.history.push(`/forgotpass/${email}`)
-
-    }
+  
 
     return (
         <div className="loginBox">
             <div className="loginForm">
                 <h1>Login</h1>
-                {error? <h5 style={{color:'red', padding: '0', margin: '0'}}>Account cannot be found. Please sign up.</h5>:null}
+                {error ? <h5 style={{ color: 'red', padding: '0', margin: '0' }}>Account cannot be found. Please sign up.</h5> : null}
                 <form noValidate >
                     <TextField onChange={e => setEmail(e.target.value)} value={email} className="form-item" label="Email" type="email" />
                     <TextField onChange={e => setPassword(e.target.value)} value={password} type="password" className="form-item" label="Password" />
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>
-                    <Button onClick={forgotPassword} style={{color:"blue"}}>forgot my password </Button>
+                    {/* <Button onClick={forgotPassword} style={{ color: "blue" }}>forgot my password </Button> */}
                 </form>
             </div>
         </div>

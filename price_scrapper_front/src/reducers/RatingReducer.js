@@ -1,14 +1,14 @@
-import '../components/Actions/actions'
- 
-const initialState = 0
+import '../components/Actions/actions';
 
-const reducer = (state = initialState, action)=>{
-    if(action.type === 'rating'){
-        return action.rating
+const initialState = 0;
+
+const reducer = (state = initialState, action) => {
+    if (action.type === 'rating') {
+        return action.rating;
     }
 
-    return state
-}
+    return state;
+};
 
 
-export default reducer
+export default reducer;

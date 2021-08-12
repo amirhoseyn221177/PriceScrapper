@@ -1,32 +1,32 @@
-import '../components/Actions/actions'
+import '../components/Actions/actions';
 
 const initalState = {
-    title:"",
-    vendor:"",
-    price:0,
-    currency:"",
-    image:"",
-    itemURL:""
-}
+    title: "",
+    vendor: "",
+    price: 0,
+    currency: "",
+    image: "",
+    itemURL: ""
+};
 
 
-const reducer =(state = initalState, action)=>{
-    if(action.type ==="item"){
-        return{
+const reducer = (state = initalState, action) => {
+    if (action.type === "item") {
+        return {
             ...state,
-            title:action.item.title,
-            vendor:action.item.vendor,
-            price : action.item.price,
-            currency :action.item.currency,
+            title: action.item.title,
+            vendor: action.item.vendor,
+            price: action.item.price,
+            currency: action.item.currency,
             image: action.item.image,
             itemURL: action.item.itemURL
 
-        }
+        };
 
     }
-    return state
-}
+    return state;
+};
 
 
 
-export default reducer
+export default reducer;

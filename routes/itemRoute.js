@@ -22,8 +22,8 @@ const {
 
 const verifyToken = async (req, res, next) => {
     try {
-        authenticate(req.headers['authorization'])
-        console.log("verified")
+        authenticate(req.headers['authorization']);
+        console.log("verified");
         next();
     } catch (e) {
         console.log(chalk.red(e.message));
@@ -31,9 +31,9 @@ const verifyToken = async (req, res, next) => {
             error: {
                 message: e.message
             }
-        })
+        });
     }
-}
+};
 
 
 route.get('/getRecentlyViewed', async (req, res) => {
@@ -69,7 +69,7 @@ route.post('/sendRating', async (req, res) => {
     });
     newRating.save()
         .then(() => res.json('Rating Added!'))
-        .catch(err => res.status(400).json('Error: ' + err))
+        .catch(err => res.status(400).json('Error: ' + err));
 });
 
 route.post('/getRating', async (req, res) => {
@@ -82,8 +82,8 @@ route.post('/getRating', async (req, res) => {
         for (let i = 0; i < ratings.length; i++) {
             sum = sum + ratings[i].rating;
         }
-        if(ratings.length>0)res.json((sum / ratings.length).toFixed(2))
-        else res.json(NaN)
+        if (ratings.length > 0) res.json((sum / ratings.length).toFixed(2));
+        else res.json(NaN);
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({
@@ -104,7 +104,7 @@ route.post('/sendReviews', async (req, res) => {
         var FirstName = req.body.FirstName;
         var LastName = req.body.LastName;
         var review = req.body.review;
-        console.log(review)
+        console.log(review);
         var newReview = new Review({
             itemURL,
             title,
@@ -112,10 +112,10 @@ route.post('/sendReviews', async (req, res) => {
             LastName,
             review
         });
-        await newReview.save()
+        await newReview.save();
         res.json({
             message: "message has been added"
-        })
+        });
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({
@@ -129,9 +129,9 @@ route.post('/sendReviews', async (req, res) => {
 
 route.post('/getReviews', async (req, res) => {
     try {
-        const itemURl = await req.body.itemURL
-        let reviews = await findTheReviews(itemURl)
-        res.status(200).json(reviews)
+        const itemURl = await req.body.itemURL;
+        let reviews = await findTheReviews(itemURl);
+        res.status(200).json(reviews);
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({
@@ -169,7 +169,7 @@ route.get("/getWishList", async (req, res) => {
 
 route.post("/addToRecent", async (req, res) => {
     try {
-        let token = req.headers.authorization
+        let token = req.headers.authorization;
         let {
             item
         } = await req.body;
@@ -192,7 +192,7 @@ route.post("/addToRecent", async (req, res) => {
 
 route.post("/addToWishList", async (req, res) => {
     try {
-        let token = req.headers.authorization
+        let token = req.headers.authorization;
         let {
             item
         } = await req.body;

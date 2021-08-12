@@ -1,15 +1,15 @@
 const initState = {
-    token:""
-}
+    token: ""
+};
 
 const rootReducer = (state = initState, action) => {
-    if(action.type==="token"){
-        return{
+    if (action.type === "token") {
+        return {
             ...state,
-            token:action.token
-        }
+            token: action.token
+        };
     }
     return state;
-}
+};
 
-export default rootReducer
+export default rootReducer;

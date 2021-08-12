@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { FaStar } from "react-icons/fa"
+import React, { useEffect, useState } from 'react';
+import { FaStar } from "react-icons/fa";
 import { connect } from 'react-redux';
 import { sendRatingToReducer } from '../Actions/actions';
 
@@ -10,21 +10,21 @@ const StarRating = (props) => {
 
 
 
-    useEffect(()=>{
-        addRating()
-    },[rating])
+    useEffect(() => {
+        addRating();
+    }, [rating]);
 
 
-    var addRating = async()=>{
-        try{
+    var addRating = async () => {
+        try {
             let token = localStorage.getItem("token");
             const resp = await axios.get('/api/user/userinfo', {
                 headers: {
                     "Authorization": token
                 }
-            })
-            const userInfo = await resp.data
-            let firstName = userInfo.Name
+            });
+            const userInfo = await resp.data;
+            let firstName = userInfo.Name;
             var itemURL = props.itemFromPath.itemURL;
             var title = props.itemFromPath.title;
             var newRating = {
@@ -33,20 +33,20 @@ const StarRating = (props) => {
                 firstName,
                 rating
             };
-          await axios.post('/api/items/sendRating', newRating, {
+            await axios.post('/api/items/sendRating', newRating, {
                 headers: {
                     "Authorization": token
                 }
             });
-            props.sendRating(rating)
-            
-        }catch(e){
-            console.log(e.message)
-        }
-    }
+            props.sendRating(rating);
 
-    
-    
+        } catch (e) {
+            console.log(e.message);
+        }
+    };
+
+
+
     return (
         <div>
             <h3>Your Rating</h3>
@@ -55,7 +55,7 @@ const StarRating = (props) => {
                 return (
                     <label key={i}>
                         <input
-                        disabled={true}
+                            disabled={true}
                             type="radio"
                             name="rating"
                             value={rating}
@@ -63,8 +63,8 @@ const StarRating = (props) => {
                         <FaStar
                             className="star"
                             color={tempRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
-                            size={15} 
-                            onClick={()=>{setRating(tempRating)}}
+                            size={15}
+                            onClick={() => { setRating(tempRating); }}
                             onMouseEnter={() => setHover(tempRating)}
                             onMouseLeave={() => setHover(null)}
                         />
@@ -76,10 +76,10 @@ const StarRating = (props) => {
 };
 
 
-const mapToProps = dispatch=>{
-    return{
-        sendRating : rating => dispatch(sendRatingToReducer(rating))
-    }
-}
+const mapToProps = dispatch => {
+    return {
+        sendRating: rating => dispatch(sendRatingToReducer(rating))
+    };
+};
 
-export default  connect(null,mapToProps)(StarRating);
+export default connect(null, mapToProps)(StarRating);

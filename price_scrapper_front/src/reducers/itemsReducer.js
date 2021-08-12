@@ -1,14 +1,14 @@
-import '../components/Actions/actions'
+import '../components/Actions/actions';
 
-const allTheSimilarItems =[]
+const allTheSimilarItems = [];
 
 
-const reducer = (state = allTheSimilarItems, action)=>{
-    if(action.type === "items"){
-        return action.items
-        
+const reducer = (state = allTheSimilarItems, action) => {
+    if (action.type === "items") {
+        return action.items;
+
     }
-    return state
-}
+    return state;
+};
 
-export default reducer
+export default reducer;

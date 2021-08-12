@@ -15,8 +15,8 @@ const Profile = (props) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [newEmail, setNewEmail] = useState("");
-    const [fullName, setFullName]= useState("")
-    const [email , setEmail]= useState("")
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
     useEffect(async () => {
         try {
             let token = localStorage.getItem("token");
@@ -35,11 +35,10 @@ const Profile = (props) => {
 
                 const data = await resp.data;
                 const WishData = await WishResp.data.items;
-                console.log(WishData);
                 if (data.items.length > 0) {
                     if (data.items.length > 0) {
                         var recentList = data.items;
-                        let titles = data.items.map(item => item.title)
+                        let titles = data.items.map(item => item.title);
                         let filtered = recentList.filter((item, index) => titles.indexOf(item.title) === index);
                         setRecent(filtered);
                     };
@@ -49,7 +48,7 @@ const Profile = (props) => {
                     }
                 }
 
-                await getUserDetails()
+                await getUserDetails();
             }
         } catch (e) {
             console.log(e.response.data.error.message);
@@ -63,7 +62,7 @@ const Profile = (props) => {
         try {
             const resp = await axios.post(`api/user/updateEmail/${newEmail}/${firstName}/${lastName}`, null, {
                 headers: {
-                    "Authorization": localStorage.getItem("token").split(" ")[1]
+                    "Authorization": localStorage.getItem("token")
                 }
             });
 
@@ -78,8 +77,6 @@ const Profile = (props) => {
 
 
     var goToProductPage = (item, index) => {
-        console.log(item);
-        console.log(index);
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
         props.history.push({
@@ -91,11 +88,10 @@ const Profile = (props) => {
     var getUserDetails = async () => {
         try {
             const resp = await axios.get('/api/user/userinfo', { headers: { authorization: localStorage.getItem("token") } });
-            const data = await resp.data
-            console.log(data)
-            if (data !== null || data  !== null || data !== ""){
-                setFullName(data.Name)
-                setEmail(data.username)
+            const data = await resp.data;
+            if (data !== null || data !== null || data !== "") {
+                setFullName(data.Name);
+                setEmail(data.username);
             }
         } catch (e) {
             console.log(e.response);
@@ -124,7 +120,7 @@ const Profile = (props) => {
                 drawer === "Profile" ?
                     (<div className="centerDiv">
                         <div>
-                        <h1>Profile</h1>
+                            <h1>Profile</h1>
                             <form id="profileForm" noValidate>
                                 <ul className="profilePage">
                                     <li key="profileName">
@@ -145,7 +141,7 @@ const Profile = (props) => {
                         (
                             <div className="centerDivUpdate">
                                 <div>
-                                <h1>Update Profile</h1>
+                                    <h1>Update Profile</h1>
                                     <form noValidate>
                                         <ul className="profilePage">
                                             <li key="updateFirstName">

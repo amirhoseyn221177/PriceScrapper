@@ -7,7 +7,6 @@ import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
-import qs from 'qs'
 
 const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
@@ -21,11 +20,19 @@ const ProductDetail = (props) => {
 
     useEffect(() => {
         let base64 = props.match.params.item64
-        let product64 = qs.parse(props.location.search)["?base64product"]
         let jsonItem = atob(base64)
         setItemFromPath(JSON.parse(jsonItem))
-        if (product64 !== undefined) setProductsFromPath(JSON.parse(decodeURIComponent(product64)))
     }, [props.match.params.item64])
+
+
+    useEffect(()=>{
+        if(props.items !== null || props.items !== undefined){
+            console.log(props.items)
+            setProductsFromPath(props.items)
+        }
+    },[props.items])
+
+    console.log(productInfoFromPath)
 
     function averagePrice() {
         var sum = 0;
@@ -123,6 +130,7 @@ const ProductDetail = (props) => {
         }
     }, [])
 
+    console.log(132222222222222)
     return (
         <div className="cardInfo">
             <div className="cardContents">
@@ -202,6 +210,7 @@ const ProductDetail = (props) => {
 const mapToState = state => {
     return {
         item: state.item,
+        items : state.items
     }
 }
 

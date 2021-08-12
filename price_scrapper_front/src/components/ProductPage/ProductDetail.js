@@ -150,6 +150,7 @@ const ProductDetail = (props) => {
 
 
 
+    console.log(loadedRating);
     function addToWishlist() {
         let token = localStorage.getItem("token");
         delete itemFromPath["_id"];

@@ -57,7 +57,7 @@ const Login = (props) => {
         <div className="loginBox">
             <div className="loginForm">
                 <h1>Login</h1>
-                {error? <h5 style={{color:'red'}}>please type your email</h5>:null}
+                {error? <h5 style={{color:'red', padding: '0', margin: '0'}}>Account cannot be found. Please sign up.</h5>:null}
                 <form noValidate >
                     <TextField onChange={e => setEmail(e.target.value)} value={email} className="form-item" label="Email" type="email" />
                     <TextField onChange={e => setPassword(e.target.value)} value={password} type="password" className="form-item" label="Password" />

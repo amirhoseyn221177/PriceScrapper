@@ -2,11 +2,11 @@
 .productTable {
     position: absolute;
     top:  50%;
-    left: 60%;
+    left: 70%;
     transform: translate(-50%,-50%);
     z-index: 1;
     margin: 0;
-    overflow-y: scroll;
+    overflow: auto;
     height: 98%;
     display: block;
 }
@@ -140,10 +140,10 @@
     position: absolute;
     display: block;
     column-count: 1;
-    width: 100%;
+    width: 70%;
     height: 60%;
     top: 34%;
-    left: 10%;
+    left: 5%;
 }
 
 .vendors ul {
@@ -159,7 +159,7 @@
 .spinner {
     position: absolute;
     top: 30%;
-    left: 40%;
+    left: 65%;
 }
 
 .spinner2 {

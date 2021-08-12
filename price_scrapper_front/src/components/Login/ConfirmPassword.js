@@ -27,11 +27,11 @@ const ForgotPassword = props=>{
 
 
     return (
-        <div className="loginBox">
-            <div className="loginForm">
+        <div className="forgotBox" >
+            <div className="loginForm" style={{height: "300px"}}>
                 <h1>New Password </h1>
                 <form noValidate >
-                    <TextField onChange={e => setPass(e.target.value)} value={pass} id="standard-basic" className="form-item" label="new password " type="password" />
+                    <TextField onChange={e => setPass(e.target.value)} value={pass} id="standard-basic" className="form-item" label="New password " type="password" />
                     <Button onClick={changePass} variant="contained" color="primary">
                         Submit
                     </Button>

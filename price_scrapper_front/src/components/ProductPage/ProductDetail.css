@@ -15,6 +15,10 @@ button.MuiButton-containedPrimary:hover {
     padding-top: 27%;
 }
 
+.cardDetailsBodyNone {
+    padding-top: 30%;
+}
+
 .cardDetailsTitle {
     text-align: center;
     width: 90%;
@@ -24,7 +28,12 @@ button.MuiButton-containedPrimary:hover {
 .column {
     float: left;
     width: 33%;
-  }
+}
+
+.columnNone {
+    float: left;
+    width: 50%; 
+}
   
 .row:after {
     content: "";
@@ -38,12 +47,12 @@ button.MuiButton-containedPrimary:hover {
 }
 
 #reviews {
-    padding-top: 10%;
+    padding-top: 2%;
 }
 
 #reviewList {
     overflow: auto;
-    height: 200px;
+    height: 150px;
 }
 
 #textArea {
@@ -53,10 +62,15 @@ button.MuiButton-containedPrimary:hover {
 }
 
 #emptyText {
-    margin-top: 30%;
+    margin-top: 25%;
+    margin-bottom: 15%;
     text-align: center;
 }
 
 #buyLink {
     text-decoration: none;
+}
+
+#errorText {
+    color: red;
 }

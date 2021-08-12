@@ -33,7 +33,7 @@ const StarRating = (props) => {
                 firstName,
                 rating
             };
-          await axios.post('/api/items/getRating', newRating, {
+          await axios.post('/api/items/sendRating', newRating, {
                 headers: {
                     "Authorization": token
                 }
@@ -49,7 +49,7 @@ const StarRating = (props) => {
     
     return (
         <div>
-            Rating:
+            <h3>Your Rating</h3>
             {[...Array(5)].map((star, i) => {
                 const tempRating = i + 1;
                 return (

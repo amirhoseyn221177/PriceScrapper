@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card } from 'react-bootstrap'
 import { withRouter } from 'react-router';
 import { Button, TextareaAutosize } from '@material-ui/core';
@@ -12,15 +12,20 @@ const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
     const [itemFromPath, setItemFromPath] = useState({})
     const [productInfoFromPath, setProductsFromPath] = useState([])
+    const [showError, setShowError] = useState(false)
+    var setProductIndex = (index) => {
+        setIndex(index);
+    }
+    let divName = "columnNone";
+    let bodyDivName = "cardDetailsBodyNone";
+    let imgPadding = "25%";
     const [searchText, setSearchText] = useState("")
     var setProductIndex = (index) => {
         setIndex(index);
     }
-
-
     const [listReview, setListReview] = useState([]);
     var [rev, setReview] = useState("");
-    const [loadedRating, setLoadedRating] = useState();
+    const [loadedRating, setLoadedRating] = useState(0);
 
 
 
@@ -51,35 +56,41 @@ const ProductDetail = (props) => {
     }
 
     async function addReview() {
-        try {
-            let token = localStorage.getItem("token");
-            if(token ==="" || token === null || token === undefined)return;
-            const resp = await axios.get('/api/user/userinfo', {
-                headers: {
-                    "Authorization": token
-                }
-            })
-            const data = await resp.data
-            var FirstName = data.Name;
-            var itemURL = itemFromPath.itemURL;
-            var title = itemFromPath.title;
-            var LastName = itemFromPath.LastName;
-            var newReview = {
-                itemURL,
-                title,
-                FirstName,
-                LastName,
-                review :rev
-            };
-            await axios.post('/api/items/sendReviews', newReview, {
-                headers: {
-                    "Authorization": token
-                }
-            })
-            setListReview(prev=>[...prev,newReview])
-            setReview("")
-        } catch (e) {
-            console.log(e.message)
+        if (rev !== "") {
+            setShowError(false)
+            try {
+                let token = localStorage.getItem("token");
+                if (token === "" || token === null || token === undefined) return;
+                const resp = await axios.get('/api/user/userinfo', {
+                    headers: {
+                        "Authorization": token
+                    }
+                })
+                const data = await resp.data
+                var FirstName = data.Name;
+                var itemURL = itemFromPath.itemURL;
+                var title = itemFromPath.title;
+                var LastName = itemFromPath.LastName;
+                var review = rev;
+                var newReview = {
+                    itemURL,
+                    title,
+                    FirstName,
+                    LastName,
+                    review
+                };
+                await axios.post('/api/items/sendReviews', newReview, {
+                    headers: {
+                        "Authorization": token
+                    }
+                })
+                setListReview(prev => [...prev, newReview])
+                setReview("")
+            } catch (e) {
+                console.log(e.message)
+            }
+        } else {
+            setShowError(true)
         }
     }
 
@@ -108,7 +119,7 @@ const ProductDetail = (props) => {
     async function getRating() {
         try {
             let token = localStorage.getItem("token");
-            const resp = await axios.get(`/api/items/getRating/${itemFromPath.title}`, {
+            const resp = await axios.post(`/api/items/getRating`,{title:itemFromPath.title}, {
                 headers: {
                     "Authorization": token
                 }
@@ -121,12 +132,15 @@ const ProductDetail = (props) => {
     }
 
 
+    let run = useRef(true)
     useEffect(()=>{
-        console.log("this is details "+props.givenRating)
+        if(run.current){
+            run.current = false
+            return;
+        }
         getRating()
     },[props.givenRating])
 
-console.log(loadedRating)
 
     useEffect(() => {
         getRating()
@@ -165,6 +179,7 @@ console.log(loadedRating)
     // };
 
 
+    console.log(loadedRating)
     function addToWishlist() {
         let token = localStorage.getItem("token")
         delete itemFromPath["_id"]
@@ -186,17 +201,28 @@ console.log(loadedRating)
 
     return (
         <div className="cardInfo">
+            {
+                localStorage.getItem("token") ? (
+                    divName = "column",
+                    bodyDivName = "cardDetailsBody",
+                    imgPadding = "33%"
+                ) : (
+                    divName = "columnNone",
+                    bodyDivName = "cardDetailsBodyNone",
+                    imgPadding = "25%"
+                )
+            }
             <div className="cardContents">
                 <Card style={{ height: '500px' }} id="cardDetail">
                     <div className="row">
-                        <div className="column">
-                            <Card.Img style={{ paddingTop: '33%' }} variant="top" src={itemFromPath.image} width='300' height='200' />
+                        <div className={divName}>
+                            <Card.Img style={{ paddingTop: imgPadding }} variant="top" src={itemFromPath.image} width='300' height='200' />
                             <br />
                             <br />
                             <Card.Title className="cardDetailsTitle">{itemFromPath.title}</Card.Title>
                         </div>
-                        <div className="column">
-                            <Card.Body className="cardDetailsBody">
+                        <div className={divName}>
+                            <Card.Body className={bodyDivName}>
                                 <div>
                                     <p>
                                         Vendor: {itemFromPath.vendor}
@@ -204,10 +230,11 @@ console.log(loadedRating)
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    <p>Rating: {loadedRating === "NaN"  || loadedRating === undefined? "Not available" :loadedRating}</p>
+                                    <p>Rating: {loadedRating === "NaN"  || loadedRating === undefined || loadedRating === null? "Not available" :loadedRating}</p>
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
+                                    <br />
                                     <br />
                                     <br />
                                     <a href={itemFromPath.itemURL}>
@@ -229,10 +256,8 @@ console.log(loadedRating)
                         {
                             localStorage.getItem("token") ?
                                 <div className="column">
-                                    <p>
-                                        <StarRating itemFromPath={itemFromPath} />
-                                    </p>
                                     <div id="reviews">
+                                        <StarRating itemFromPath={itemFromPath} />
                                         <h3>Reviews</h3>
                                         {
                                             listReview.length !== 0 ?
@@ -247,8 +272,10 @@ console.log(loadedRating)
                                         <TextareaAutosize data-role="none" style={{ resize: "none" }} id="textArea" value={rev} rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
                                         <br />
                                         <br />
-                                        <br />
                                         <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
+                                        {
+                                            showError ? <p id="errorText"> Please submit a review.</p> : null
+                                        }
                                     </div>
                                 </div> : null
                         }

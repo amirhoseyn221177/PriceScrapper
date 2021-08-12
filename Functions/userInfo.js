@@ -2,12 +2,9 @@ const { User, Item } = require("../Mongoose/models");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const salt = 8;
-const chalk = require("chalk");
 var jwt = require('jsonwebtoken');
 var { ACCESS_TOKEN } = require('../Access_Token');
 var adminEmail = require("./EmailFunctions");
-const nodemailer = require("nodemailer");
-const { token } = require("morgan");
 
 /**
  * 
@@ -16,6 +13,7 @@ const { token } = require("morgan");
  * @param {String} FirstName --- user's first name
  * @param {String} LastName --- user's lastName
  */
+
 var SignUp = async (email, password, FirstName, LastName) => {
     if (password.length < 6) throw new Error("The Password is too short");
     const bcryptSalt = await bcrypt.genSalt(salt);
@@ -29,7 +27,6 @@ var SignUp = async (email, password, FirstName, LastName) => {
  * @param {String} email --- for Finding the user  
  * @param {String} password -- comapring the hashes to make sure user is authenticated 
  */
-
 
 var Login = async (email, password) => {
     const user = await User.findOne({ email: email });
@@ -45,7 +42,6 @@ var Login = async (email, password) => {
             res(token);
         }
     });
-
 };
 
 
@@ -54,10 +50,10 @@ var Login = async (email, password) => {
  * @param {String} token
  * @abstract --- makes sure that user is authenticated 
  */
+
 var authenticate = (token) => {
     jwt.verify(token.split(" ")[1], ACCESS_TOKEN);
 };
-
 
 
 /**
@@ -65,6 +61,7 @@ var authenticate = (token) => {
  * @param {String} email --- gets the requested email to change its password and if the email is available, a code will be sent to the requested email  
  * and the account will contain a forgot password code till its redeemed. (we can set a time to remove the code but it not make any difference)
  */
+
 var forgotPassword = async (email) => {
     const user = await User.findOne({ email: email });
     if (!user) throw new Error("no such a user");
@@ -74,11 +71,9 @@ var forgotPassword = async (email) => {
         to: user.email,
         subject: "reset Password",
         text: `your code is ${randomCode} `
-
     });
     user.forgotPassword = randomCode;
     await user.save();
-
 };
 
 
@@ -87,6 +82,7 @@ var forgotPassword = async (email) => {
  * @param {String} email --- the email of the user that the password should be changed 
  * @param {String} password --- new password that will be hashed and saved in the DB 
  */
+
 var updatePassword = async (token) => {
     let object = TokenDecoder(token);
     const user = await User.findOne({ email: email });
@@ -97,7 +93,6 @@ var updatePassword = async (token) => {
     await user.save();
 };
 
-
 var updateUserInfo = async (email = null, token, firstName = null, lastName = null) => {
     const { username, password } = TokenDecoder(token);
     const user = await User.findOne({ email: username });
@@ -107,7 +102,6 @@ var updateUserInfo = async (email = null, token, firstName = null, lastName = nu
     await user.save();
     let newToken = await Login(email, password);
     return newToken;
-
 };
 
 
@@ -116,10 +110,7 @@ var getRecentViewdItems = async (token) => {
     const recentViewsIds = await User.findOne({ email: username }).select('viewedItems');
     const viewedItems = await Item.find({ '_id': { $in: recentViewsIds.viewedItems } });
     return viewedItems;
-
-
 };
-
 
 var addTorecentViews = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
@@ -128,7 +119,6 @@ var addTorecentViews = async (token, itemObject) => {
     await User.updateOne({ email: username }, {
         $addToSet: { viewedItems: item }
     });
-
 };
 
 
@@ -139,16 +129,13 @@ var addToWishList = async (token, itemObject) => {
     await User.updateOne({ email: username }, {
         $addToSet: { WishListItems: item }
     });
-
 };
-
 
 var getWishListItems = async (token) => {
     const { username } = TokenDecoder(token);
     const wishListIds = await User.findOne({ email: username }).select('WishListItems');
     const wishedItems = await Item.find({ '_id': { $in: wishListIds.WishListItems } });
     return wishedItems;
-
 };
 
 var getUserDetails = (token) => {
@@ -157,23 +144,10 @@ var getUserDetails = (token) => {
     return userDetails;
 };
 
-
 var TokenDecoder = token => {
     const object = jwt.verify(token.split(" ")[1], ACCESS_TOKEN);
     return object;
 };
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = {
     SignUp,

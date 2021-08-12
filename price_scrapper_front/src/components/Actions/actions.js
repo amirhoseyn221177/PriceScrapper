@@ -7,8 +7,6 @@ export const savingToStorage = (token) => {
     };
 };
 
-
-
 export const ChosenItem = item => {
     return {
         type: 'item',
@@ -23,12 +21,10 @@ export const similarItems = items => {
     };
 };
 
-
 export const sendRatingToReducer = rating => {
     return {
         type: 'rating',
         rating
     };
 };
-
 

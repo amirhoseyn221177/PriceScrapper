@@ -2,7 +2,6 @@ const route = require("express").Router();
 const chalk = require("chalk");
 const { AmazonResult } = require("../Functions/StoreAPIs");
 
-
 route.post("/search", async (req, res) => {
     try {
         let searchParam = req.body.searchText;
@@ -19,10 +18,6 @@ route.post("/search", async (req, res) => {
             }
         });
     }
-
 });
-
-
-
 
 module.exports = route;

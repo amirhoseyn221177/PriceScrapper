@@ -5,7 +5,6 @@ let Item = mongoose.model("Item");
 let Review = mongoose.model("Review");
 let Rating = mongoose.model("Rating");
 
-
 module.exports = {
     User,
     Item,

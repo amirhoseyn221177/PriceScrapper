@@ -9,7 +9,6 @@ const initalState = {
     itemURL: ""
 };
 
-
 const reducer = (state = initalState, action) => {
     if (action.type === "item") {
         return {
@@ -26,7 +25,5 @@ const reducer = (state = initalState, action) => {
     }
     return state;
 };
-
-
 
 export default reducer;

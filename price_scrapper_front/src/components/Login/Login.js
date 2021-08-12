@@ -29,17 +29,15 @@ const Login = (props) => {
             else {
                 setError(true);
             }
-
         } catch (e) {
             setError(true);
             console.log(e.response.data.error.message);
         }
-
-
     };
 
-
-  
+    var forgotPassword = async () => {
+        props.history.push(`/forgotpass/${email}`);
+    };
 
     return (
         <div className="loginBox">
@@ -52,14 +50,12 @@ const Login = (props) => {
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>
-                    {/* <Button onClick={forgotPassword} style={{ color: "blue" }}>forgot my password </Button> */}
+                    <Button onClick={forgotPassword} style={{ color: "blue" }}>Fvorgot my password </Button>
                 </form>
             </div>
         </div>
-
     );
 };
-
 
 const mapToProps = dispatch => {
     return {

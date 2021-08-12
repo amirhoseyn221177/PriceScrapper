@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from 'react-bootstrap'
 import { withRouter } from 'react-router';
 import { Button, TextareaAutosize } from '@material-ui/core';
@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
 import qs from 'qs'
+import { get } from "mongoose";
+import { red } from "@material-ui/core/colors";
 
 const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
@@ -18,10 +20,17 @@ const ProductDetail = (props) => {
     }
     const [listReview, setListReview] = useState([]);
     var [rev, setReview] = useState("");
+    var [ratings, setRatings] = useState("");
+    const [loadedReview, setLoadedReview] = useState([]);
+    const [loadedRating, setLoadedRating] = useState();
+
+
+    console.log(productInfoFromPath)
 
     useEffect(() => {
         let base64 = props.match.params.item64
         let product64 = qs.parse(props.location.search)["?base64product"]
+        console.log(product64)
         let jsonItem = atob(base64)
         setItemFromPath(JSON.parse(jsonItem))
         if (product64 !== undefined) setProductsFromPath(JSON.parse(decodeURIComponent(product64)))
@@ -35,9 +44,6 @@ const ProductDetail = (props) => {
         return (sum / (productInfoFromPath.length + 1)).toFixed(2)
 
     }
-
-    console.log(rev)
-
 
     async function addReview() {
         try {
@@ -70,40 +76,79 @@ const ProductDetail = (props) => {
         } catch (e) {
             console.log(e.message)
         }
-
+        let token = localStorage.getItem("token");
+        var itemURL = itemFromPath.itemURL;
+        var title = itemFromPath.title;
+        var LastName = itemFromPath.LastName;
+        var review = rev;
+        var newReview = {
+            itemURL,
+            title,
+            FirstName,
+            LastName,
+            review
+        };
+        const data = await (await axios.post('/api/items/getReviews', newReview, {
+            headers: {
+                "Authorization": token
+            }
+        })).data;
     }
-
 
     async function getReview() {
         try {
             let token = localStorage.getItem("token");
-            const resp = await axios.post('/api/items/getReviews',{itemURL:itemFromPath.itemURL}, {
+            const resp = await axios.get('/api/items/getReviews', {
                 headers: {
                     "Authorization": token
                 }
             })
             const data = await resp.data
-            console.log("we just got the data")
+            console.log(data)
             if (data.length > 0) {
-    
-                setListReview(data)
-            }else{
-                setListReview([])
+                data.map(item => {
+                    console.log(itemFromPath.itemURL)
+                    console.log(item.itemURL)
+                    if (item.itemURL === itemFromPath.itemURL) {
+                        setListReview(prev => [...prev, item])
+                    }
+                })
+                setLoadedReview(data)
             }
         } catch (e) {
             console.log(e.message)
         }
     }
 
+    async function getRating() {
+        console.log(itemFromPath.itemURL)
+        try {
+            console.log(itemFromPath.itemURL)
+            let token = localStorage.getItem("token");
+            const resp = await axios.get(`/api/items/getRating/${itemFromPath.title}`, {
+                headers: {
+                    "Authorization": token
+                }
+            })
+            const data = await resp.data
+            console.log(data)
+            setLoadedRating(data)
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+    console.log(itemFromPath.itemURL)
 
     useEffect(() => {
-        console.log(90)
-        getReview()
+        getRating()
     }, [itemFromPath])
 
+    console.log(loadedReview)
 
-
-
+    useEffect(() => {
+        getReview()
+    }, [itemFromPath])
 
     function addToWishlist() {
         let token = localStorage.getItem("token")
@@ -143,13 +188,13 @@ const ProductDetail = (props) => {
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    <StarRating />
+                                    <p>Rating: {loadedRating}</p>
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
-                                    <br />amir
                                     <br />
-                                    <a id="buyLink" href={itemFromPath.itemURL}>
+                                    <br />
+                                    <a href={itemFromPath.itemURL}>
                                         <Button id="buyBtn" variant="contained" color="primary">
                                             Buy product!
                                         </Button>
@@ -168,6 +213,9 @@ const ProductDetail = (props) => {
                         {
                             localStorage.getItem("token") ?
                                 <div className="column">
+                                    <p>
+                                        <StarRating itemFromPath={itemFromPath} />
+                                    </p>
                                     <div id="reviews">
                                         <h3>Reviews</h3>
                                         {
@@ -184,7 +232,7 @@ const ProductDetail = (props) => {
                                         <br />
                                         <br />
                                         <br />
-                                        <Button variant="contained" color="primary" onClick={() =>addReview()}>Submit Review</Button>
+                                        <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
                                     </div>
                                 </div> : null
                         }

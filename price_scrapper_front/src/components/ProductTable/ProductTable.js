@@ -9,7 +9,7 @@ import axios from "axios";
 import SearchBar from "material-ui-search-bar";
 import './ProductTable.css';
 import Pagination from '@material-ui/lab/Pagination';
-import { ChosenItem } from "../Actions/actions";
+import { ChosenItem, similarItems } from "../Actions/actions";
 import { connect } from 'react-redux';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -66,9 +66,7 @@ const ProductTable = (props) => {
         setAnchorEl(null);
     };
 
-    const handleShow = () => {
-        setOpen(true);
-    };
+  
     const handleClose = () => {
         setOpen(false);
     };
@@ -254,17 +252,18 @@ const ProductTable = (props) => {
 
     var goToProductPage = (item, index, info) => {
         props.sendingItemArray(item);
-        console.log(item);
         addToRecentlyViewed(item);
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
-        let arr = JSON.stringify(productInfoArray);
-        let encodedItems = encodeURIComponent(arr);
+        props.sendingItemsArray(productInfoArray)
         props.history.push({
-            pathname: `/productdetail/${base64Item}/${index}`,
-            search: `base64product=${encodedItems}`
-        });
+            pathname : `/productdetail/${base64Item}/${index}`,
+            search :`searchedWord=${searchText}`
+        })
     };
+
+
+    
 
 
     var createProductCards = () => {
@@ -522,7 +521,9 @@ const ProductTable = (props) => {
 
 const mapToProps = dispatch => {
     return {
-        sendingItemArray: (item) => dispatch(ChosenItem(item))
+        sendingItemArray: (item) => dispatch(ChosenItem(item)),
+        sendingItemsArray : (items)=> dispatch(similarItems(items))
+        
     };
 };
 export default connect(null, mapToProps)(ProductTable);

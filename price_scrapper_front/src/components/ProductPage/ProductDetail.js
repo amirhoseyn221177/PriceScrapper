@@ -7,34 +7,39 @@ import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
-import qs from 'qs'
-import { get } from "mongoose";
-import { red } from "@material-ui/core/colors";
-
+import qs  from 'qs'
 const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
     const [itemFromPath, setItemFromPath] = useState({})
     const [productInfoFromPath, setProductsFromPath] = useState([])
+    const [searchText, setSearchText] = useState("")
     var setProductIndex = (index) => {
         setIndex(index);
     }
+
+
     const [listReview, setListReview] = useState([]);
     var [rev, setReview] = useState("");
-    var [ratings, setRatings] = useState("");
-    const [loadedReview, setLoadedReview] = useState([]);
     const [loadedRating, setLoadedRating] = useState();
 
 
-    console.log(productInfoFromPath)
 
     useEffect(() => {
         let base64 = props.match.params.item64
-        let product64 = qs.parse(props.location.search)["?base64product"]
-        console.log(product64)
         let jsonItem = atob(base64)
+        let searchVariable = qs.parse(props.location.search)['?searchedWord']
+        setSearchText(searchVariable)
         setItemFromPath(JSON.parse(jsonItem))
-        if (product64 !== undefined) setProductsFromPath(JSON.parse(decodeURIComponent(product64)))
     }, [props.match.params.item64])
+
+
+    useEffect(()=>{
+        if(props.items !== null || props.items !== undefined){
+            setProductsFromPath(props.items)
+        }
+    },[props.items])
+
+
 
     function averagePrice() {
         var sum = 0;
@@ -48,6 +53,7 @@ const ProductDetail = (props) => {
     async function addReview() {
         try {
             let token = localStorage.getItem("token");
+            if(token ==="" || token === null || token === undefined)return;
             const resp = await axios.get('/api/user/userinfo', {
                 headers: {
                     "Authorization": token
@@ -65,55 +71,31 @@ const ProductDetail = (props) => {
                 LastName,
                 review :rev
             };
-            const infos = await (await axios.post('/api/items/sendReviews', newReview, {
+            await axios.post('/api/items/sendReviews', newReview, {
                 headers: {
                     "Authorization": token
                 }
-            })).data;
-            console.log(infos)
+            })
             setListReview(prev=>[...prev,newReview])
             setReview("")
         } catch (e) {
             console.log(e.message)
         }
-        let token = localStorage.getItem("token");
-        var itemURL = itemFromPath.itemURL;
-        var title = itemFromPath.title;
-        var LastName = itemFromPath.LastName;
-        var review = rev;
-        var newReview = {
-            itemURL,
-            title,
-            FirstName,
-            LastName,
-            review
-        };
-        const data = await (await axios.post('/api/items/getReviews', newReview, {
-            headers: {
-                "Authorization": token
-            }
-        })).data;
     }
 
     async function getReview() {
         try {
             let token = localStorage.getItem("token");
-            const resp = await axios.get('/api/items/getReviews', {
+            const resp = await axios.post('/api/items/getReviews',{itemURL:itemFromPath.itemURL}, {
                 headers: {
                     "Authorization": token
                 }
             })
             const data = await resp.data
-            console.log(data)
             if (data.length > 0) {
-                data.map(item => {
-                    console.log(itemFromPath.itemURL)
-                    console.log(item.itemURL)
-                    if (item.itemURL === itemFromPath.itemURL) {
-                        setListReview(prev => [...prev, item])
-                    }
-                })
-                setLoadedReview(data)
+                setListReview(data)
+            }else{
+                setListReview([])
             }
         } catch (e) {
             console.log(e.message)
@@ -121,9 +103,7 @@ const ProductDetail = (props) => {
     }
 
     async function getRating() {
-        console.log(itemFromPath.itemURL)
         try {
-            console.log(itemFromPath.itemURL)
             let token = localStorage.getItem("token");
             const resp = await axios.get(`/api/items/getRating/${itemFromPath.title}`, {
                 headers: {
@@ -138,17 +118,42 @@ const ProductDetail = (props) => {
         }
     }
 
-    console.log(itemFromPath.itemURL)
+
 
     useEffect(() => {
         getRating()
-    }, [itemFromPath])
-
-    console.log(loadedReview)
-
-    useEffect(() => {
         getReview()
     }, [itemFromPath])
+
+
+    // var callAmazonAPI = async () => {
+    //     try {
+    //         console.log(searchText);
+    //         var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint:1, sortVariable:'Highest Rating' });
+    //         const amazonJSON = await amazonResponse.data;
+    //         const amazonItemArr = await amazonJSON.result;
+    //         console.log("this is amazon" + amazonItemArr);
+    //     } catch (e) {
+    //         console.log(e.response.data.error.message);
+
+    //     }
+
+    // };
+
+
+
+    // var callEbayAPI = async () => {
+    //     try {
+    //         var ebayResponse = await axios.post("/api/ebay/search", { searchText, startPoint:1, sortVariable:'Highest Rating' });
+    //         const ebayJSON = await ebayResponse.data;
+    //         const ebayItemArr = await ebayJSON.result;
+    //     } catch (e) {
+    //         console.log(e);
+
+    //     }
+
+    // };
+
 
     function addToWishlist() {
         let token = localStorage.getItem("token")
@@ -167,6 +172,7 @@ const ProductDetail = (props) => {
 
         }
     }, [])
+
 
     return (
         <div className="cardInfo">
@@ -188,7 +194,7 @@ const ProductDetail = (props) => {
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    <p>Rating: {loadedRating}</p>
+                                    <p>Rating: {loadedRating === "NaN" ? "Not available" :loadedRating}</p>
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
@@ -250,6 +256,7 @@ const ProductDetail = (props) => {
 const mapToState = state => {
     return {
         item: state.item,
+        items : state.items
     }
 }
 

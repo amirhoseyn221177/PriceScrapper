@@ -31,13 +31,11 @@ const StarRating = (props) => {
                 rating
             };
             console.log(newRating.rating)
-            const response = await axios.post('/api/items/getRating', newRating, {
+          await axios.post('/api/items/getRating', newRating, {
                 headers: {
                     "Authorization": token
                 }
             });
-            const data = await response.data
-            console.log(data)
         }catch(e){
             console.log(e.message)
         }

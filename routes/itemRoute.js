@@ -8,7 +8,6 @@ const { findTheReviews } = require("../Functions/StoreAPIs");
 
 const verifyToken = async (req, res, next) => {
     try {
-        console.log(req.headers['authorization'])
         authenticate(req.headers['authorization'])
         console.log("verified")
         next();
@@ -82,38 +81,6 @@ route.get('/getRating/:title', async (req, res) => {
     });
 
 
-
-route.post('/getReviews', async (req, res) => {
-    var itemURL = req.body.itemURL;
-    var title = req.body.title;
-    var FirstName = req.body.FirstName;
-    var LastName = req.body.LastName;
-    var review = req.body.review;
-    var newReview = new Review({
-        itemURL,
-        title,
-        FirstName,
-        LastName,
-        review
-    });
-
-    newReview.save()
-        .then(() => res.json('Review Added!'))
-        .catch(err => res.status(400).json('Error: ' + err))
-});
-
-route.get('/getReviews', async (req, res) => {
-    Review.find()
-        .then(review => res.json(review))
-        .catch(err => res.status(400).json('Error: ' + err));
-});
-
-route.delete('/getReviews/:id', async (req, res) => {
-    Review.find()
-        .then(review => res.json(review))
-        .catch(err => res.status(400).json('Error: ' + err));
-});
-
 route.post('/sendReviews', async (req, res) => {
     try{
 
@@ -145,7 +112,6 @@ route.post('/sendReviews', async (req, res) => {
 
 route.post('/getReviews', async (req, res) => {
     try{
-        console.log(req.body.itemURL)
         const itemURl = await req.body.itemURL
         let reviews = await findTheReviews(itemURl)
         res.status(200).json(reviews)

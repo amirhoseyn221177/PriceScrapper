@@ -1,5 +1,4 @@
 const route = require("express").Router();
-const chalk = require("chalk");
 const { EbayResult } = require("../Functions/StoreAPIs");
 
 route.post("/search", async (req, res) => {

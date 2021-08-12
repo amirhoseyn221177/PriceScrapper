@@ -1,6 +1,5 @@
 const route = require("express").Router();
-const { SignUp, Login, forgotPassword, updatePassword, updateUserInfo, TokenDecoder, getUserDetails } = require('../Functions/userInfo');
-const chalk = require("chalk");
+const { SignUp, Login, forgotPassword, updatePassword, updateUserInfo, getUserDetails } = require('../Functions/userInfo');
 
 route.post("/login", async (req, res) => {
     try {

@@ -7,7 +7,6 @@ const {
     addToWishList,
     authenticate
 } = require("../Functions/userInfo");
-const chalk = require("chalk");
 const { findTheReviews } = require("../Functions/StoreAPIs");
 const verifyToken = async (req, res, next) => {
     try {

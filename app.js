@@ -11,9 +11,8 @@ var {route:userItems,verifyToken} = require('./routes/itemRoute');
 var db = require("./Mongoose/DBSetup");
 var amazon = require("./routes/AmazonRoute");
 var ebay = require("./routes/Ebay");
-require('dotenv').config();
-
 var app = express();
+require('dotenv').config();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

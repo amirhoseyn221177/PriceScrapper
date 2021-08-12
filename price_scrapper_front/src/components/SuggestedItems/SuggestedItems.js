@@ -16,7 +16,7 @@ import axios from 'axios';
 
 const SuggestedItems = (props) => {
     const [items, setItems] = useState([]);
-    const [searchText , setSearchText]=useState(props.searchtext)
+    const [searchText, setSearchText] = useState(props.searchtext);
     useEffect(() => {
         setItems(props.allItems);
     }, [props.allItems]);
@@ -29,7 +29,7 @@ const SuggestedItems = (props) => {
                 "Authorization": token
             }
         })
-            .then(response => console.log(response.data));
+            .then(response => console.log());
     }
 
 
@@ -37,13 +37,14 @@ const SuggestedItems = (props) => {
     var goToProductPage = (item, index) => {
         props.sendingItemArray(item);
         addToRecentlyViewed(item);
-        props.sendingItems(items)
+        props.sendingItems(items);
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
         props.history.push({
-            pathname : `/productdetail/${base64Item}/${index}`,
-            serach :`?searchedWord = ${searchText}`
-        })    }
+            pathname: `/productdetail/${base64Item}/${index}`,
+            serach: `?searchedWord = ${searchText}`
+        });
+    };
 
     const responsive = {
         desktop: {
@@ -130,10 +131,10 @@ const SuggestedItems = (props) => {
 
 
 
-const mapToProps = dispatch =>{
-    return{
+const mapToProps = dispatch => {
+    return {
         sendingItemArray: (item) => dispatch(ChosenItem(item)),
-        sendingItems : (items)=>dispatch(similarItems(items))
-    }
-}
+        sendingItems: (items) => dispatch(similarItems(items))
+    };
+};
 export default connect(null, mapToProps)(withRouter(SuggestedItems));

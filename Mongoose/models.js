@@ -1,14 +1,14 @@
-const mongoose = require("./DBSetup")
+const mongoose = require("./DBSetup");
 
-let User = mongoose.model("User")
-let Item  = mongoose.model("Item")
-let Review  = mongoose.model("Review")
-let Rating  = mongoose.model("Rating")
+let User = mongoose.model("User");
+let Item = mongoose.model("Item");
+let Review = mongoose.model("Review");
+let Rating = mongoose.model("Rating");
 
 
-module.exports={
+module.exports = {
     User,
     Item,
     Review,
     Rating
-}
+};

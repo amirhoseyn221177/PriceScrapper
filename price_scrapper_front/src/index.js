@@ -9,10 +9,12 @@ import thunk  from 'redux-thunk'
 import Auth from './reducers/AuthReducer'
 import ItemReducer from './reducers/ItemReducer'
 import Items from './reducers/itemsReducer'
+import Rating from './reducers/RatingReducer'
 const rootreducer=combineReducers({
   AuthReducer:Auth,
   item:ItemReducer,
-  items :  Items
+  items :  Items,
+  givenRate : Rating
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

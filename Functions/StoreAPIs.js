@@ -1,6 +1,6 @@
 const amazonScraper = require('amazon-buddy');
 const Ebay = require("ebay-node-api");
-const {Review} = require('../Mongoose/models')
+const { Review } = require('../Mongoose/models');
 let ebay = new Ebay({
     clientID: "SatyakHa-Web-PRD-716b1f9e8-c247be31",
     clientSecret: "PRD-16b1f9e8c971-b22c-4866-9dad-2bc4",
@@ -17,13 +17,11 @@ let ebay = new Ebay({
 
 var AmazonResult = async (searchParam, country = null, startPoint, sortVariable = null) => {
     const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "US" }); //default country is Canada
-    console.log(startPoint);
     return { result: sortAmazonItems(sortVariable, products.result).splice((startPoint - 1) * 3, 12), totalLength: products.result.length };
 };
 
 
 var EbayResult = async (searchText, startPoint, sortVariable = null) => {
-    console.log(startPoint);
     let product = await ebay.findItemsByKeywords({ keywords: searchText });
     return {
         result: sortEbayItems(sortVariable, product[0].searchResult[0].item).splice((startPoint - 1) * 3, 12),
@@ -40,7 +38,6 @@ var EbayResult = async (searchText, startPoint, sortVariable = null) => {
  * @param {*} items -- items that have to be sorted
  */
 var sortAmazonItems = (sortType = null, items) => {
-    console.log(sortType);
     switch (sortType) {
         case "Highest Rating":
             return items.sort((a, b) => b.reviews.rating - a.reviews.rating);
@@ -74,10 +71,10 @@ var sortEbayItems = (sortType = null, items) => {
 };
 
 
-var findTheReviews = async(itemURL)=>{
-    let resp =  await Review.find({itemURL :itemURL})
-    return resp
-}
+var findTheReviews = async (itemURL) => {
+    let resp = await Review.find({ itemURL: itemURL });
+    return resp;
+};
 
 
 

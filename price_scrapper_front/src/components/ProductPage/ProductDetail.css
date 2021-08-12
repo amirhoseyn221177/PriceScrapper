@@ -62,7 +62,8 @@ button.MuiButton-containedPrimary:hover {
 }
 
 #emptyText {
-    margin-top: 30%;
+    margin-top: 25%;
+    margin-bottom: 15%;
     text-align: center;
 }
 

@@ -23,7 +23,6 @@ const {
 const verifyToken = async (req, res, next) => {
     try {
         authenticate(req.headers['authorization']);
-        console.log("verified");
         next();
     } catch (e) {
         console.log(chalk.red(e.message));
@@ -37,7 +36,6 @@ const verifyToken = async (req, res, next) => {
 
 
 route.get('/getRecentlyViewed', async (req, res) => {
-    console.log(req.headers.authorization);
     try {
         let token = req.headers.authorization;
         const items = await getRecentViewdItems(token);
@@ -104,7 +102,6 @@ route.post('/sendReviews', async (req, res) => {
         var FirstName = req.body.FirstName;
         var LastName = req.body.LastName;
         var review = req.body.review;
-        console.log(review);
         var newReview = new Review({
             itemURL,
             title,

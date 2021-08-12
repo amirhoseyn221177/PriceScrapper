@@ -33,7 +33,6 @@ var SignUp = async (email, password, FirstName, LastName) => {
 
 var Login = async (email, password) => {
     const user = await User.findOne({ email: email });
-    console.log(user);
     let hashPass = await user.password;
     let result = await bcrypt.compare(password, hashPass);
 
@@ -68,7 +67,6 @@ var authenticate = (token) => {
  */
 var forgotPassword = async (email) => {
     const user = await User.findOne({ email: email });
-    console.log(user);
     if (!user) throw new Error("no such a user");
     let randomCode = crypto.randomBytes(3).toString("hex");
     let info = await (await adminEmail()).sendMail({
@@ -80,8 +78,6 @@ var forgotPassword = async (email) => {
     });
     user.forgotPassword = randomCode;
     await user.save();
-    console.log(info.messageId);
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 
 };
 
@@ -118,7 +114,6 @@ var updateUserInfo = async (email = null, token, firstName = null, lastName = nu
 var getRecentViewdItems = async (token) => {
     const { username } = TokenDecoder(token);
     const recentViewsIds = await User.findOne({ email: username }).select('viewedItems');
-    console.log(recentViewsIds);
     const viewedItems = await Item.find({ '_id': { $in: recentViewsIds.viewedItems } });
     return viewedItems;
 
@@ -128,9 +123,7 @@ var getRecentViewdItems = async (token) => {
 
 var addTorecentViews = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
-    console.log(itemObject);
     const item = new Item(itemObject);
-    console.log(item);
     await Item.create(item);
     await User.updateOne({ email: username }, {
         $addToSet: { viewedItems: item }
@@ -142,7 +135,6 @@ var addTorecentViews = async (token, itemObject) => {
 var addToWishList = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
     const item = new Item(itemObject);
-    console.log(136);
     await Item.create(item);
     await User.updateOne({ email: username }, {
         $addToSet: { WishListItems: item }
@@ -154,9 +146,7 @@ var addToWishList = async (token, itemObject) => {
 var getWishListItems = async (token) => {
     const { username } = TokenDecoder(token);
     const wishListIds = await User.findOne({ email: username }).select('WishListItems');
-    console.log(wishListIds);
     const wishedItems = await Item.find({ '_id': { $in: wishListIds.WishListItems } });
-    console.log(wishedItems);
     return wishedItems;
 
 };
@@ -170,7 +160,6 @@ var getUserDetails = (token) => {
 
 var TokenDecoder = token => {
     const object = jwt.verify(token.split(" ")[1], ACCESS_TOKEN);
-    console.log(object);
     return object;
 };
 

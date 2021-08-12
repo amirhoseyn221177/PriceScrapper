@@ -1,7 +1,7 @@
 import './App.css';
-import NavBar from './components/Header/Header'
-import { Link, BrowserRouter } from 'react-router-dom'
-import Footer from './components/Footer/Footer'
+import NavBar from './components/Header/Header';
+import { Link, BrowserRouter } from 'react-router-dom';
+import Footer from './components/Footer/Footer';
 import MainComponent from './components/MainComponent';
 import React, { useEffect, useState } from 'react';
 import { Button } from "@material-ui/core";
@@ -12,26 +12,26 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 function App() {
   const [open, setOpen] = useState(true);
-  
+
   const handleClose = () => {
     setOpen(false);
-  }
+  };
 
   useEffect(() => {
     let visited = sessionStorage["alreadyVisited"];
-    if(visited) {
-         setOpen(false)
+    if (visited) {
+      setOpen(false);
     } else {
-         sessionStorage["alreadyVisited"] = true;
-         setOpen(true)
+      sessionStorage["alreadyVisited"] = true;
+      setOpen(true);
     }
-  })
+  });
 
-  function checkLogin(){
+  function checkLogin() {
     if (localStorage.hasOwnProperty("token")) {
       sessionStorage["alreadyVisited"] = true;
     } else {
-      localStorage.removeItem('alreadyVisited')
+      localStorage.removeItem('alreadyVisited');
     }
   }
 

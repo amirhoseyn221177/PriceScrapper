@@ -1,8 +1,8 @@
-import React from 'react'
-import { Card } from 'react-bootstrap'
-import { Button, Tooltip} from '@material-ui/core';
+import React from 'react';
+import { Card } from 'react-bootstrap';
+import { Button, Tooltip } from '@material-ui/core';
 import { withRouter, } from 'react-router';
-import './ProductCard.css'
+import './ProductCard.css';
 
 const ProductCard = (props) => {
 
@@ -25,7 +25,7 @@ const ProductCard = (props) => {
                 </Button>
             </Card.Body>
         </Card>
-    )
-}
+    );
+};
 
 export default withRouter(ProductCard);

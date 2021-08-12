@@ -33,20 +33,20 @@ var SignUp = async (email, password, FirstName, LastName) => {
 
 var Login = async (email, password) => {
     const user = await User.findOne({ email: email });
-    console.log(user)
+    console.log(user);
     let hashPass = await user.password;
     let result = await bcrypt.compare(password, hashPass);
 
-    return new Promise(async(res,rej)=>{
+    return new Promise(async (res, rej) => {
         if (result) {
-                let token = jwt.sign({ username: email, password,Name:(user.FirstName + " " + user.LastName) }, ACCESS_TOKEN, {
-                    algorithm: 'HS256',
-                    expiresIn: '2h'
-                })
-                res(token)        
+            let token = jwt.sign({ username: email, password, Name: (user.FirstName + " " + user.LastName) }, ACCESS_TOKEN, {
+                algorithm: 'HS256',
+                expiresIn: '2h'
+            });
+            res(token);
         }
-    })
- 
+    });
+
 };
 
 
@@ -55,9 +55,9 @@ var Login = async (email, password) => {
  * @param {String} token
  * @abstract --- makes sure that user is authenticated 
  */
-var authenticate=(token)=>{
-    jwt.verify(token.split(" ")[1],ACCESS_TOKEN)
-}
+var authenticate = (token) => {
+    jwt.verify(token.split(" ")[1], ACCESS_TOKEN);
+};
 
 
 
@@ -91,8 +91,8 @@ var forgotPassword = async (email) => {
  * @param {String} email --- the email of the user that the password should be changed 
  * @param {String} password --- new password that will be hashed and saved in the DB 
  */
-var updatePassword = async (email, password) => {
-    console.log(87);
+var updatePassword = async (token) => {
+    let object = TokenDecoder(token);
     const user = await User.findOne({ email: email });
     let newgenSalt = await bcrypt.genSalt(salt);
     let hashedPass = await bcrypt.hash(password, newgenSalt);
@@ -103,16 +103,15 @@ var updatePassword = async (email, password) => {
 
 
 var updateUserInfo = async (email = null, token, firstName = null, lastName = null) => {
-    const { username , password } = TokenDecoder(token);
+    const { username, password } = TokenDecoder(token);
     const user = await User.findOne({ email: username });
     email !== null ? user.email = email : null;
     firstName !== null ? user.FirstName = firstName : null;
     lastName !== null ? user.LastName = lastName : null;
     await user.save();
-    let newToken = await Login(email,password)
-    TokenDecoder(newToken)
-    return newToken
-     
+    let newToken = await Login(email, password);
+    return newToken;
+
 };
 
 
@@ -129,9 +128,9 @@ var getRecentViewdItems = async (token) => {
 
 var addTorecentViews = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
-    console.log(itemObject)
+    console.log(itemObject);
     const item = new Item(itemObject);
-    console.log(item)
+    console.log(item);
     await Item.create(item);
     await User.updateOne({ email: username }, {
         $addToSet: { viewedItems: item }
@@ -143,7 +142,7 @@ var addTorecentViews = async (token, itemObject) => {
 var addToWishList = async (token, itemObject) => {
     const { username } = TokenDecoder(token);
     const item = new Item(itemObject);
-    console.log(136)
+    console.log(136);
     await Item.create(item);
     await User.updateOne({ email: username }, {
         $addToSet: { WishListItems: item }
@@ -155,23 +154,23 @@ var addToWishList = async (token, itemObject) => {
 var getWishListItems = async (token) => {
     const { username } = TokenDecoder(token);
     const wishListIds = await User.findOne({ email: username }).select('WishListItems');
-    console.log(wishListIds)
+    console.log(wishListIds);
     const wishedItems = await Item.find({ '_id': { $in: wishListIds.WishListItems } });
     console.log(wishedItems);
     return wishedItems;
 
 };
 
-var getUserDetails= (token)=>{
-    const userDetails = TokenDecoder(token)
-    delete userDetails.password
-    return userDetails
-}
+var getUserDetails = (token) => {
+    const userDetails = TokenDecoder(token);
+    delete userDetails.password;
+    return userDetails;
+};
 
 
 var TokenDecoder = token => {
     const object = jwt.verify(token.split(" ")[1], ACCESS_TOKEN);
-    console.log(object)
+    console.log(object);
     return object;
 };
 
@@ -185,36 +184,6 @@ var TokenDecoder = token => {
 
 
 
-
-// User.findOne({email:"amirsayuar221177@gmail.com"})
-// .then(user=>{
-//     console.log(user)
-// })
-
-// let item = {
-//     itemName: "shoe",
-//     store: 'amazon',
-//     category: 'clothes',
-//     itemSotreCode: "321321"
-// };
-// getRecentViewdItems("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFtaXJzYXl5YXJAZ21haWwuY29tIiwicGFzc3dvcmQiOiJzZXgyMjExIiwiaWF0IjoxNjI2NTA5MTE3LCJleHAiOjE2MjY1MTYzMTd9.BXvtzDcfbzVfKv7c7-FNzwR5dCqrxv_mJoIL5t_ZxC0");
-
-
-var getAllTheUsers = async () => {
-    // let allusers = await User.find({});
-    let allItems = await Item.find({});
-    console.log(allItems)
-    // console.log(allusers);
-};
-
-
-// var deleteAllUsers = async()=>{
-//     await User.deleteMany({})
-// }
-
-
-// getAllTheUsers();
-// deleteAllUsers()
 
 
 module.exports = {

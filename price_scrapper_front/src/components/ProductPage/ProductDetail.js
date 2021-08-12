@@ -1,50 +1,48 @@
-import React, { useEffect, useState } from "react";
-import { Card } from 'react-bootstrap'
+import React, { useEffect, useRef, useState } from "react";
+import { Card } from 'react-bootstrap';
 import { withRouter } from 'react-router';
 import { Button, TextareaAutosize } from '@material-ui/core';
-import './ProductDetail.css'
+import './ProductDetail.css';
 import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
-import axios from 'axios'
+import axios from 'axios';
 import StarRating from "./StarRating";
-import qs from 'qs'
+import qs from 'qs';
 const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
-    const [itemFromPath, setItemFromPath] = useState({})
-    const [productInfoFromPath, setProductsFromPath] = useState([])
-    const [showError, setShowError] = useState(false)
+    const [itemFromPath, setItemFromPath] = useState({});
+    const [productInfoFromPath, setProductsFromPath] = useState([]);
+    const [showError, setShowError] = useState(false);
     var setProductIndex = (index) => {
         setIndex(index);
-    }
+    };
     let divName = "columnNone";
     let bodyDivName = "cardDetailsBodyNone";
     let imgPadding = "25%";
-    const [searchText, setSearchText] = useState("")
+    const [searchText, setSearchText] = useState("");
     var setProductIndex = (index) => {
         setIndex(index);
-    }
-
-
+    };
     const [listReview, setListReview] = useState([]);
     var [rev, setReview] = useState("");
-    const [loadedRating, setLoadedRating] = useState();
+    const [loadedRating, setLoadedRating] = useState(0);
 
 
 
     useEffect(() => {
-        let base64 = props.match.params.item64
-        let jsonItem = atob(base64)
-        let searchVariable = qs.parse(props.location.search)['?searchedWord']
-        setSearchText(searchVariable)
-        setItemFromPath(JSON.parse(jsonItem))
-    }, [props.match.params.item64])
+        let base64 = props.match.params.item64;
+        let jsonItem = atob(base64);
+        let searchVariable = qs.parse(props.location.search)['?searchedWord'];
+        setSearchText(searchVariable);
+        setItemFromPath(JSON.parse(jsonItem));
+    }, [props.match.params.item64]);
 
 
     useEffect(() => {
         if (props.items !== null || props.items !== undefined) {
-            setProductsFromPath(props.items)
+            setProductsFromPath(props.items);
         }
-    }, [props.items])
+    }, [props.items]);
 
 
 
@@ -53,13 +51,13 @@ const ProductDetail = (props) => {
         for (let i = 0; i < productInfoFromPath.length; i++) {
             sum = sum + parseInt(productInfoFromPath[i].price, 10);
         }
-        return (sum / (productInfoFromPath.length + 1)).toFixed(2)
+        return (sum / (productInfoFromPath.length + 1)).toFixed(2);
 
     }
 
     async function addReview() {
         if (rev !== "") {
-            setShowError(false)
+            setShowError(false);
             try {
                 let token = localStorage.getItem("token");
                 if (token === "" || token === null || token === undefined) return;
@@ -67,8 +65,8 @@ const ProductDetail = (props) => {
                     headers: {
                         "Authorization": token
                     }
-                })
-                const data = await resp.data
+                });
+                const data = await resp.data;
                 var FirstName = data.Name;
                 var itemURL = itemFromPath.itemURL;
                 var title = itemFromPath.title;
@@ -85,14 +83,14 @@ const ProductDetail = (props) => {
                     headers: {
                         "Authorization": token
                     }
-                })
-                setListReview(prev => [...prev, newReview])
-                setReview("")
+                });
+                setListReview(prev => [...prev, newReview]);
+                setReview("");
             } catch (e) {
-                console.log(e.message)
+                console.log(e.message);
             }
         } else {
-            setShowError(true)
+            setShowError(true);
         }
     }
 
@@ -103,40 +101,53 @@ const ProductDetail = (props) => {
                 headers: {
                     "Authorization": token
                 }
-            })
-            const data = await resp.data
+            });
+            const data = await resp.data;
             if (data.length > 0) {
-                setListReview(data)
+                setListReview(data);
             } else {
-                setListReview([])
+                setListReview([]);
             }
         } catch (e) {
-            console.log(e.message)
+            console.log(e.message);
         }
     }
+
+
+
 
     async function getRating() {
         try {
             let token = localStorage.getItem("token");
-            const resp = await axios.get(`/api/items/getRating/${itemFromPath.title}`, {
+            const resp = await axios.post(`/api/items/getRating`, { title: itemFromPath.title }, {
                 headers: {
                     "Authorization": token
                 }
-            })
-            const data = await resp.data
-            console.log(data)
-            setLoadedRating(data)
+            });
+            const data = await resp.data;
+            setLoadedRating(data);
         } catch (e) {
-            console.log(e.message)
+            console.log(e.message);
         }
     }
 
 
+    let run = useRef(true);
+    useEffect(() => {
+        if (run.current) {
+            run.current = false;
+            return;
+        }
+        getRating();
+    }, [props.givenRating]);
+
 
     useEffect(() => {
-        getRating()
-        getReview()
-    }, [itemFromPath])
+        getRating();
+        getReview();
+    }, [itemFromPath]);
+
+
 
 
     // var callAmazonAPI = async () => {
@@ -168,9 +179,10 @@ const ProductDetail = (props) => {
     // };
 
 
+    console.log(loadedRating);
     function addToWishlist() {
-        let token = localStorage.getItem("token")
-        delete itemFromPath["_id"]
+        let token = localStorage.getItem("token");
+        delete itemFromPath["_id"];
         axios.post('/api/items/addToWishList', { item: itemFromPath }, {
             headers: {
                 "Authorization": token
@@ -180,11 +192,11 @@ const ProductDetail = (props) => {
     }
 
     useEffect(() => {
-        if (props.item.title === "" && itemFromPath === null) props.history.push("/")
+        if (props.item.title === "" && itemFromPath === null) props.history.push("/");
         else {
 
         }
-    }, [])
+    }, []);
 
 
     return (
@@ -218,9 +230,7 @@ const ProductDetail = (props) => {
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    {
-                                        localStorage.getItem("token") ? <p>Rating: {loadedRating === "NaN" ? "Not available" : loadedRating}</p> : null
-                                    }
+                                    <p>Rating: {loadedRating === "NaN" || loadedRating === undefined || loadedRating === null ? "Not available" : loadedRating}</p>
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
@@ -236,7 +246,7 @@ const ProductDetail = (props) => {
                                     <br />
                                     {
                                         localStorage.getItem("token") ?
-                                            <Button variant="contained" color="primary" onClick={() => { addToWishlist() }}>
+                                            <Button variant="contained" color="primary" onClick={() => { addToWishlist(); }}>
                                                 Add to wishlist
                                             </Button> : null
                                     }
@@ -276,16 +286,17 @@ const ProductDetail = (props) => {
                 allItems={productInfoFromPath} setProductIndex={setProductIndex}
             />
         </div>
-    )
-}
+    );
+};
 
 
 const mapToState = state => {
     return {
         item: state.item,
-        items: state.items
-    }
-}
+        items: state.items,
+        givenRating: state.givenRate
+    };
+};
 
 export default connect(mapToState, null)(withRouter(ProductDetail));
 

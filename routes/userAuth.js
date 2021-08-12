@@ -10,7 +10,7 @@ route.post("/login", async (req, res) => {
         const password = req.headers.password;
         const email = req.headers.email;
         const token = await Login(email, password);
-        res.status(200).set("Authorization", "Bearer "+token).send().end();
+        res.status(200).set("Authorization", "Bearer " + token).send().end();
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({
@@ -58,10 +58,10 @@ route.post("/forgotpass/:email", async (req, res) => {
 });
 
 
-route.post("/updatePass/:password/:email", async (req, res) => {
+route.post("/updatePass", async (req, res) => {
     try {
-        const { password, email } = req.params;
-        await updatePassword(email, password);
+        const token = req.headers.authorization
+        await updatePassword(token);
         res.status(200).json({ message: "password changed successfully" });
     } catch (e) {
         console.log(e.message);
@@ -79,7 +79,7 @@ route.post("/updateEmail/:email/:firstname/:lastname", async (req, res) => {
         const token = req.headers.authorization;
         const { email, firstname, lastname } = req.params;
         let newToken = await updateUserInfo(email, token, firstname, lastname);
-        res.status(200).set("Authorization", "Bearer "+newToken).json({ message: 'successful' });
+        res.status(200).set("Authorization", "Bearer " + newToken).json({ message: 'successful' });
     } catch (e) {
         console.log(e.message);
         res.status(500).send({
@@ -91,12 +91,12 @@ route.post("/updateEmail/:email/:firstname/:lastname", async (req, res) => {
 });
 
 
-route.get("/userinfo",async(req,res)=>{
-    try{
-        const token = req.headers.authorization
-        const userDetails = getUserDetails(token)
-        res.status(200).json(userDetails)
-    }catch(e){
+route.get("/userinfo", async (req, res) => {
+    try {
+        const token = req.headers.authorization;
+        const userDetails = getUserDetails(token);
+        res.status(200).json(userDetails);
+    } catch (e) {
         console.log(e.message);
         res.status(500).send({
             error: {
@@ -104,7 +104,7 @@ route.get("/userinfo",async(req,res)=>{
             }
         });
     }
-})
+});
 
 
 

@@ -20,9 +20,7 @@ const Login = (props) => {
                 }
             });
             const data = await resp.headers;
-            console.log(data);
             if (data.authorization !== "" && data.authorization !== undefined) {
-                console.log(data);
                 props.sendingToActions(data.authorization);
                 props.history.push(`/home`);
             }

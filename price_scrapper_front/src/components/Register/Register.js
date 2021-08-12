@@ -28,10 +28,10 @@ const Register = props => {
                 <div className="signUpForm">
                     <h1>Sign Up</h1>
                     <form noValidate autoComplete="off">
-                        <TextField onChange={e => setFirstName(e.target.value)} id="standard-basic" className="form-item" label="First Name" type="first name" />
-                        <TextField onChange={e => setLastName(e.target.value)} id="standard-basic" className="form-item" label="Last Name" />
-                        <TextField onChange={e => setEmail(e.target.value)} id="standard-basic" className="form-item" label="Email" type="email" />
-                        <TextField onChange={e => setPassword(e.target.value)} id="standard-basic" className="form-item" label="Password" type="password" />
+                        <TextField onChange={e => setFirstName(e.target.value)} className="form-item" label="First Name" type="first name" />
+                        <TextField onChange={e => setLastName(e.target.value)} className="form-item" label="Last Name" />
+                        <TextField onChange={e => setEmail(e.target.value)} className="form-item" label="Email" type="email" />
+                        <TextField onChange={e => setPassword(e.target.value)} className="form-item" label="Password" type="password" />
                         <Button onClick={sendingUserInfoToBackEnd} variant="contained" color="primary">
                             Sign Up
                         </Button>

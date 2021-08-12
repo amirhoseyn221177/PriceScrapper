@@ -62,14 +62,18 @@ const ProductDetail = (props) => {
                 LastName,
                 review: rev
             };
-            const infos = await (await axios.post('/api/items/sendReviews', newReview, {
-                headers: {
-                    "Authorization": token
-                }
-            })).data;
-            console.log(infos)
-            setListReview(prev => [...prev, newReview])
-            setReview("")
+            if (rev !== "") {
+                const infos = await (await axios.post('/api/items/sendReviews', newReview, {
+                    headers: {
+                        "Authorization": token
+                    }
+                })).data;
+                console.log(infos)
+                setListReview(prev => [...prev, newReview])
+                setReview("")
+            } else {
+                alert("Please type a review.")
+            }
         } catch (e) {
             console.log(e.message)
         }

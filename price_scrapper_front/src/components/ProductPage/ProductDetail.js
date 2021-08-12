@@ -132,8 +132,10 @@ const ProductDetail = (props) => {
     }, [props.givenRating]);
 
     useEffect(() => {
-        getRating();
-        getReview();
+        if (localStorage.getItem("token")) {
+            getRating();
+            getReview();
+        }
     }, [itemFromPath]);
 
     function addToWishlist() {

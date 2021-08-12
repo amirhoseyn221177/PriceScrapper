@@ -14,7 +14,6 @@ const verifyToken = async (req, res, next) => {
         authenticate(req.headers['authorization']);
         next();
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(403).send({
             error: {
                 message: e.message
@@ -31,7 +30,6 @@ route.get('/getRecentlyViewed', async (req, res) => {
             items
         });
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(500).send({
             error: {
                 message: e.message
@@ -68,7 +66,6 @@ route.post('/getRating', async (req, res) => {
         if (ratings.length > 0) res.json((sum / ratings.length).toFixed(2));
         else res.json(NaN);
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(500).send({
             error: {
                 message: e.message
@@ -96,7 +93,6 @@ route.post('/sendReviews', async (req, res) => {
             message: "message has been added"
         });
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(500).send({
             error: {
                 message: e.message
@@ -111,7 +107,6 @@ route.post('/getReviews', async (req, res) => {
         let reviews = await findTheReviews(itemURl);
         res.status(200).json(reviews);
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(500).send({
             error: {
                 message: e.message
@@ -134,7 +129,6 @@ route.get("/getWishList", async (req, res) => {
             items
         });
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(500).send({
             error: {
                 message: e.message
@@ -155,7 +149,6 @@ route.post("/addToRecent", async (req, res) => {
             message: "item added to recentViews"
         });
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(500).send({
             error: {
                 message: e.message
@@ -175,7 +168,6 @@ route.post("/addToWishList", async (req, res) => {
             message: "item added to the wish list"
         });
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(500).send({
             error: {
                 message: e.message

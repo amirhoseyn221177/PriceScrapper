@@ -162,11 +162,13 @@ const ProductTable = (props) => {
 
     function addToRecentlyViewed(item) {
         let token = localStorage.getItem("token");
-        axios.post('/api/items/addToRecent', { item }, {
-            headers: {
-                "Authorization": token
-            }
-        }).then(response => console.log());
+        if (token) {
+            axios.post('/api/items/addToRecent', { item }, {
+                headers: {
+                    "Authorization": token
+                }
+            }).then(response => console.log());
+        }
     }
 
     var goToProductPage = (item, index, info) => {

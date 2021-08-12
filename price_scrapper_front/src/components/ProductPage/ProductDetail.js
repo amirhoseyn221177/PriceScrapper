@@ -7,11 +7,18 @@ import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
-import qs  from 'qs'
+import qs from 'qs'
 const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
     const [itemFromPath, setItemFromPath] = useState({})
     const [productInfoFromPath, setProductsFromPath] = useState([])
+    const [showError, setShowError] = useState(false)
+    var setProductIndex = (index) => {
+        setIndex(index);
+    }
+    let divName = "columnNone";
+    let bodyDivName = "cardDetailsBodyNone";
+    let imgPadding = "25%";
     const [searchText, setSearchText] = useState("")
     var setProductIndex = (index) => {
         setIndex(index);
@@ -33,11 +40,11 @@ const ProductDetail = (props) => {
     }, [props.match.params.item64])
 
 
-    useEffect(()=>{
-        if(props.items !== null || props.items !== undefined){
+    useEffect(() => {
+        if (props.items !== null || props.items !== undefined) {
             setProductsFromPath(props.items)
         }
-    },[props.items])
+    }, [props.items])
 
 
 
@@ -51,42 +58,48 @@ const ProductDetail = (props) => {
     }
 
     async function addReview() {
-        try {
-            let token = localStorage.getItem("token");
-            if(token ==="" || token === null || token === undefined)return;
-            const resp = await axios.get('/api/user/userinfo', {
-                headers: {
-                    "Authorization": token
-                }
-            })
-            const data = await resp.data
-            var FirstName = data.Name;
-            var itemURL = itemFromPath.itemURL;
-            var title = itemFromPath.title;
-            var LastName = itemFromPath.LastName;
-            var newReview = {
-                itemURL,
-                title,
-                FirstName,
-                LastName,
-                review :rev
-            };
-            await axios.post('/api/items/sendReviews', newReview, {
-                headers: {
-                    "Authorization": token
-                }
-            })
-            setListReview(prev=>[...prev,newReview])
-            setReview("")
-        } catch (e) {
-            console.log(e.message)
+        if (rev !== "") {
+            setShowError(false)
+            try {
+                let token = localStorage.getItem("token");
+                if (token === "" || token === null || token === undefined) return;
+                const resp = await axios.get('/api/user/userinfo', {
+                    headers: {
+                        "Authorization": token
+                    }
+                })
+                const data = await resp.data
+                var FirstName = data.Name;
+                var itemURL = itemFromPath.itemURL;
+                var title = itemFromPath.title;
+                var LastName = itemFromPath.LastName;
+                var review = rev;
+                var newReview = {
+                    itemURL,
+                    title,
+                    FirstName,
+                    LastName,
+                    review
+                };
+                await axios.post('/api/items/sendReviews', newReview, {
+                    headers: {
+                        "Authorization": token
+                    }
+                })
+                setListReview(prev => [...prev, newReview])
+                setReview("")
+            } catch (e) {
+                console.log(e.message)
+            }
+        } else {
+            setShowError(true)
         }
     }
 
     async function getReview() {
         try {
             let token = localStorage.getItem("token");
-            const resp = await axios.post('/api/items/getReviews',{itemURL:itemFromPath.itemURL}, {
+            const resp = await axios.post('/api/items/getReviews', { itemURL: itemFromPath.itemURL }, {
                 headers: {
                     "Authorization": token
                 }
@@ -94,7 +107,7 @@ const ProductDetail = (props) => {
             const data = await resp.data
             if (data.length > 0) {
                 setListReview(data)
-            }else{
+            } else {
                 setListReview([])
             }
         } catch (e) {
@@ -176,17 +189,28 @@ const ProductDetail = (props) => {
 
     return (
         <div className="cardInfo">
+            {
+                localStorage.getItem("token") ? (
+                    divName = "column",
+                    bodyDivName = "cardDetailsBody",
+                    imgPadding = "33%"
+                ) : (
+                    divName = "columnNone",
+                    bodyDivName = "cardDetailsBodyNone",
+                    imgPadding = "25%"
+                )
+            }
             <div className="cardContents">
                 <Card style={{ height: '500px' }} id="cardDetail">
                     <div className="row">
-                        <div className="column">
-                            <Card.Img style={{ paddingTop: '33%' }} variant="top" src={itemFromPath.image} width='300' height='200' />
+                        <div className={divName}>
+                            <Card.Img style={{ paddingTop: imgPadding }} variant="top" src={itemFromPath.image} width='300' height='200' />
                             <br />
                             <br />
                             <Card.Title className="cardDetailsTitle">{itemFromPath.title}</Card.Title>
                         </div>
-                        <div className="column">
-                            <Card.Body className="cardDetailsBody">
+                        <div className={divName}>
+                            <Card.Body className={bodyDivName}>
                                 <div>
                                     <p>
                                         Vendor: {itemFromPath.vendor}
@@ -194,10 +218,13 @@ const ProductDetail = (props) => {
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    <p>Rating: {loadedRating === "NaN" ? "Not available" :loadedRating}</p>
+                                    {
+                                        localStorage.getItem("token") ? <p>Rating: {loadedRating === "NaN" ? "Not available" : loadedRating}</p> : null
+                                    }
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
+                                    <br />
                                     <br />
                                     <br />
                                     <a href={itemFromPath.itemURL}>
@@ -219,10 +246,8 @@ const ProductDetail = (props) => {
                         {
                             localStorage.getItem("token") ?
                                 <div className="column">
-                                    <p>
-                                        <StarRating itemFromPath={itemFromPath} />
-                                    </p>
                                     <div id="reviews">
+                                        <StarRating itemFromPath={itemFromPath} />
                                         <h3>Reviews</h3>
                                         {
                                             listReview.length !== 0 ?
@@ -237,8 +262,10 @@ const ProductDetail = (props) => {
                                         <TextareaAutosize data-role="none" style={{ resize: "none" }} id="textArea" value={rev} rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
                                         <br />
                                         <br />
-                                        <br />
                                         <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
+                                        {
+                                            showError ? <p id="errorText"> Please submit a review.</p> : null
+                                        }
                                     </div>
                                 </div> : null
                         }
@@ -256,7 +283,7 @@ const ProductDetail = (props) => {
 const mapToState = state => {
     return {
         item: state.item,
-        items : state.items
+        items: state.items
     }
 }
 

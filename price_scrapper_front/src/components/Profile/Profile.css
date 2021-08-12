@@ -12,7 +12,7 @@
     text-align:  center;
     height: 10%;
     width: 80%;
-    overflow:scroll;
+    overflow: auto;
 }
 
 .viewedDiv, .wishDiv {
@@ -64,6 +64,10 @@ form {
 form ul li label {
     margin-top: 14px;
     float: left;
+}
+
+#update {
+    margin-right: 32px;
 }
 
 .textField {

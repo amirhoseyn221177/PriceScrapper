@@ -102,6 +102,9 @@ const ProductDetail = (props) => {
         }
     }
 
+
+
+
     async function getRating() {
         try {
             let token = localStorage.getItem("token");
@@ -111,7 +114,6 @@ const ProductDetail = (props) => {
                 }
             })
             const data = await resp.data
-            console.log(data)
             setLoadedRating(data)
         } catch (e) {
             console.log(e.message)
@@ -119,11 +121,19 @@ const ProductDetail = (props) => {
     }
 
 
+    useEffect(()=>{
+        console.log("this is details "+props.givenRating)
+        getRating()
+    },[props.givenRating])
+
+console.log(loadedRating)
 
     useEffect(() => {
         getRating()
         getReview()
     }, [itemFromPath])
+
+
 
 
     // var callAmazonAPI = async () => {
@@ -194,7 +204,7 @@ const ProductDetail = (props) => {
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    <p>Rating: {loadedRating === "NaN" ? "Not available" :loadedRating}</p>
+                                    <p>Rating: {loadedRating === "NaN"  || loadedRating === undefined? "Not available" :loadedRating}</p>
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
@@ -256,7 +266,8 @@ const ProductDetail = (props) => {
 const mapToState = state => {
     return {
         item: state.item,
-        items : state.items
+        items : state.items,
+        givenRating : state.givenRate
     }
 }
 

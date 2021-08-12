@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { FaStar } from "react-icons/fa"
+import { connect } from 'react-redux';
+import { sendRatingToReducer } from '../Actions/actions';
 
 const StarRating = (props) => {
     const [rating, setRating] = useState(0);
@@ -11,6 +13,7 @@ const StarRating = (props) => {
     useEffect(()=>{
         addRating()
     },[rating])
+
 
     var addRating = async()=>{
         try{
@@ -30,12 +33,13 @@ const StarRating = (props) => {
                 firstName,
                 rating
             };
-            console.log(newRating.rating)
           await axios.post('/api/items/getRating', newRating, {
                 headers: {
                     "Authorization": token
                 }
             });
+            props.sendRating(rating)
+            
         }catch(e){
             console.log(e.message)
         }
@@ -71,4 +75,11 @@ const StarRating = (props) => {
     );
 };
 
-export default StarRating
+
+const mapToProps = dispatch=>{
+    return{
+        sendRating : rating => dispatch(sendRatingToReducer(rating))
+    }
+}
+
+export default  connect(null,mapToProps)(StarRating);

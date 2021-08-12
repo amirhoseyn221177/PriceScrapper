@@ -24,3 +24,11 @@ export const similarItems = items=>{
 }
 
 
+export const sendRatingToReducer = rating =>{
+    return{
+        type : 'rating',
+        rating
+    }
+}
+
+

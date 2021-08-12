@@ -58,17 +58,18 @@ route.post('/getRating', async (req, res) => {
 });
 
 route.get('/getRating/:title', async (req, res) => {
+    var sum = 0;
     try {
         const ratings = await Rating.find();
-        var sum = 0;
         var j = 0; 
         for(let i = 0; i < ratings.length; i++){
             if(ratings[i].title === req.params.title){
-                sum = sum + parseInt(ratings[i].rating, 10);
+                sum = sum + ratings[i].rating;
                 j = j + 1;
+                console.log("Rating: "+ ratings[i].rating + " The sum is: " + sum + " j: " + j)
             }
         }
-            res.json((sum / (j + 1)).toFixed(2))
+            res.json((sum / j).toFixed(2))
         } catch (e) {
             console.log(chalk.red(e.message));
             res.status(500).send({

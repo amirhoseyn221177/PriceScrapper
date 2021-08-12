@@ -8,10 +8,10 @@ const StarRating = (props) => {
 
 
 
-    // useEffect(()=>{
-    //     console.log(props.ratingValue)
-    //     setRating(props.ratingValue)
-    // },[props.ratingValue])
+    useEffect(()=>{
+        console.log(rating)
+        setRating(rating)
+    },[rating])
 
     var addRating = async(tempRating)=>{
         try{
@@ -33,6 +33,7 @@ const StarRating = (props) => {
                 firstName,
                 rating
             };
+            console.log(newRating.rating)
             const response = await axios.post('/api/items/getRating', newRating, {
                 headers: {
                     "Authorization": token

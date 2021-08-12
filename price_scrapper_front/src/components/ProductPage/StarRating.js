@@ -9,14 +9,11 @@ const StarRating = (props) => {
 
 
     useEffect(()=>{
-        console.log(rating)
-        setRating(rating)
+        addRating()
     },[rating])
 
-    var addRating = async(tempRating)=>{
+    var addRating = async()=>{
         try{
-            console.log(tempRating)
-            setRating(tempRating)
             let token = localStorage.getItem("token");
             const resp = await axios.get('/api/user/userinfo', {
                 headers: {
@@ -45,6 +42,8 @@ const StarRating = (props) => {
             console.log(e.message)
         }
     }
+
+    
     
     return (
         <div>
@@ -62,8 +61,8 @@ const StarRating = (props) => {
                         <FaStar
                             className="star"
                             color={tempRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
-                            size={15}
-                            onClick={()=>{addRating(tempRating)}}
+                            size={15} 
+                            onClick={()=>{setRating(tempRating)}}
                             onMouseEnter={() => setHover(tempRating)}
                             onMouseLeave={() => setHover(null)}
                         />

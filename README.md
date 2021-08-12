@@ -28,22 +28,22 @@ Note: Website designed for larger screens (preferably 1920px x 1080px and above)
 Our frontend components are either from React Bootstrap or Material-UI. However, they are heavily customized to fit our needs with HTML and CSS. These components are integrated into our app with JSX which is the syntax extenstion of JavaScript in React.
 
 ### Unit 2: React & Redux
-Most of our frontend components are resuable React components such as Product Card, Product Table and Suggested Item carousel. We used redux to pass around the authentication token associated with the user in order to authenticate them and to pass around items that need to be showcased.
+Most of our frontend components are resuable React components such as Product Card, Product Table and Suggested Item carousel. We used Redux to pass around the authentication token associated with the user in order to authenticate them and to pass around items that need to be showcased.
 
 ### Unit 3: Mongo DB
 Our database is hosted on MongoDB which contains all our user information such as their first and last name, email, recently viewed list and wish list.
-Since MongoDB is a NoSQL database, it allows us to easily customize a schema using Mongoose to store various information for each user.
+Since MongoDB is a NoSQL database, it allows us to easily customize schemas using Mongoose to store various information for each user and item.
 
 ### Unit 4: Node & Express
-Node and Express was used to implement our endpoints that was queried through our frontend. We used Express Router to seperate our endpoints in categories such as vendor API calls or getting user information.
+Node and Express was used to implement our endpoints that was queried through our frontend. We used Express Router to seperate our endpoints into categories such as vendor API calls or getting user information.
 
 ### Unit 5: Release Engineering
-Price Scrapper is deployed and hosted on Azure. Our team also used Github Actions to automate the deployment process.
+Price Scrapper is deployed and hosted on Microsoft Azure. Our team also used Github Actions to automate the deployment process.
 
 
 ## Above and Beyond Functionalities
 ### Custom links for items
-Initially, we did not have custom links for each item due to technical difficulties. However, we decided to work through those issues to create custom links so users can easily share them to their friends or family.
+Initially, we did not have custom links for each item due to technical difficulties. The item received from vendors already had a link of their own associated with the vendor, so it was difficult to have custom links for each item. However, we decided to work through those issues to create custom links so users can easily share them to their friends or family.
 
 ### Wish list and popular searches
 Adding a wish list and popular searches was not part of our plan, but we decided to add these features since they enhance the overall experience for users. The wish list allow users to keep track of items they want to purchase in the future and popular searches allow users to stay with the current trend and purchase the hottest items on the market.

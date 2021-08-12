@@ -56,3 +56,7 @@ button.MuiButton-containedPrimary:hover {
     margin-top: 30%;
     text-align: center;
 }
+
+#buyLink {
+    text-decoration: none;
+}

@@ -140,7 +140,7 @@ const ProductDetail = (props) => {
                                     </p>
                                     <br />
                                     <br />
-                                    <a href={itemFromPath.itemURL}>
+                                    <a id="buyLink" href={itemFromPath.itemURL}>
                                         <Button id="buyBtn" variant="contained" color="primary">
                                             Buy product!
                                         </Button>

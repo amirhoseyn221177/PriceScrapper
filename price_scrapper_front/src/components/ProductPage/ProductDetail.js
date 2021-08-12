@@ -55,6 +55,24 @@ const ProductDetail = (props) => {
             })
             const data = await resp.data
             var FirstName = data.Name;
+            var itemURL = itemFromPath.itemURL;
+            var title = itemFromPath.title;
+            var LastName = itemFromPath.LastName;
+            var newReview = {
+                itemURL,
+                title,
+                FirstName,
+                LastName,
+                review :rev
+            };
+            const infos = await (await axios.post('/api/items/sendReviews', newReview, {
+                headers: {
+                    "Authorization": token
+                }
+            })).data;
+            console.log(infos)
+            setListReview(prev=>[...prev,newReview])
+            setReview("")
         } catch (e) {
             console.log(e.message)
         }
@@ -209,7 +227,7 @@ const ProductDetail = (props) => {
                                         }
                                         <br />
                                         <br />
-                                        <TextareaAutosize data-role="none" style={{ resize: "none", overflow: "scroll" }} id="textArea" rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
+                                        <TextareaAutosize data-role="none" style={{ resize: "none" }} id="textArea" value={rev} rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
                                         <br />
                                         <br />
                                         <br />

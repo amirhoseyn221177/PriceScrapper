@@ -1,5 +1,4 @@
 const route = require("express").Router();
-const chalk = require("chalk");
 const { EbayResult } = require("../Functions/StoreAPIs");
 
 route.post("/search", async (req, res) => {
@@ -8,7 +7,6 @@ route.post("/search", async (req, res) => {
         const respond = await EbayResult(searchText, startPoint, sortVariable);
         res.status(200).json(respond);
     } catch (e) {
-        console.log(chalk.red(e.message));
         res.status(500).send({
             error: {
                 message: e.message

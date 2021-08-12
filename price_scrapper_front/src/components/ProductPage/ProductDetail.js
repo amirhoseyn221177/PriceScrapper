@@ -132,8 +132,10 @@ const ProductDetail = (props) => {
     }, [props.givenRating]);
 
     useEffect(() => {
-        getRating();
-        getReview();
+        if (localStorage.getItem("token")) {
+            getRating();
+            getReview();
+        }
     }, [itemFromPath]);
 
     function addToWishlist() {
@@ -144,7 +146,7 @@ const ProductDetail = (props) => {
                 "Authorization": token
             }
         })
-            .then(response => console.log(response.data));
+            .then(response => console.log());
     }
 
     useEffect(() => {

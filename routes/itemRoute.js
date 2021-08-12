@@ -2,6 +2,7 @@ const route = require("express").Router();
 const { User, Review, mostPopularItems } = require("../Mongoose/models");
 const { TokenDecoder, getRecentViewdItems, getWishListItems, addTorecentViews, addToWishList, authenticate } = require("../Functions/userInfo");
 const chalk = require("chalk");
+const { findTheReviews } = require("../Functions/StoreAPIs");
 
 
 
@@ -41,29 +42,50 @@ route.get('/getRecentlyViewed', async (req, res) => {
 });
 
 
-route.post('/getReviews', async (req, res) => {
-    var itemURL = req.body.itemURL;
-    var title = req.body.title;
-    var FirstName = req.body.FirstName;
-    var LastName = req.body.LastName;
-    var review = req.body.review;
-    var newReview = new Review({
-        itemURL,
-        title,
-        FirstName,
-        LastName,
-        review
-    });
+route.post('/sendReviews', async (req, res) => {
+    try{
 
-    newReview.save()
-    .then(() => res.json('Review Added!'))
-    .catch(err => res.status(400).json('Error: ' + err))
+        var itemURL = req.body.itemURL;
+        var title = req.body.title;
+        var FirstName = req.body.FirstName;
+        var LastName = req.body.LastName;
+        var review = req.body.review;
+        console.log(review)
+        var newReview = new Review({
+            itemURL,
+            title,
+            FirstName,
+            LastName,
+            review
+        });
+        await newReview.save()
+        res.json({message : "message has been added"})
+    }catch(e){
+        console.log(chalk.red(e.message));
+        res.status(500).send({
+            error: {
+                message: e.message
+            }
+        });
+    }
+
 });
 
-route.get('/getReviews', async (req, res) => {
-    Review.find()
-    .then(review => res.json(review))
-    .catch(err => res.status(400).json('Error: ' + err));
+route.post('/getReviews', async (req, res) => {
+    try{
+        console.log(req.body.itemURL)
+        const itemURl = await req.body.itemURL
+        let reviews = await findTheReviews(itemURl)
+        res.status(200).json(reviews)
+    }catch(e){
+        console.log(chalk.red(e.message));
+        res.status(500).send({
+            error: {
+                message: e.message
+            }
+        });
+
+    }
 });
 
 route.delete('/getReviews/:id', async (req, res) => {

@@ -106,7 +106,7 @@ const ProductTable = (props) => {
 
 
     useEffect(() => {
-        setTotalItem(ebayNumber > amazonNumber ? Math.ceil(ebayNumber / 3) - 1 : Math.ceil(amazonNumber / 3) - 1);
+        setTotalItem(ebayNumber > amazonNumber ? Math.ceil(ebayNumber / 12) - 1 : Math.ceil(amazonNumber / 12) - 1);
     }, [ebayNumber, amazonNumber]);
 
 

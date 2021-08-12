@@ -66,6 +66,7 @@ const ProductDetail = (props) => {
             })).data;
             console.log(infos)
             setListReview(prev=>[...prev,newReview])
+            setReview("")
         } catch (e) {
             console.log(e.message)
         }
@@ -146,7 +147,7 @@ const ProductDetail = (props) => {
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
-                                    <br />
+                                    <br />amir
                                     <br />
                                     <a id="buyLink" href={itemFromPath.itemURL}>
                                         <Button id="buyBtn" variant="contained" color="primary">
@@ -179,7 +180,7 @@ const ProductDetail = (props) => {
                                         }
                                         <br />
                                         <br />
-                                        <TextareaAutosize data-role="none" style={{ resize: "none" }} id="textArea" rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
+                                        <TextareaAutosize data-role="none" style={{ resize: "none" }} id="textArea" value={rev} rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
                                         <br />
                                         <br />
                                         <br />

@@ -11,7 +11,7 @@ const Profile = (props) => {
 
     const [recent, setRecent] = useState([]);
     const [wishList, setWishList] = useState([]);
-    const [drawer, setDrawer] = useState("Recently Viewed");
+    const [drawer, setDrawer] = useState("Profile");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [newEmail, setNewEmail] = useState("");
@@ -36,8 +36,19 @@ const Profile = (props) => {
                 const data = await resp.data;
                 const WishData = await WishResp.data.items;
                 console.log(WishData);
-                if (data.items.length > 0) setRecent(data.items);
-                if (WishData.length > 0) setWishList(WishData);
+                if (data.items.length > 0) {
+                    if (data.items.length > 0) {
+                        var recentList = data.items;
+                        let titles = data.items.map(item => item.title)
+                        let filtered = recentList.filter((item, index) => titles.indexOf(item.title) === index);
+                        setRecent(filtered);
+                    };
+                    if (WishData.length > 0) {
+                        let wishList = WishData;
+                        setWishList([...new Set(wishList)]);
+                    }
+                }
+
                 await getUserDetails()
             }
         } catch (e) {
@@ -47,89 +58,6 @@ const Profile = (props) => {
         }
 
     }, []);
-
-   
-
-
-
-
-    // const items = [
-    //     {
-    //         cardTitle: "1",
-    //         vendor: "1",
-    //         price: "1",
-    //         currency: "1",
-    //         image: "1",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "2",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "3",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "4",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "5",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     },
-    //     {
-    //         cardTitle: "6",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     }
-    //     ,
-    //     {
-    //         cardTitle: "7",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     }
-    //     ,
-    //     {
-    //         cardTitle: "8",
-    //         vendor: "2",
-    //         price: "2",
-    //         currency: "2",
-    //         image: "2",
-    //         imageURL: "https://thumbs2.ebaystatic.com/m/mO-r2rts4ww4J3XybKZyZIg/140.jpg"
-    //     }
-    // ]
-
-    // useEffect(()=>{
-    //     if (drawer === "Progile") console.log(98)
-    //     else if (drawer === 'Update Profile'){
-    //         const 
-    //     }
-    //     else if (drawer === "Wishlist")
-
-    // },[drawer])
 
     var updateProfile = async () => {
         try {
@@ -173,13 +101,11 @@ const Profile = (props) => {
             console.log(e.response);
         }
     };
-// {username: "polo", password: "sex221177", Name: "Amir  sayyar", iat: 1628317499, exp: 1628324699}
-
-
 
     return (
         <div className="profileDiv">
             <Drawer
+                id="drawer"
                 variant="permanent"
                 anchor="left"
                 className="drawer"
@@ -197,18 +123,18 @@ const Profile = (props) => {
             {
                 drawer === "Profile" ?
                     (<div className="centerDiv">
-                        <h1>Profile</h1>
                         <div>
-                            <form noValidate>
+                        <h1>Profile</h1>
+                            <form id="profileForm" noValidate>
                                 <ul className="profilePage">
                                     <li key="profileName">
                                         <div className="form-name">
-                                            <pre style={{fontSize:'large'}}>Name: {fullName}</pre>
+                                            <label>Name: {fullName}</label>
                                         </div>
                                     </li>
                                     <li key="profileEmail">
                                         <div className="form-email">
-                                            <pre style={{fontSize:'large' , position:'relative', right : '14%'}}>Email: {email} </pre>
+                                            <label>Email: {email} </label>
                                         </div>
                                     </li>
                                 </ul>
@@ -217,20 +143,20 @@ const Profile = (props) => {
                     </div>)
                     : drawer === "Update Profile" ?
                         (
-                            <div className="centerDiv">
-                                <h1>Update Profile</h1>
+                            <div className="centerDivUpdate">
                                 <div>
+                                <h1>Update Profile</h1>
                                     <form noValidate>
                                         <ul className="profilePage">
                                             <li key="updateFirstName">
                                                 <div className="form-name">
-                                                    <label>Firstname: </label>
+                                                    <label>First name: </label>
                                                     <TextField value={firstName} onChange={e => setFirstName(e.target.value)} className="textField" />
                                                 </div>
                                             </li>
                                             <li key="updateLastName">
                                                 <div className="form-name">
-                                                    <label>LastName: </label>
+                                                    <label>Last name: </label>
                                                     <TextField value={lastName} onChange={e => setLastName(e.target.value)} className="textField" />
                                                 </div>
                                             </li>
@@ -249,7 +175,7 @@ const Profile = (props) => {
                             </div>
                         )
                         : drawer === "Recently Viewed" ?
-                            (<div className="centerDiv">
+                            (<div className="centerDivLists">
                                 <h1>Recently Viewed</h1>
                                 <div className="viewedDiv">
                                     <ul className="viewedList" id="list">
@@ -262,14 +188,14 @@ const Profile = (props) => {
                                                         </li>;
                                                     }
                                                 ) :
-                                                <div><p> no items detected</p></div>
+                                                <h3> No recently viewed items</h3>
                                         }
                                     </ul>
                                 </div>
                             </div>)
                             :
                             (
-                                <div className="centerDiv">
+                                <div className="centerDivLists">
                                     <h1>Wishlist</h1>
                                     <div className="wishDiv">
                                         <ul className="wishList">
@@ -282,7 +208,7 @@ const Profile = (props) => {
                                                             </li>;
                                                         }
                                                     ) :
-                                                    <div><p> no items detected</p></div>
+                                                    <div id="empty"><p> No items currently in wishlist</p></div>
                                             }
                                         </ul>
                                     </div>

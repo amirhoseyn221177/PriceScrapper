@@ -205,7 +205,9 @@ const ProductDetail = (props) => {
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    <p>Rating: {loadedRating}</p>
+                                    {
+                                        localStorage.getItem("token") ? <p>Rating: {loadedRating}</p> : null
+                                    }
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>

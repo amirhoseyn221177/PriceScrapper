@@ -47,7 +47,7 @@ const StarRating = (props) => {
     
     return (
         <div>
-            <h3>Your Rating:</h3>
+            <h3>Your Rating</h3>
             {[...Array(5)].map((star, i) => {
                 const tempRating = i + 1;
                 return (

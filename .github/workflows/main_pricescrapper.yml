@@ -34,6 +34,6 @@ jobs:
       with:
         app-name: pricescrapper
         slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_18046A8439F2451AB6157024501C3DD6 }}
+        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C88D1CE999C7416CADEDA79ACC18E861 }}
         package: .
 

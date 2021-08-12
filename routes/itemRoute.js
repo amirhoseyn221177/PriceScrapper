@@ -83,7 +83,7 @@ route.post('/getRating', async (req, res) => {
             sum = sum + ratings[i].rating;
         }
         if(ratings.length>0)res.json((sum / ratings.length).toFixed(2))
-        res.json(NaN)
+        else res.json(NaN)
     } catch (e) {
         console.log(chalk.red(e.message));
         res.status(500).send({

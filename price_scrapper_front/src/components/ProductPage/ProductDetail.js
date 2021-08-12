@@ -13,6 +13,7 @@ const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
     const [itemFromPath, setItemFromPath] = useState({})
     const [productInfoFromPath, setProductsFromPath] = useState([])
+    const [showError, setShowError] = useState(false)
     var setProductIndex = (index) => {
         setIndex(index);
     }
@@ -63,6 +64,7 @@ const ProductDetail = (props) => {
                 review: rev
             };
             if (rev !== "") {
+                setShowError(false)
                 const infos = await (await axios.post('/api/items/sendReviews', newReview, {
                     headers: {
                         "Authorization": token
@@ -72,7 +74,7 @@ const ProductDetail = (props) => {
                 setListReview(prev => [...prev, newReview])
                 setReview("")
             } else {
-                alert("Please type a review.")
+                setShowError(true)
             }
         } catch (e) {
             console.log(e.message)
@@ -203,6 +205,9 @@ const ProductDetail = (props) => {
                                         <br />
                                         <br />
                                         <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
+                                        {
+                                            showError ? <p id="errorText"> Please type a review.</p> : null
+                                        }
                                     </div>
                                 </div> : null
                         }

@@ -52,7 +52,7 @@ button.MuiButton-containedPrimary:hover {
 
 #reviewList {
     overflow: auto;
-    height: 200px;
+    height: 150px;
 }
 
 #textArea {
@@ -69,4 +69,8 @@ button.MuiButton-containedPrimary:hover {
 
 #buyLink {
     text-decoration: none;
+}
+
+#errorText {
+    color: red;
 }

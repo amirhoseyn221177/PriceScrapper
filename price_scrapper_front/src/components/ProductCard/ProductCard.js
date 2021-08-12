@@ -5,9 +5,6 @@ import { withRouter, } from 'react-router';
 import './ProductCard.css';
 
 const ProductCard = (props) => {
-
-
-
     return (
         <Card className="productCard">
             <Card.Img className="cardImg" variant="top" src={props.image} width="100" height="180" />

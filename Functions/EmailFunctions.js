@@ -11,10 +11,7 @@ var AdminEmail = async () => {
             pass: adminAccount.pass
         }
     });
-
     return trans;
 };
-
-
 
 module.exports = AdminEmail;

@@ -25,7 +25,6 @@ const categories = ["Clothing", "Shoes", "Computers", "Cars"];
 let searchDivClass = "searchDivNone";
 
 const ProductTable = (props) => {
-
     const [ebayArray, setEbayArray] = useState([]);
     const [amazonArray, setAmazonArray] = useState([]);
     const [productInfoArray, setproductInfoArray] = useState([]);
@@ -43,10 +42,10 @@ const ProductTable = (props) => {
     const [checkboxStates, setCheckboxStates] = useState([true, true]); // Amazon, Ebay
     const [query, setQuery] = useState("");
     const [shouldspinner, setSpinner] = useState(false);
+
     const handleClickListItem = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
 
     const handleMenuItemClick = (event, index) => {
         setSelectedIndex(index);
@@ -57,14 +56,9 @@ const ProductTable = (props) => {
         setAnchorEl(null);
     };
 
-
     const handleClose = () => {
         setOpen(false);
     };
-
-
-
-
 
     var callAmazonAPI = async () => {
         try {
@@ -75,12 +69,8 @@ const ProductTable = (props) => {
             setAmazonArray(amazonItemArr);
         } catch (e) {
             console.log(e.response.data.error.message);
-
         }
-
     };
-
-
 
     var callEbayAPI = async () => {
         try {
@@ -91,31 +81,17 @@ const ProductTable = (props) => {
             setEbayArray(ebayItemArr);
         } catch (e) {
             console.log(e);
-
         }
-
     };
-
-
-
 
     useEffect(async () => {
         setStartPoint(1);
         await callAPIBundle();
     }, [selectedIndex]);
 
-
     useEffect(() => {
         setTotalItem(ebayNumber > amazonNumber ? Math.ceil(ebayNumber / 12) - 1 : Math.ceil(amazonNumber / 12) - 1);
     }, [ebayNumber, amazonNumber]);
-
-
-
-
-
-
-
-
 
     var loadProductCards = async () => {
         let currProductsArray = [];
@@ -131,11 +107,9 @@ const ProductTable = (props) => {
             } else {
                 image = "";
             }
-
             let ebayObject = { title, vendor, price, currency, image, itemURL };
             currProductsArray.push(ebayObject);
         });
-
 
         amazonArray.map(async (item) => {
             let title = await item.title;
@@ -148,11 +122,9 @@ const ProductTable = (props) => {
             if (item.reviews.rating) rating = await item.reviews.rating.toString();
             let amazonObject = { title, vendor, price, currency, image, itemURL, rating };
             currProductsArray.push(amazonObject);
-
         });
         setproductInfoArray(currProductsArray);
     };
-
 
     var callAPIBundle = async (val) => {
         if ((checkboxStates[0] && checkboxStates[1]) || (!checkboxStates[0] && !checkboxStates[1])) {
@@ -167,12 +139,6 @@ const ProductTable = (props) => {
         }
 
     };
-
-
-
-
-
-
 
     var choosingCategories = (catName) => {
         if (!chosenCategories.includes(catName)) {
@@ -200,8 +166,7 @@ const ProductTable = (props) => {
             headers: {
                 "Authorization": token
             }
-        })
-            .then(response => console.log());
+        }).then(response => console.log());
     }
 
     var goToProductPage = (item, index, info) => {
@@ -215,10 +180,6 @@ const ProductTable = (props) => {
             search: `searchedWord=${searchText}`
         });
     };
-
-
-
-
 
     var createProductCards = () => {
         let allCards = [];
@@ -269,11 +230,7 @@ const ProductTable = (props) => {
         }
         setproductCardsJSX(allCards);
         setSpinner(false);
-
     };
-
-
-
 
     let dontRunFirstTime = useRef(true);
     useEffect(async () => {
@@ -294,7 +251,6 @@ const ProductTable = (props) => {
         await callAPIBundle();
     }
 
-
     useMemo(async () => {
         await loadProductCards();
     }, [ebayArray, amazonArray]);
@@ -302,7 +258,6 @@ const ProductTable = (props) => {
     useEffect(() => {
         createProductCards();
     }, [productInfoArray]);
-
 
     useEffect(() => {
         setSpinner(true);
@@ -315,7 +270,6 @@ const ProductTable = (props) => {
     useEffect(async () => {
         await callAPIBundle();
     }, [searchText]);
-
 
     return (
         <Fragment>
@@ -340,7 +294,6 @@ const ProductTable = (props) => {
                     <Button id="popSearch" onClick={() => setQuery("Nike SB Dunk Low")}>Nike SB Dunk Low</Button>
                 </div>
             </div>
-
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle className="dialogTitle" disableTypography>
                     <h2>Filter by category</h2>
@@ -454,7 +407,6 @@ const ProductTable = (props) => {
     );
 };
 
-
 const mapToProps = dispatch => {
     return {
         sendingItemArray: (item) => dispatch(ChosenItem(item)),
@@ -462,4 +414,5 @@ const mapToProps = dispatch => {
 
     };
 };
+
 export default connect(null, mapToProps)(ProductTable);

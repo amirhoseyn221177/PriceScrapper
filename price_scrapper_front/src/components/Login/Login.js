@@ -29,17 +29,11 @@ const Login = (props) => {
             else {
                 setError(true);
             }
-
         } catch (e) {
             setError(true);
             console.log(e.response.data.error.message);
         }
-
-
     };
-
-
-  
 
     return (
         <div className="loginBox">
@@ -52,14 +46,11 @@ const Login = (props) => {
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>
-                    {/* <Button onClick={forgotPassword} style={{ color: "blue" }}>forgot my password </Button> */}
                 </form>
             </div>
         </div>
-
     );
 };
-
 
 const mapToProps = dispatch => {
     return {

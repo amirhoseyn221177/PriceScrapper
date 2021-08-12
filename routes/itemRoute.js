@@ -1,12 +1,6 @@
 const route = require("express").Router();
+const { Review, Rating } = require("../Mongoose/models");
 const {
-    User,
-    Review,
-    Rating,
-    mostPopularItems
-} = require("../Mongoose/models");
-const {
-    TokenDecoder,
     getRecentViewdItems,
     getWishListItems,
     addTorecentViews,
@@ -14,12 +8,7 @@ const {
     authenticate
 } = require("../Functions/userInfo");
 const chalk = require("chalk");
-const {
-    findTheReviews
-} = require("../Functions/StoreAPIs");
-
-
-
+const { findTheReviews } = require("../Functions/StoreAPIs");
 const verifyToken = async (req, res, next) => {
     try {
         authenticate(req.headers['authorization']);
@@ -33,7 +22,6 @@ const verifyToken = async (req, res, next) => {
         });
     }
 };
-
 
 route.get('/getRecentlyViewed', async (req, res) => {
     try {
@@ -49,9 +37,7 @@ route.get('/getRecentlyViewed', async (req, res) => {
                 message: e.message
             }
         });
-
     }
-
 });
 
 route.post('/sendRating', async (req, res) => {
@@ -73,7 +59,6 @@ route.post('/sendRating', async (req, res) => {
 route.post('/getRating', async (req, res) => {
     var sum = 0;
     try {
-
         const ratings = await Rating.find({
             title: req.body.title
         });
@@ -89,14 +74,11 @@ route.post('/getRating', async (req, res) => {
                 message: e.message
             }
         });
-
     }
 });
 
-
 route.post('/sendReviews', async (req, res) => {
     try {
-
         var itemURL = req.body.itemURL;
         var title = req.body.title;
         var FirstName = req.body.FirstName;
@@ -121,7 +103,6 @@ route.post('/sendReviews', async (req, res) => {
             }
         });
     }
-
 });
 
 route.post('/getReviews', async (req, res) => {
@@ -136,7 +117,6 @@ route.post('/getReviews', async (req, res) => {
                 message: e.message
             }
         });
-
     }
 });
 
@@ -181,11 +161,8 @@ route.post("/addToRecent", async (req, res) => {
                 message: e.message
             }
         });
-
     }
-
 });
-
 
 route.post("/addToWishList", async (req, res) => {
     try {

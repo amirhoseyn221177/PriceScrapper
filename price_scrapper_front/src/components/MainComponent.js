@@ -25,7 +25,4 @@ var Main = props => {
     );
 };
 
-
-
-
 export default withRouter(Main);

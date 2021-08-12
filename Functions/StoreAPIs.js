@@ -12,14 +12,10 @@ let ebay = new Ebay({
 
 });
 
-
-
-
 var AmazonResult = async (searchParam, country = null, startPoint, sortVariable = null) => {
     const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "US" }); //default country is Canada
     return { result: sortAmazonItems(sortVariable, products.result).splice((startPoint - 1) * 12, 12), totalLength: products.result.length };
 };
-
 
 var EbayResult = async (searchText, startPoint, sortVariable = null) => {
     let product = await ebay.findItemsByKeywords({ keywords: searchText });
@@ -28,9 +24,6 @@ var EbayResult = async (searchText, startPoint, sortVariable = null) => {
         totalLength: product[0].searchResult[0].item.length
     };
 };
-
-
-
 
 /**
  * 
@@ -65,18 +58,13 @@ var sortEbayItems = (sortType = null, items) => {
             return items.sort((a, b) => a.sellerInfo[0].positiveFeedbackPercent[0] - b.sellerInfo[0].positiveFeedbackPercent[0]);
         default:
             return items.sort((a, b) => b.sellingStatus[0].convertedCurrentPrice[0].__value__ - a.sellingStatus[0].convertedCurrentPrice[0].__value__);
-
     }
-
 };
-
 
 var findTheReviews = async (itemURL) => {
     let resp = await Review.find({ itemURL: itemURL });
     return resp;
 };
-
-
 
 module.exports = {
     AmazonResult,

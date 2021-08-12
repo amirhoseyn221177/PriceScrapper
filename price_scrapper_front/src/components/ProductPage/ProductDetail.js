@@ -8,26 +8,24 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import StarRating from "./StarRating";
 import qs from 'qs';
+
 const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
     const [itemFromPath, setItemFromPath] = useState({});
     const [productInfoFromPath, setProductsFromPath] = useState([]);
     const [showError, setShowError] = useState(false);
-    var setProductIndex = (index) => {
-        setIndex(index);
-    };
+    const [searchText, setSearchText] = useState("");
+    const [listReview, setListReview] = useState([]);
+    const [loadedRating, setLoadedRating] = useState(0);
+
     let divName = "columnNone";
     let bodyDivName = "cardDetailsBodyNone";
     let imgPadding = "25%";
-    const [searchText, setSearchText] = useState("");
+
+    var [rev, setReview] = useState("");
     var setProductIndex = (index) => {
         setIndex(index);
     };
-    const [listReview, setListReview] = useState([]);
-    var [rev, setReview] = useState("");
-    const [loadedRating, setLoadedRating] = useState(0);
-
-
 
     useEffect(() => {
         let base64 = props.match.params.item64;
@@ -37,14 +35,11 @@ const ProductDetail = (props) => {
         setItemFromPath(JSON.parse(jsonItem));
     }, [props.match.params.item64]);
 
-
     useEffect(() => {
         if (props.items !== null || props.items !== undefined) {
             setProductsFromPath(props.items);
         }
     }, [props.items]);
-
-
 
     function averagePrice() {
         var sum = 0;
@@ -52,7 +47,6 @@ const ProductDetail = (props) => {
             sum = sum + parseInt(productInfoFromPath[i].price, 10);
         }
         return (sum / (productInfoFromPath.length + 1)).toFixed(2);
-
     }
 
     async function addReview() {
@@ -113,9 +107,6 @@ const ProductDetail = (props) => {
         }
     }
 
-
-
-
     async function getRating() {
         try {
             let token = localStorage.getItem("token");
@@ -131,7 +122,6 @@ const ProductDetail = (props) => {
         }
     }
 
-
     let run = useRef(true);
     useEffect(() => {
         if (run.current) {
@@ -141,16 +131,11 @@ const ProductDetail = (props) => {
         getRating();
     }, [props.givenRating]);
 
-
     useEffect(() => {
         getRating();
         getReview();
     }, [itemFromPath]);
 
-
-
-
-    console.log(loadedRating);
     function addToWishlist() {
         let token = localStorage.getItem("token");
         delete itemFromPath["_id"];
@@ -168,7 +153,6 @@ const ProductDetail = (props) => {
 
         }
     }, []);
-
 
     return (
         <div className="cardInfo">
@@ -259,7 +243,6 @@ const ProductDetail = (props) => {
         </div>
     );
 };
-
 
 const mapToState = state => {
     return {

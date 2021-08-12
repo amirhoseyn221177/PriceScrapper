@@ -2,11 +2,8 @@ const route = require("express").Router();
 const { SignUp, Login, forgotPassword, updatePassword, updateUserInfo, TokenDecoder, getUserDetails } = require('../Functions/userInfo');
 const chalk = require("chalk");
 
-
-
 route.post("/login", async (req, res) => {
     try {
-
         const password = req.headers.password;
         const email = req.headers.email;
         const token = await Login(email, password);
@@ -19,9 +16,7 @@ route.post("/login", async (req, res) => {
             }
         });
     }
-
 });
-
 
 route.post("/signup", async (req, res) => {
     try {
@@ -36,10 +31,8 @@ route.post("/signup", async (req, res) => {
                 message: e.message
             }
         });
-
     }
 });
-
 
 route.post("/forgotpass/:email", async (req, res) => {
     try {
@@ -57,7 +50,6 @@ route.post("/forgotpass/:email", async (req, res) => {
     }
 });
 
-
 route.post("/updatePass", async (req, res) => {
     try {
         const token = req.headers.authorization
@@ -72,7 +64,6 @@ route.post("/updatePass", async (req, res) => {
         });
     }
 });
-
 
 route.post("/updateEmail/:email/:firstname/:lastname", async (req, res) => {
     try {
@@ -90,7 +81,6 @@ route.post("/updateEmail/:email/:firstname/:lastname", async (req, res) => {
     }
 });
 
-
 route.get("/userinfo", async (req, res) => {
     try {
         const token = req.headers.authorization;
@@ -105,7 +95,5 @@ route.get("/userinfo", async (req, res) => {
         });
     }
 });
-
-
 
 module.exports = route;

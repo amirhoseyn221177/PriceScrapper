@@ -7,7 +7,7 @@ CPSC 455 Project: Team merge-conflict
 ## Project description
 Price Scrapper aims to assist everyday consumers in finding the best/lowest price for items they wish to purchase. Consumers have an option of accessing the website as a guest or a user. The difference between the two is that users get the option of viewing their recently visited items and keep track of items they want to purchase later in a wish list. Consumers have an option to search through various vendors such as viewing items on all vendors, only viewing items on Amazon or only on Ebay. They also have the option to sort through their search results to either view items with high/low price or high/low rating first.
 
-Note: Website designed for larger screens (preferably 1920px x 1080px and above)
+Note: Website designed for larger screens (preferably 1920px x 1080px and above) and refresh may cause loss of data since there is too much overhead when hosted on Microsoft Azure free tier.
 
 ## Project task requirements
 

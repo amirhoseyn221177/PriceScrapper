@@ -43,3 +43,7 @@
     width: 100px;
     height: 48px;
   }
+
+  #logo {
+    padding-left: 50%;
+  }

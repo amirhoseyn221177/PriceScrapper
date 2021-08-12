@@ -17,7 +17,7 @@ const Header = (props) => {
                     localStorage.getItem("token") ?
                         (
                             <ul>
-                                <li><img width="100px" height="48px" src={logo} alt="logo"></img></li>
+                                <li><img id="logo" width="100px" height="48px" src={logo} alt="logo"></img></li>
                                 <li style={{float: "left"}}><Link to="/home"> Home </Link></li>
                                 <li style={{float: "right"}}><Button id="logoutBtn" onClick={logOut}>Logout</Button></li>
                                 <li style={{float: "right"}}><Link to="/profile"> Profile </Link></li>
@@ -27,7 +27,7 @@ const Header = (props) => {
                         :
                         (
                             <ul>
-                                <li><img width="100px" height="48px" src={logo} alt="logo"></img></li>
+                                <li><img id="logo" width="100px" height="48px" src={logo} alt="logo"></img></li>
                                 <li style={{float: "left"}}><Link to="/home"> Home </Link></li>
                                 <li style={{float: "right"}}><Link to="/register"> Register </Link></li>
                                 <li style={{float: "right"}}><Link to="/login"> Login </Link></li>

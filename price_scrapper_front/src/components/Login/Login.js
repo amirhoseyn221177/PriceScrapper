@@ -35,10 +35,6 @@ const Login = (props) => {
         }
     };
 
-    var forgotPassword = async () => {
-        props.history.push(`/forgotpass/${email}`);
-    };
-
     return (
         <div className="loginBox">
             <div className="loginForm">
@@ -50,7 +46,6 @@ const Login = (props) => {
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>
-                    <Button onClick={forgotPassword} style={{ color: "blue" }}>Forgot my password </Button>
                 </form>
             </div>
         </div>

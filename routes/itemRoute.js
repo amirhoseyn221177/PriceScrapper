@@ -45,14 +45,14 @@ route.post('/getRating', async (req, res) => {
     var title = req.body.title;
     var FirstName = req.body.FirstName;
     var rating = req.body.rating;
-    var newReview = new Review({
+    var newRating = new Rating({
         itemURL,
         title,
         FirstName,
         rating
     });
-    newReview.save()
-        .then(() => res.json('Review Added!'))
+    newRating.save()
+        .then(() => res.json('Rating Added!'))
         .catch(err => res.status(400).json('Error: ' + err))
 });
 

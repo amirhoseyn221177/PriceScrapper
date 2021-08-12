@@ -218,8 +218,8 @@ const ProductDetail = (props) => {
                 localStorage.getItem("token") ?
                     <div>
                         <p>
-                            <StarRating ratingValue={itemFromPath.rating} addRating={e => addRating(itemFromPath.rating)} />
-                        </p>
+                        <StarRating itemFromPath = {itemFromPath} /> 
+                       </p>
                         <p style={{ color: "red" }}>
                             Reviews: {listReview.map(item => (
                                 <p color> {item.FirstName} : {item.review}</p>

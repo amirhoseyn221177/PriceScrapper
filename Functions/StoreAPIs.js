@@ -1,6 +1,6 @@
 const amazonScraper = require('amazon-buddy');
 const Ebay = require("ebay-node-api");
-
+const {Review} = require('../Mongoose/models')
 let ebay = new Ebay({
     clientID: "SatyakHa-Web-PRD-716b1f9e8-c247be31",
     clientSecret: "PRD-16b1f9e8c971-b22c-4866-9dad-2bc4",
@@ -74,8 +74,16 @@ var sortEbayItems = (sortType = null, items) => {
 };
 
 
+var findTheReviews = async(itemURL)=>{
+    let resp =  await Review.find({itemURL :itemURL})
+    console.log(resp)
+    return resp
+}
+
+
 
 module.exports = {
     AmazonResult,
     EbayResult,
+    findTheReviews
 };

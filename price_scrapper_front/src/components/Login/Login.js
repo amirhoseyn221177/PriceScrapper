@@ -50,7 +50,7 @@ const Login = (props) => {
                     <Button onClick={sendingInfoToBackEnd} variant="contained" color="primary">
                         Login
                     </Button>
-                    <Button onClick={forgotPassword} style={{ color: "blue" }}>Fvorgot my password </Button>
+                    <Button onClick={forgotPassword} style={{ color: "blue" }}>Forgot my password </Button>
                 </form>
             </div>
         </div>

@@ -150,35 +150,6 @@ const ProductDetail = (props) => {
 
 
 
-    // var callAmazonAPI = async () => {
-    //     try {
-    //         console.log(searchText);
-    //         var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint:1, sortVariable:'Highest Rating' });
-    //         const amazonJSON = await amazonResponse.data;
-    //         const amazonItemArr = await amazonJSON.result;
-    //         console.log("this is amazon" + amazonItemArr);
-    //     } catch (e) {
-    //         console.log(e.response.data.error.message);
-
-    //     }
-
-    // };
-
-
-
-    // var callEbayAPI = async () => {
-    //     try {
-    //         var ebayResponse = await axios.post("/api/ebay/search", { searchText, startPoint:1, sortVariable:'Highest Rating' });
-    //         const ebayJSON = await ebayResponse.data;
-    //         const ebayItemArr = await ebayJSON.result;
-    //     } catch (e) {
-    //         console.log(e);
-
-    //     }
-
-    // };
-
-
     console.log(loadedRating);
     function addToWishlist() {
         let token = localStorage.getItem("token");

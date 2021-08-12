@@ -251,7 +251,7 @@ const ProductDetail = (props) => {
                                         <br />
                                         <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
                                         {
-                                            showError ? <p id="errorText"> Please type a review.</p> : null
+                                            showError ? <p id="errorText"> Please submit a review.</p> : null
                                         }
                                     </div>
                                 </div> : null

@@ -13,6 +13,12 @@ form {
     height: 430px;
 }
 
+.forgotBox {
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+}
+
 .loginBox {
     margin-top: 100px;
 }

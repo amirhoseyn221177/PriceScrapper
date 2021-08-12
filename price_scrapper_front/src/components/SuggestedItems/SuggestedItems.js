@@ -10,13 +10,13 @@ import {
     Tooltip
 } from "@material-ui/core";
 import { withRouter } from 'react-router-dom';
-import { ChosenItem } from '../Actions/actions';
+import { ChosenItem, similarItems } from '../Actions/actions';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
 const SuggestedItems = (props) => {
     const [items, setItems] = useState([]);
-
+    const [searchText , setSearchText]=useState(props.searchtext)
     useEffect(() => {
         setItems(props.allItems);
     }, [props.allItems]);
@@ -32,18 +32,18 @@ const SuggestedItems = (props) => {
             .then(response => console.log(response.data));
     }
 
+
+
     var goToProductPage = (item, index) => {
         props.sendingItemArray(item);
         addToRecentlyViewed(item);
+        props.sendingItems(items)
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
-        let arr = JSON.stringify(items);
-        let base64Products = encodeURIComponent(arr);
         props.history.push({
-            pathname: `/productdetail/${base64Item}/${index}`,
-            search: `base64product=${base64Products}`
-        });
-    };
+            pathname : `/productdetail/${base64Item}/${index}`,
+            serach :`?searchedWord = ${searchText}`
+        })    }
 
     const responsive = {
         desktop: {
@@ -129,9 +129,11 @@ const SuggestedItems = (props) => {
 };
 
 
-const mapToProps = dispatch => {
-    return {
-        sendingItemArray: (item) => dispatch(ChosenItem(item))
-    };
-};
+
+const mapToProps = dispatch =>{
+    return{
+        sendingItemArray: (item) => dispatch(ChosenItem(item)),
+        sendingItems : (items)=>dispatch(similarItems(items))
+    }
+}
 export default connect(null, mapToProps)(withRouter(SuggestedItems));

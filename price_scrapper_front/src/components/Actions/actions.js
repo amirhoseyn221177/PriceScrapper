@@ -15,3 +15,12 @@ export const ChosenItem = item =>{
         item
     }
 }
+
+export const similarItems = items=>{
+    return {
+        type: 'items',
+        items
+    }
+}
+
+

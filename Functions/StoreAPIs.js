@@ -76,7 +76,6 @@ var sortEbayItems = (sortType = null, items) => {
 
 var findTheReviews = async(itemURL)=>{
     let resp =  await Review.find({itemURL :itemURL})
-    console.log(resp)
     return resp
 }
 

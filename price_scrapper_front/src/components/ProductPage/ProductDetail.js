@@ -140,7 +140,7 @@ const ProductDetail = (props) => {
                                     </p>
                                     <br />
                                     <br />
-                                    <a href={itemFromPath.itemURL}>
+                                    <a id="buyLink" href={itemFromPath.itemURL}>
                                         <Button id="buyBtn" variant="contained" color="primary">
                                             Buy product!
                                         </Button>
@@ -171,7 +171,7 @@ const ProductDetail = (props) => {
                                         }
                                         <br />
                                         <br />
-                                        <TextareaAutosize data-role="none" style={{ resize: "none", overflow: "scroll" }} id="textArea" rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
+                                        <TextareaAutosize data-role="none" style={{ resize: "none" }} id="textArea" rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
                                         <br />
                                         <br />
                                         <br />

@@ -13,13 +13,13 @@ let ebay = new Ebay({
 
 var AmazonResult = async (searchParam, country = null, startPoint, sortVariable = null) => {
     const products = await amazonScraper.products({ keyword: searchParam, country: country ? country : "US" }); //default country is Canada
-    return { result: sortAmazonItems(sortVariable, products.result).splice((startPoint - 1) * 12, 12), totalLength: products.result.length };
+    return { result: sortAmazonItems(sortVariable, products.result).splice((startPoint - 1) * 3, 12), totalLength: products.result.length };
 };
 
 var EbayResult = async (searchText, startPoint, sortVariable = null) => {
     let product = await ebay.findItemsByKeywords({ keywords: searchText });
     return {
-        result: sortEbayItems(sortVariable, product[0].searchResult[0].item).splice((startPoint - 1) * 12, 12),
+        result: sortEbayItems(sortVariable, product[0].searchResult[0].item).splice((startPoint - 1) * 3, 12),
         totalLength: product[0].searchResult[0].item.length
     };
 };

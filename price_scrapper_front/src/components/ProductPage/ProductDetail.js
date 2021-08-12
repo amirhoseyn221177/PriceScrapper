@@ -50,27 +50,27 @@ const ProductDetail = (props) => {
     }
 
     async function addReview() {
-        try {
-            let token = localStorage.getItem("token");
-            const resp = await axios.get('/api/user/userinfo', {
-                headers: {
-                    "Authorization": token
-                }
-            })
-            const data = await resp.data
-            var FirstName = data.Name;
-            var itemURL = itemFromPath.itemURL;
-            var title = itemFromPath.title;
-            var LastName = itemFromPath.LastName;
-            var newReview = {
-                itemURL,
-                title,
-                FirstName,
-                LastName,
-                review: rev
-            };
-            if (rev !== "") {
-                setShowError(false)
+        if (rev !== "") {
+            setShowError(false)
+            try {
+                let token = localStorage.getItem("token");
+                const resp = await axios.get('/api/user/userinfo', {
+                    headers: {
+                        "Authorization": token
+                    }
+                })
+                const data = await resp.data
+                var FirstName = data.Name;
+                var itemURL = itemFromPath.itemURL;
+                var title = itemFromPath.title;
+                var LastName = itemFromPath.LastName;
+                var newReview = {
+                    itemURL,
+                    title,
+                    FirstName,
+                    LastName,
+                    review: rev
+                };
                 const infos = await (await axios.post('/api/items/sendReviews', newReview, {
                     headers: {
                         "Authorization": token
@@ -79,29 +79,29 @@ const ProductDetail = (props) => {
                 console.log(infos)
                 setListReview(prev => [...prev, newReview])
                 setReview("")
-            } else {
-                setShowError(true)
+            } catch (e) {
+                console.log(e.message)
             }
-        } catch (e) {
-            console.log(e.message)
+            let token = localStorage.getItem("token");
+            var itemURL = itemFromPath.itemURL;
+            var title = itemFromPath.title;
+            var LastName = itemFromPath.LastName;
+            var review = rev;
+            var newReview = {
+                itemURL,
+                title,
+                FirstName,
+                LastName,
+                review
+            };
+            const data = await (await axios.post('/api/items/getReviews', newReview, {
+                headers: {
+                    "Authorization": token
+                }
+            })).data;
+        } else {
+            setShowError(true)
         }
-        let token = localStorage.getItem("token");
-        var itemURL = itemFromPath.itemURL;
-        var title = itemFromPath.title;
-        var LastName = itemFromPath.LastName;
-        var review = rev;
-        var newReview = {
-            itemURL,
-            title,
-            FirstName,
-            LastName,
-            review
-        };
-        const data = await (await axios.post('/api/items/getReviews', newReview, {
-            headers: {
-                "Authorization": token
-            }
-        })).data;
     }
 
     async function getReview() {

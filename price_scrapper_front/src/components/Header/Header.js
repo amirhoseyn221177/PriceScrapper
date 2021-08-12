@@ -2,7 +2,8 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Button } from '@material-ui/core';
 import { withRouter } from 'react-router';
-import './Header.css'
+import './Header.css';
+import logo from '../../logo2.png';
 
 const Header = (props) => {
     function logOut() {
@@ -16,18 +17,20 @@ const Header = (props) => {
                     localStorage.getItem("token") ?
                         (
                             <ul>
-                                <li><Link to="/home"> Home </Link></li>
-                                <li><Link to="/profile"> Profile </Link></li>
-                                <li><Button id="logoutBtn" onClick={logOut}>Logout</Button></li>
+                                <li><img width="100px" height="48px" src={logo} alt="logo"></img></li>
+                                <li style={{float: "left"}}><Link to="/home"> Home </Link></li>
+                                <li style={{float: "right"}}><Button id="logoutBtn" onClick={logOut}>Logout</Button></li>
+                                <li style={{float: "right"}}><Link to="/profile"> Profile </Link></li>
                             </ul>
 
                         )
                         :
                         (
                             <ul>
-                                <li><Link to="/home"> Home </Link></li>
-                                <li><Link to="/login"> Login </Link></li>
-                                <li><Link to="/register"> Register </Link></li>
+                                <li><img width="100px" height="48px" src={logo} alt="logo"></img></li>
+                                <li style={{float: "left"}}><Link to="/home"> Home </Link></li>
+                                <li style={{float: "right"}}><Link to="/register"> Register </Link></li>
+                                <li style={{float: "right"}}><Link to="/login"> Login </Link></li>
                             </ul>
                         )
                 }

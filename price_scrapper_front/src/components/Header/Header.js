@@ -10,6 +10,7 @@ const Header = (props) => {
         localStorage.removeItem("token");
         props.history.push("/home");
     }
+
     return (
         <div className="navbar">
             <nav className="nav">

@@ -17,6 +17,7 @@ import axios from 'axios';
 const SuggestedItems = (props) => {
     const [items, setItems] = useState([]);
     const [searchText, setSearchText] = useState(props.searchtext);
+
     useEffect(() => {
         setItems(props.allItems);
     }, [props.allItems]);
@@ -28,11 +29,8 @@ const SuggestedItems = (props) => {
             headers: {
                 "Authorization": token
             }
-        })
-            .then(response => console.log());
+        }).then(response => console.log());
     }
-
-
 
     var goToProductPage = (item, index) => {
         props.sendingItemArray(item);
@@ -69,6 +67,7 @@ const SuggestedItems = (props) => {
             items: 2
         }
     };
+
     return (
         <div
             style={{
@@ -129,12 +128,11 @@ const SuggestedItems = (props) => {
     );
 };
 
-
-
 const mapToProps = dispatch => {
     return {
         sendingItemArray: (item) => dispatch(ChosenItem(item)),
         sendingItems: (items) => dispatch(similarItems(items))
     };
 };
+
 export default connect(null, mapToProps)(withRouter(SuggestedItems));

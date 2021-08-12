@@ -17,6 +17,7 @@ const Profile = (props) => {
     const [newEmail, setNewEmail] = useState("");
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
+
     useEffect(async () => {
         try {
             let token = localStorage.getItem("token");
@@ -26,13 +27,11 @@ const Profile = (props) => {
                         "Authorization": token
                     }
                 });
-
                 const WishResp = await axios.get("/api/items/getWishList", {
                     headers: {
                         "Authorization": token
                     }
                 });
-
                 const data = await resp.data;
                 const WishData = await WishResp.data.items;
                 if (data.items.length > 0) {
@@ -47,7 +46,6 @@ const Profile = (props) => {
                         setWishList([...new Set(wishList)]);
                     }
                 }
-
                 await getUserDetails();
             }
         } catch (e) {
@@ -55,7 +53,6 @@ const Profile = (props) => {
             localStorage.removeItem("token");
             props.history.push("/home");
         }
-
     }, []);
 
     var updateProfile = async () => {
@@ -75,7 +72,6 @@ const Profile = (props) => {
         }
     };
 
-
     var goToProductPage = (item, index) => {
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
@@ -83,7 +79,6 @@ const Profile = (props) => {
             pathname: `/productdetail/${base64Item}/${index}`
         });
     };
-
 
     var getUserDetails = async () => {
         try {
@@ -215,11 +210,10 @@ const Profile = (props) => {
     );
 };
 
-
-
 const mapToProps = dispatch => {
     return {
         sendingItemArray: (item) => dispatch(ChosenItem(item))
     };
 };
+
 export default connect(null, mapToProps)(withRouter(Profile));

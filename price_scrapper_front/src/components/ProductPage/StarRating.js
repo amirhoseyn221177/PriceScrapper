@@ -8,12 +8,9 @@ const StarRating = (props) => {
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(null);
 
-
-
     useEffect(() => {
         addRating();
     }, [rating]);
-
 
     var addRating = async () => {
         try {
@@ -45,8 +42,6 @@ const StarRating = (props) => {
         }
     };
 
-
-
     return (
         <div>
             <h3>Your Rating</h3>
@@ -74,7 +69,6 @@ const StarRating = (props) => {
         </div>
     );
 };
-
 
 const mapToProps = dispatch => {
     return {

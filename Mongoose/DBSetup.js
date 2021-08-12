@@ -5,8 +5,6 @@ var url = "mongodb+srv://cpsc455DB:Amir221177@cluster0.j4ek5.mongodb.net/myFirst
 
 mongoose.connect(url, { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, autoIndex: true, useFindAndModify: true }, () => {
     console.log(chalk.red("connected to Mongo DB"));
-    // mongoose.connection.db.dropDatabase()
-
 });
 
 const allSchemas = () => {
@@ -20,8 +18,6 @@ const allSchemas = () => {
         WishListItems: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }]
     });
 
-
-
     const Item = mongoose.Schema({
         title: { type: String, require: true },
         vendor: { type: String, require: true },
@@ -33,7 +29,6 @@ const allSchemas = () => {
         itemStoreCode: { type: String, require: true },
         itemURL: { type: String, require: true },
         rating: { type: String }
-
     });
 
     const Review = mongoose.Schema({
@@ -55,15 +50,8 @@ const allSchemas = () => {
     mongoose.model("User", User);
     mongoose.model("Review", Review);
     mongoose.model("Rating", Rating);
-
-
 };
 
-
-
 allSchemas();
-
-
-
 
 module.exports = mongoose;

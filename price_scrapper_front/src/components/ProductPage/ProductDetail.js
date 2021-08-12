@@ -16,6 +16,9 @@ const ProductDetail = (props) => {
     var setProductIndex = (index) => {
         setIndex(index);
     }
+    let divName = "columnNone";
+    let bodyDivName = "cardDetailsBodyNone";
+    let imgPadding = "25%";
     const [listReview, setListReview] = useState([]);
     var [rev, setReview] = useState("");
 
@@ -57,7 +60,7 @@ const ProductDetail = (props) => {
                 title,
                 FirstName,
                 LastName,
-                review :rev
+                review: rev
             };
             const infos = await (await axios.post('/api/items/sendReviews', newReview, {
                 headers: {
@@ -65,7 +68,7 @@ const ProductDetail = (props) => {
                 }
             })).data;
             console.log(infos)
-            setListReview(prev=>[...prev,newReview])
+            setListReview(prev => [...prev, newReview])
             setReview("")
         } catch (e) {
             console.log(e.message)
@@ -77,7 +80,7 @@ const ProductDetail = (props) => {
     async function getReview() {
         try {
             let token = localStorage.getItem("token");
-            const resp = await axios.post('/api/items/getReviews',{itemURL:itemFromPath.itemURL}, {
+            const resp = await axios.post('/api/items/getReviews', { itemURL: itemFromPath.itemURL }, {
                 headers: {
                     "Authorization": token
                 }
@@ -85,9 +88,9 @@ const ProductDetail = (props) => {
             const data = await resp.data
             console.log("we just got the data")
             if (data.length > 0) {
-    
+
                 setListReview(data)
-            }else{
+            } else {
                 setListReview([])
             }
         } catch (e) {
@@ -125,17 +128,28 @@ const ProductDetail = (props) => {
 
     return (
         <div className="cardInfo">
+            {
+                localStorage.getItem("token") ? (
+                    divName = "column",
+                    bodyDivName = "cardDetailsBody",
+                    imgPadding = "33%"
+                ) : (
+                    divName = "columnNone",
+                    bodyDivName = "cardDetailsBodyNone",
+                    imgPadding = "25%"
+                )
+            }
             <div className="cardContents">
                 <Card style={{ height: '500px' }} id="cardDetail">
                     <div className="row">
-                        <div className="column">
-                            <Card.Img style={{ paddingTop: '33%' }} variant="top" src={itemFromPath.image} width='300' height='200' />
+                        <div className={divName}>
+                            <Card.Img style={{ paddingTop: imgPadding }} variant="top" src={itemFromPath.image} width='300' height='200' />
                             <br />
                             <br />
                             <Card.Title className="cardDetailsTitle">{itemFromPath.title}</Card.Title>
                         </div>
-                        <div className="column">
-                            <Card.Body className="cardDetailsBody">
+                        <div className={divName}>
+                            <Card.Body className={bodyDivName}>
                                 <div>
                                     <p>
                                         Vendor: {itemFromPath.vendor}
@@ -147,7 +161,7 @@ const ProductDetail = (props) => {
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
-                                    <br />amir
+                                    <br />
                                     <br />
                                     <a id="buyLink" href={itemFromPath.itemURL}>
                                         <Button id="buyBtn" variant="contained" color="primary">
@@ -184,7 +198,7 @@ const ProductDetail = (props) => {
                                         <br />
                                         <br />
                                         <br />
-                                        <Button variant="contained" color="primary" onClick={() =>addReview()}>Submit Review</Button>
+                                        <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
                                     </div>
                                 </div> : null
                         }

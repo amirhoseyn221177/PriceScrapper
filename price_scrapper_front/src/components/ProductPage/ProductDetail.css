@@ -15,6 +15,10 @@ button.MuiButton-containedPrimary:hover {
     padding-top: 27%;
 }
 
+.cardDetailsBodyNone {
+    padding-top: 25%;
+}
+
 .cardDetailsTitle {
     text-align: center;
     width: 90%;
@@ -24,7 +28,12 @@ button.MuiButton-containedPrimary:hover {
 .column {
     float: left;
     width: 33%;
-  }
+}
+
+.columnNone {
+    float: left;
+    width: 50%; 
+}
   
 .row:after {
     content: "";

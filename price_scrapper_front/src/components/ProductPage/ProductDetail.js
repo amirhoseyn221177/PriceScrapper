@@ -231,10 +231,8 @@ const ProductDetail = (props) => {
                         {
                             localStorage.getItem("token") ?
                                 <div className="column">
-                                    <p>
-                                        <StarRating itemFromPath={itemFromPath} />
-                                    </p>
                                     <div id="reviews">
+                                        <StarRating itemFromPath={itemFromPath} />
                                         <h3>Reviews</h3>
                                         {
                                             listReview.length !== 0 ?
@@ -247,7 +245,6 @@ const ProductDetail = (props) => {
                                         <br />
                                         <br />
                                         <TextareaAutosize data-role="none" style={{ resize: "none" }} id="textArea" value={rev} rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
-                                        <br />
                                         <br />
                                         <br />
                                         <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>

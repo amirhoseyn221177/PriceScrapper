@@ -53,7 +53,7 @@ We chose to deploy Price Scrapper on Azure instead of Heroku which most teams de
 
 
 ## Next steps
-We have completed all our standard requirements and one of our stretch goals. Next steps would be completing the remaining stretch goal which would be add a way of communication between buyer and seller. Moreover, we also plan on adding notifications to users who have signed up about a price drop to items on their wish list. Lastly, the UI could be improved with more responsiveness.
+We have completed all our standard requirements and one of our stretch goals. Next steps would be completing the remaining stretch goal which would be add a way of communication between buyer and seller. Moreover, we also plan on adding notifications to users who have signed up about a price drop to items on their wish list and allowing users to view all their posted reviews in their profile page with an option to delete them. Lastly, the UI could be improved with more responsiveness.
 
 ## List of Contributions
 

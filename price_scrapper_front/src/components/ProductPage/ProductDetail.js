@@ -146,7 +146,7 @@ const ProductDetail = (props) => {
                 "Authorization": token
             }
         })
-            .then(response => console.log(response.data));
+            .then(response => console.log());
     }
 
     useEffect(() => {

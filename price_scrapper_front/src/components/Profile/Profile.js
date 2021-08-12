@@ -43,7 +43,9 @@ const Profile = (props) => {
                     };
                     if (WishData.length > 0) {
                         let wishList = WishData;
-                        setWishList([...new Set(wishList)]);
+                        let wishTitles = wishList.map(item => item.title);
+                        let filteredWish = wishList.filter((item, index) => wishTitles.indexOf(item.title) === index);
+                        setWishList([...new Set(filteredWish)]);
                     }
                 }
                 await getUserDetails();

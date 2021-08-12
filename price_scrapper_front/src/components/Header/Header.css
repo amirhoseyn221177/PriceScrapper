@@ -15,17 +15,14 @@
     display: block;
     color: white;
     text-align: center;
-    padding: 14px 40px 16px 40px;
+    padding: 14px 40px 17px 40px;
     text-decoration: none;
   }
 
   nav li a:hover {
     background-color: white;
     color: #3048cc;
-  }
-  
-  .active {
-    border-bottom: 4px solid white;
+    border-radius: 30px;
   }
 
   .navbar {
@@ -33,4 +30,16 @@
     top: 0;
     width: 100%;
     z-index: 1;
+  }
+
+  #logoutBtn:hover {
+    background-color: white;
+    color: blue;
+  }
+
+  #logoutBtn {
+    border-radius: 30px;
+    padding: 14px 40px 16px 40px;
+    width: 100px;
+    height: 48px;
   }

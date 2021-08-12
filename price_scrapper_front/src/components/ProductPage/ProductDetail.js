@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card } from 'react-bootstrap'
 import { withRouter } from 'react-router';
-import { Button } from '@material-ui/core';
+import { Button, TextareaAutosize } from '@material-ui/core';
 import './ProductDetail.css'
 import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
@@ -12,7 +12,6 @@ import { get } from "mongoose";
 import { red } from "@material-ui/core/colors";
 
 const ProductDetail = (props) => {
-    console.log(13)
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
     const [itemFromPath, setItemFromPath] = useState({})
     const [productInfoFromPath, setProductsFromPath] = useState([])
@@ -37,8 +36,6 @@ const ProductDetail = (props) => {
         if (product64 !== undefined) setProductsFromPath(JSON.parse(decodeURIComponent(product64)))
     }, [props.match.params.item64])
 
-    console.log(itemFromPath)
-
     function averagePrice() {
         var sum = 0;
         for (let i = 0; i < productInfoFromPath.length; i++) {
@@ -49,7 +46,6 @@ const ProductDetail = (props) => {
     }
 
     async function addReview() {
-        console.log("hi")
         try {
             let token = localStorage.getItem("token");
             const resp = await axios.get('/api/user/userinfo', {
@@ -58,19 +54,15 @@ const ProductDetail = (props) => {
                 }
             })
             const data = await resp.data
-            console.log(data)
             var FirstName = data.Name;
-            console.log(FirstName)
         } catch (e) {
             console.log(e.message)
         }
         let token = localStorage.getItem("token");
         var itemURL = itemFromPath.itemURL;
         var title = itemFromPath.title;
-        // var FirstName = itemFromPath.FirstName;
         var LastName = itemFromPath.LastName;
         var review = rev;
-        console.log(review);
         var newReview = {
             itemURL,
             title,
@@ -78,51 +70,12 @@ const ProductDetail = (props) => {
             LastName,
             review
         };
-        console.log(newReview);
         const data = await (await axios.post('/api/items/getReviews', newReview, {
             headers: {
                 "Authorization": token
             }
         })).data;
     }
-
-    async function addRating() {
-        console.log("87")
-        try {
-            let token = localStorage.getItem("token");
-            const resp = await axios.get('/api/user/userinfo', {
-                headers: {
-                    "Authorization": token
-                }
-            })
-            const data = await resp.data
-            console.log(data)
-            var FirstName = data.Name;
-         
-        var itemURL = itemFromPath.itemURL;
-        var title = itemFromPath.title;
-        var rating = ratings;
-        console.log(rating);
-        var newRating = {
-            itemURL,
-            title,
-            FirstName,
-            rating
-        };
-        console.log(newRating);
-        const dataRating = await (await axios.post('/api/items/getRating', newRating, {
-            headers: {
-                "Authorization": token
-            }
-        })).data;
-            console.log(FirstName)
-        } catch (e) {
-            console.log(e.message)
-        }
-        
-    }
-
-    
 
     async function getReview() {
         try {
@@ -150,16 +103,17 @@ const ProductDetail = (props) => {
     }
 
     async function getRating() {
+        console.log("here")
         try {
             let token = localStorage.getItem("token");
-            const resp = await axios.get('/api/items/getRating/' + itemFromPath.itemURL, {
+            const resp = await axios.get(`/api/items/getRating/${itemFromPath.itemURL}`, {
                 headers: {
                     "Authorization": token
                 }
             })
             const data = await resp.data
             console.log(data)
-                setLoadedRating(data)
+            setLoadedRating(data)
         } catch (e) {
             console.log(e.message)
         }
@@ -168,17 +122,18 @@ const ProductDetail = (props) => {
     console.log(itemFromPath.itemURL)
 
     useEffect(() => {
-        getReview()
         getRating()
     }, [itemFromPath])
 
     console.log(loadedReview)
 
+    useEffect(() => {
+        getReview()
+    }, [itemFromPath])
 
     function addToWishlist() {
         let token = localStorage.getItem("token")
         delete itemFromPath["_id"]
-        console.log(itemFromPath)
         axios.post('/api/items/addToWishList', { item: itemFromPath }, {
             headers: {
                 "Authorization": token
@@ -194,60 +149,77 @@ const ProductDetail = (props) => {
         }
     }, [])
 
-    console.log(index)
     return (
         <div className="cardInfo">
-            <Card id="cardDetail">
-                <Card.Img variant="top" src={itemFromPath.image} width='640' height='480' />
-                <Card.Body className="cardBody">
-                </Card.Body>
-            </Card>
-            <p >
-                Name: {itemFromPath.title}
-            </p>
-            <p>
-                Vendor: {itemFromPath.vendor}
-            </p>
-            <p>
-                Price: {itemFromPath.price} {itemFromPath.currency}
-            </p>
-            <p>
-                Average Price: {averagePrice()}
-            </p>
-            {
-                localStorage.getItem("token") ?
-                    <div>
-                        <p>
-                        <StarRating itemFromPath = {itemFromPath} /> 
-                       </p>
-                        <p style={{ color: "red" }}>
-                            Reviews: {listReview.map(item => (
-                                <p color> {item.FirstName} : {item.review}</p>
-                            ))}
-                        </p>
-                        <input id="review" type="text" placeholder="Write A Review" size="50" onChange={e => setReview(e.target.value)} />
-                        {/* <input type="button" value="Submit Review" onClick={() => addReview()} /> */}
-                        <br />
-                        <br />
-                        <Button variant="contained" color="primary" onClick={() => addReview()}>
-                            Submit Review
-                        </Button>
-                    </div> : null
-            }
-            <br />
-            <a href={itemFromPath.itemURL}>
-                <Button variant="contained" color="primary">
-                    Buy product!
-                </Button>
-            </a>
-            <br />
-            <br />
-            {
-                localStorage.getItem("token") ?
-                    <Button variant="contained" color="primary" onClick={() => { addToWishlist() }}>
-                        Add to wishlist
-                    </Button> : null
-            }
+            <div className="cardContents">
+                <Card style={{ height: '500px' }} id="cardDetail">
+                    <div className="row">
+                        <div className="column">
+                            <Card.Img style={{ paddingTop: '33%' }} variant="top" src={itemFromPath.image} width='300' height='200' />
+                            <br />
+                            <br />
+                            <Card.Title className="cardDetailsTitle">{itemFromPath.title}</Card.Title>
+                        </div>
+                        <div className="column">
+                            <Card.Body className="cardDetailsBody">
+                                <div>
+                                    <p>
+                                        Vendor: {itemFromPath.vendor}
+                                    </p>
+                                    <p>
+                                        Price: {itemFromPath.price} {itemFromPath.currency}
+                                    </p>
+                                    <p>Rating: {loadedRating}</p>
+                                    <p>
+                                        Average Price: {averagePrice()}
+                                    </p>
+                                    <br />
+                                    <br />
+                                    <a href={itemFromPath.itemURL}>
+                                        <Button id="buyBtn" variant="contained" color="primary">
+                                            Buy product!
+                                        </Button>
+                                    </a>
+                                    <br />
+                                    <br />
+                                    {
+                                        localStorage.getItem("token") ?
+                                            <Button variant="contained" color="primary" onClick={() => { addToWishlist() }}>
+                                                Add to wishlist
+                                            </Button> : null
+                                    }
+                                </div>
+                            </Card.Body>
+                        </div>
+                        {
+                            localStorage.getItem("token") ?
+                                <div className="column">
+                                    <p>
+                                        <StarRating itemFromPath={itemFromPath} />
+                                    </p>
+                                    <div id="reviews">
+                                        <h3>Reviews</h3>
+                                        {
+                                            listReview.length !== 0 ?
+                                                <div id="reviewList">
+                                                    {listReview.map((item, idx) => (
+                                                        <p key={idx}> {item.FirstName}: {item.review}</p>))}
+                                                </div>
+                                                : <p id="emptyText"> No reviews available yet, write one!</p>
+                                        }
+                                        <br />
+                                        <br />
+                                        <TextareaAutosize data-role="none" style={{ resize: "none", overflow: "scroll" }} id="textArea" rows={4} placeholder="Write a review" onChange={e => setReview(e.target.value)}></TextareaAutosize>
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
+                                    </div>
+                                </div> : null
+                        }
+                    </div>
+                </Card>
+            </div>
             <SuggestedItems
                 allItems={productInfoFromPath} setProductIndex={setProductIndex}
             />

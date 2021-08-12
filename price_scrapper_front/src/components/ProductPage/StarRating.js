@@ -51,7 +51,7 @@ const StarRating = (props) => {
             {[...Array(5)].map((star, i) => {
                 const tempRating = i + 1;
                 return (
-                    <label>
+                    <label key={i}>
                         <input
                         disabled={true}
                             type="radio"

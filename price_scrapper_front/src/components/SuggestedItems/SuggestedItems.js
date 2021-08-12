@@ -16,7 +16,7 @@ import axios from 'axios';
 
 const SuggestedItems = (props) => {
     const [items, setItems] = useState([]);
-
+    const [searchText , setSearchText]=useState(props.searchtext)
     useEffect(() => {
         setItems(props.allItems);
     }, [props.allItems]);
@@ -40,8 +40,10 @@ const SuggestedItems = (props) => {
         props.sendingItems(items)
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
-        props.history.push(`/productdetail/${base64Item}/${index}`)
-    }
+        props.history.push({
+            pathname : `/productdetail/${base64Item}/${index}`,
+            serach :`?searchedWord = ${searchText}`
+        })    }
 
     const responsive = {
         desktop: {

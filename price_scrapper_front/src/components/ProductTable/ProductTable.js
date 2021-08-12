@@ -66,9 +66,7 @@ const ProductTable = (props) => {
         setAnchorEl(null);
     };
 
-    const handleShow = () => {
-        setOpen(true);
-    };
+  
     const handleClose = () => {
         setOpen(false);
     };
@@ -254,14 +252,14 @@ const ProductTable = (props) => {
 
     var goToProductPage = (item, index, info) => {
         props.sendingItemArray(item);
-        console.log(item);
         addToRecentlyViewed(item);
         let base64Item = JSON.stringify(item);
         base64Item = Buffer.from(base64Item).toString("base64");
         props.sendingItemsArray(productInfoArray)
-        let arr = JSON.stringify(productInfoArray);
-        let encodedItems = encodeURIComponent(arr);
-        props.history.push(`/productdetail/${base64Item}/${index}`)
+        props.history.push({
+            pathname : `/productdetail/${base64Item}/${index}`,
+            search :`searchedWord=${searchText}`
+        })
     };
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from 'react-bootstrap'
 import { withRouter } from 'react-router';
 import { Button, TextareaAutosize } from '@material-ui/core';
@@ -7,32 +7,39 @@ import SuggestedItems from '../SuggestedItems/SuggestedItems';
 import { connect } from 'react-redux';
 import axios from 'axios'
 import StarRating from "./StarRating";
-
+import qs  from 'qs'
 const ProductDetail = (props) => {
     const [index, setIndex] = useState(parseInt(props.match.params.index, 10));
     const [itemFromPath, setItemFromPath] = useState({})
     const [productInfoFromPath, setProductsFromPath] = useState([])
+    const [searchText, setSearchText] = useState("")
     var setProductIndex = (index) => {
         setIndex(index);
     }
+
+
     const [listReview, setListReview] = useState([]);
     var [rev, setReview] = useState("");
+    const [loadedRating, setLoadedRating] = useState();
+
+
 
     useEffect(() => {
         let base64 = props.match.params.item64
         let jsonItem = atob(base64)
+        let searchVariable = qs.parse(props.location.search)['?searchedWord']
+        setSearchText(searchVariable)
         setItemFromPath(JSON.parse(jsonItem))
     }, [props.match.params.item64])
 
 
     useEffect(()=>{
         if(props.items !== null || props.items !== undefined){
-            console.log(props.items)
             setProductsFromPath(props.items)
         }
     },[props.items])
 
-    console.log(productInfoFromPath)
+
 
     function averagePrice() {
         var sum = 0;
@@ -43,12 +50,10 @@ const ProductDetail = (props) => {
 
     }
 
-    console.log(rev)
-
-
     async function addReview() {
         try {
             let token = localStorage.getItem("token");
+            if(token ==="" || token === null || token === undefined)return;
             const resp = await axios.get('/api/user/userinfo', {
                 headers: {
                     "Authorization": token
@@ -66,20 +71,17 @@ const ProductDetail = (props) => {
                 LastName,
                 review :rev
             };
-            const infos = await (await axios.post('/api/items/sendReviews', newReview, {
+            await axios.post('/api/items/sendReviews', newReview, {
                 headers: {
                     "Authorization": token
                 }
-            })).data;
-            console.log(infos)
+            })
             setListReview(prev=>[...prev,newReview])
             setReview("")
         } catch (e) {
             console.log(e.message)
         }
-
     }
-
 
     async function getReview() {
         try {
@@ -90,9 +92,7 @@ const ProductDetail = (props) => {
                 }
             })
             const data = await resp.data
-            console.log("we just got the data")
             if (data.length > 0) {
-    
                 setListReview(data)
             }else{
                 setListReview([])
@@ -102,14 +102,57 @@ const ProductDetail = (props) => {
         }
     }
 
+    async function getRating() {
+        try {
+            let token = localStorage.getItem("token");
+            const resp = await axios.get(`/api/items/getRating/${itemFromPath.title}`, {
+                headers: {
+                    "Authorization": token
+                }
+            })
+            const data = await resp.data
+            console.log(data)
+            setLoadedRating(data)
+        } catch (e) {
+            console.log(e.message)
+        }
+    }
+
+
 
     useEffect(() => {
-        console.log(90)
+        getRating()
         getReview()
     }, [itemFromPath])
 
 
+    // var callAmazonAPI = async () => {
+    //     try {
+    //         console.log(searchText);
+    //         var amazonResponse = await axios.post("/api/amazon/search", { searchText, startPoint:1, sortVariable:'Highest Rating' });
+    //         const amazonJSON = await amazonResponse.data;
+    //         const amazonItemArr = await amazonJSON.result;
+    //         console.log("this is amazon" + amazonItemArr);
+    //     } catch (e) {
+    //         console.log(e.response.data.error.message);
 
+    //     }
+
+    // };
+
+
+
+    // var callEbayAPI = async () => {
+    //     try {
+    //         var ebayResponse = await axios.post("/api/ebay/search", { searchText, startPoint:1, sortVariable:'Highest Rating' });
+    //         const ebayJSON = await ebayResponse.data;
+    //         const ebayItemArr = await ebayJSON.result;
+    //     } catch (e) {
+    //         console.log(e);
+
+    //     }
+
+    // };
 
 
     function addToWishlist() {
@@ -130,7 +173,7 @@ const ProductDetail = (props) => {
         }
     }, [])
 
-    console.log(132222222222222)
+
     return (
         <div className="cardInfo">
             <div className="cardContents">
@@ -151,13 +194,13 @@ const ProductDetail = (props) => {
                                     <p>
                                         Price: {itemFromPath.price} {itemFromPath.currency}
                                     </p>
-                                    <StarRating />
+                                    <p>Rating: {loadedRating === "NaN" ? "Not available" :loadedRating}</p>
                                     <p>
                                         Average Price: {averagePrice()}
                                     </p>
-                                    <br />amir
                                     <br />
-                                    <a id="buyLink" href={itemFromPath.itemURL}>
+                                    <br />
+                                    <a href={itemFromPath.itemURL}>
                                         <Button id="buyBtn" variant="contained" color="primary">
                                             Buy product!
                                         </Button>
@@ -176,6 +219,9 @@ const ProductDetail = (props) => {
                         {
                             localStorage.getItem("token") ?
                                 <div className="column">
+                                    <p>
+                                        <StarRating itemFromPath={itemFromPath} />
+                                    </p>
                                     <div id="reviews">
                                         <h3>Reviews</h3>
                                         {
@@ -192,7 +238,7 @@ const ProductDetail = (props) => {
                                         <br />
                                         <br />
                                         <br />
-                                        <Button variant="contained" color="primary" onClick={() =>addReview()}>Submit Review</Button>
+                                        <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
                                     </div>
                                 </div> : null
                         }

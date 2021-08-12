@@ -1,32 +1,68 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { FaStar } from "react-icons/fa"
 
 const StarRating = (props) => {
-    const [rating, setRating] = useState(props.ratingValue);
+    const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(null);
 
 
+
     useEffect(()=>{
-        setRating(props.ratingValue)
-    },[props.ratingValue])
+        addRating()
+    },[rating])
+
+    var addRating = async()=>{
+        try{
+            let token = localStorage.getItem("token");
+            const resp = await axios.get('/api/user/userinfo', {
+                headers: {
+                    "Authorization": token
+                }
+            })
+            const userInfo = await resp.data
+            let firstName = userInfo.Name
+            var itemURL = props.itemFromPath.itemURL;
+            var title = props.itemFromPath.title;
+            var newRating = {
+                itemURL,
+                title,
+                firstName,
+                rating
+            };
+            console.log(newRating.rating)
+          await axios.post('/api/items/getRating', newRating, {
+                headers: {
+                    "Authorization": token
+                }
+            });
+        }catch(e){
+            console.log(e.message)
+        }
+    }
+
+    
     
     return (
         <div>
             Rating:
             {[...Array(5)].map((star, i) => {
-                const ratingValue = i + 1;
+                const tempRating = i + 1;
                 return (
                     <label key={i}>
                         <input
+                        disabled={true}
                             type="radio"
                             name="rating"
                             value={rating}
-                            onClick={() => setRating(ratingValue)}
                         />
                         <FaStar
                             className="star"
-                            color={ratingValue <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
-                            size={15}
+                            color={tempRating <= (hover || rating) ? "#ffc107" : "#e4e5e9"}
+                            size={15} 
+                            onClick={()=>{setRating(tempRating)}}
+                            onMouseEnter={() => setHover(tempRating)}
+                            onMouseLeave={() => setHover(null)}
                         />
                     </label>
                 );

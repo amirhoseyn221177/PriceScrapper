@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card } from 'react-bootstrap'
 import { withRouter } from 'react-router';
 import { Button, TextareaAutosize } from '@material-ui/core';
@@ -18,12 +18,10 @@ const ProductDetail = (props) => {
     }
     const [listReview, setListReview] = useState([]);
     var [rev, setReview] = useState("");
-    const [loadedReview, setLoadedReview] = useState([]);
 
     useEffect(() => {
         let base64 = props.match.params.item64
         let product64 = qs.parse(props.location.search)["?base64product"]
-        console.log(product64)
         let jsonItem = atob(base64)
         setItemFromPath(JSON.parse(jsonItem))
         if (product64 !== undefined) setProductsFromPath(JSON.parse(decodeURIComponent(product64)))
@@ -38,6 +36,9 @@ const ProductDetail = (props) => {
 
     }
 
+    console.log(rev)
+
+
     async function addReview() {
         try {
             let token = localStorage.getItem("token");
@@ -48,53 +49,60 @@ const ProductDetail = (props) => {
             })
             const data = await resp.data
             var FirstName = data.Name;
+            var itemURL = itemFromPath.itemURL;
+            var title = itemFromPath.title;
+            var LastName = itemFromPath.LastName;
+            var newReview = {
+                itemURL,
+                title,
+                FirstName,
+                LastName,
+                review :rev
+            };
+            const infos = await (await axios.post('/api/items/sendReviews', newReview, {
+                headers: {
+                    "Authorization": token
+                }
+            })).data;
+            console.log(infos)
+            setListReview(prev=>[...prev,newReview])
         } catch (e) {
             console.log(e.message)
         }
-        let token = localStorage.getItem("token");
-        var itemURL = itemFromPath.itemURL;
-        var title = itemFromPath.title;
-        var LastName = itemFromPath.LastName;
-        var review = rev;
-        var newReview = {
-            itemURL,
-            title,
-            FirstName,
-            LastName,
-            review
-        };
-        const data = await (await axios.post('/api/items/getReviews', newReview, {
-            headers: {
-                "Authorization": token
-            }
-        })).data;
+
     }
+
 
     async function getReview() {
         try {
             let token = localStorage.getItem("token");
-            const resp = await axios.get('/api/items/getReviews', {
+            const resp = await axios.post('/api/items/getReviews',{itemURL:itemFromPath.itemURL}, {
                 headers: {
                     "Authorization": token
                 }
             })
             const data = await resp.data
+            console.log("we just got the data")
             if (data.length > 0) {
-                data.map(item => {
-                    if (item.itemURL === itemFromPath.itemURL) {
-                        setListReview(prev => [...prev, item])
-                    }
-                })
-                setLoadedReview(data)
+    
+                setListReview(data)
+            }else{
+                setListReview([])
             }
         } catch (e) {
             console.log(e.message)
         }
     }
 
+
     useEffect(() => {
+        console.log(90)
         getReview()
     }, [itemFromPath])
+
+
+
+
 
     function addToWishlist() {
         let token = localStorage.getItem("token")
@@ -175,7 +183,7 @@ const ProductDetail = (props) => {
                                         <br />
                                         <br />
                                         <br />
-                                        <Button variant="contained" color="primary" onClick={() => addReview()}>Submit Review</Button>
+                                        <Button variant="contained" color="primary" onClick={() =>addReview()}>Submit Review</Button>
                                     </div>
                                 </div> : null
                         }

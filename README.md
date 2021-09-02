@@ -70,8 +70,6 @@ Did inital setup with React App and MongoDB, deployed project onto Azure, mostly
 Researched and added suitable vendors to scrape information from, connected vendor APIs to search results table, added a vendor filter, made suggested items carousel to dynamically load items and assisted other team members.
 
 
-### Shadi Rezaei (m3i9g): 
-Worked mainly on the front-end setting up flex-boxes and adding material UI for some react components and setting up tickets for other team members through JIRA.
 
 ## Brief sketch of our initial layout
 
